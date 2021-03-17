@@ -82,7 +82,7 @@ UART       | 0x82000000 | 0x820000FF
 The platform comes with several software examples testing components and showing the useage of periphrals in the RISC-V environment.
 
 Next to handwritten C and Assembly software examples there are some prebuilt freeRTOS binaries for the MicroRV32 platform. They can be found in `sw/freeRTOS-prebuilt` and are named after the freeRTOS example demos for reference.
-Additionally the official `riscv-tests` unit tests can be found in `sw/riscv-tests-static` as built binaries ready for execution.
+Additionally the official `riscv-tests` unit tests can be found in `sw/riscv-test-rv32uip-prebuild` as built binaries ready for execution.
 
 To run the examples the memory size has to be choosen according to the example being executed (this is due to the program being loaded into the memory before compilation/synthesis of the platform). In `src/main/scala/core/microrv32/` the file `MicroRV32Top.scala` contains all the components of the platform being interconnected. In line `51` the memory gets initiated with the program that should be exectued. In the lines above commented versions of this instantiation show the different memorysizes for each software:
 ```scala
