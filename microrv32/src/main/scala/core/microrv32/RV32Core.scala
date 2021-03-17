@@ -55,7 +55,7 @@ class RV32Core() extends Component{
     import Tools._
     import RVOpcode._
     import InstructionType._
-    import CSSROpcode._
+    import CSROpcode._
 
     // data signals
     val instruction = Reg(Bits(32 bits)) init(0)
@@ -330,17 +330,17 @@ class RV32Core() extends Component{
   }
 
   // generate CSR logic only if class variable is set
-  val cssrLogic = (CSR_EXT) generate new Area{
+  val CSRLogic = (CSR_EXT) generate new Area{
     //import controlFSM._
     import RVCSR._
-    import CSSRAccessType._
+    import CSRAccessType._
     import InstructionType._
 
-    // input/output stage of cssr logic for read/write
+    // input/output stage of CSR logic for read/write
     val addr = UInt(12 bits)
     //val rw = Bool // true means write
-    val accessType = CSSRAccessType()
-    val ena = Bool // enable of cssr logic
+    val accessType = CSRAccessType()
+    val ena = Bool // enable of CSR logic
     val wval = Bits(32 bits) // write data
     val rval = Reg(Bits(32 bits)) init(0) // read data
     val newFetch = Bool
@@ -353,7 +353,7 @@ class RV32Core() extends Component{
     val chooseOperand = Bool
     val wrCSRcnd = Bool
 
-    // cssr registers
+    // CSR registers
     // Machine Information Registers
     val mvendorid = Reg(Bits(32 bits)) init(0) //RO - Vendor ID 
     val marchid = Reg(Bits(32 bits)) init(0) // RO - Architecture ID
@@ -543,10 +543,10 @@ class RV32Core() extends Component{
     // halting signal
     val halted = Bool
     val fetchSync = Bool
-    // cssr counter enable
+    // CSR counter enable
     val newFetch = Bool
     val haltCond = (io.halt | io.haltErr)
-    val timerIRQPending = cssrLogic.mip(MIP_MTIP) & cssrLogic.mie(MIP_MTIP) & cssrLogic.mstatus(MSTATUS_MIE)
+    val timerIRQPending = CSRLogic.mip(MIP_MTIP) & CSRLogic.mie(MIP_MTIP) & CSRLogic.mstatus(MSTATUS_MIE)
 
     //likely to get pruned but easier for readability
     memReady := io.sb.SBready
@@ -601,7 +601,7 @@ class RV32Core() extends Component{
         if(CSR_EXT){
           //newFetch := True
           // move into datapath at decode state? it would be wrong to have it here, at the moment it works tho
-          cssrLogic.minstret := (cssrLogic.minstret.asUInt + 1).asBits
+          CSRLogic.minstret := (CSRLogic.minstret.asUInt + 1).asBits
         }
       }
     }
@@ -726,8 +726,8 @@ class RV32Core() extends Component{
     import controlFSM._
     import InstructionType._
     import RVOpcode._
-    import CSSROpcode._
-    import CSSRAccessType._
+    import CSROpcode._
+    import CSRAccessType._
     import RVCSR._
 
     //io signals for datapath
@@ -755,7 +755,7 @@ class RV32Core() extends Component{
 
     // signals going to csr logic -- since they are redundant they will get pruned likely, but it helps readability
     val csr_addr = UInt(12 bits)
-    val csr_accType = CSSRAccessType()
+    val csr_accType = CSRAccessType()
     val csr_ena = Bool
     val csr_rval = Bits(32 bits)
     val csr_wval = Bits(32 bits)
@@ -767,11 +767,11 @@ class RV32Core() extends Component{
     csr_wval := 0
 
     // connect to csr logic
-    cssrLogic.addr := csr_addr
-    cssrLogic.accessType := csr_accType
-    cssrLogic.ena := csr_ena
-    csr_rval := cssrLogic.rval
-    cssrLogic.wval := csr_wval
+    CSRLogic.addr := csr_addr
+    CSRLogic.accessType := csr_accType
+    CSRLogic.ena := csr_ena
+    csr_rval := CSRLogic.rval
+    CSRLogic.wval := csr_wval
 
     /*
     * as regarded in https://github.com/SpinalHDL/SpinalHDL/issues/308
@@ -873,14 +873,14 @@ class RV32Core() extends Component{
           // next state is trap
           when(decodeLogic.funct12 === F12_ECALL){
             // trap values
-            cssrLogic.mcause := RVCSR.TRAP_EXC_ECALL_M_MODE
-            cssrLogic.mtval := (pcLogic.programCounter - 4).asBits
+            CSRLogic.mcause := RVCSR.TRAP_EXC_ECALL_M_MODE
+            CSRLogic.mtval := (pcLogic.programCounter - 4).asBits
           }.elsewhen(decodeLogic.funct12 === F12_MRET & decodeLogic.source1 === 0 & decodeLogic.funct3 === 0 & decodeLogic.destination === 0){
             if(CSR_EXT){
               // recover from traphandler 
-              cssrLogic.mstatus(MSTATUS_MIE) := cssrLogic.mstatus(MSTATUS_MPIE)
-              cssrLogic.mstatus(MSTATUS_MPIE) := True
-              pcLogic.programCounter := cssrLogic.mepc.asUInt
+              CSRLogic.mstatus(MSTATUS_MIE) := CSRLogic.mstatus(MSTATUS_MPIE)
+              CSRLogic.mstatus(MSTATUS_MPIE) := True
+              pcLogic.programCounter := CSRLogic.mepc.asUInt
             }
           }.elsewhen(decodeLogic.funct3 =/= F3_CSR_DECODEMASK){
             // F3_CSR_DECODEMASK = -00 (dontcare, 0, 0). all other funct3 have instruction
@@ -889,9 +889,9 @@ class RV32Core() extends Component{
               // write to csr register given through instruction
               csr_addr := decodeLogic.csr.asUInt
               // choose between data in src1 register and immediate with bit 3 of funct3
-              // src1 == x0 gets checked in cssrLogic based on AccessType Enum
+              // src1 == x0 gets checked in CSRLogic based on AccessType Enum
               csr_wval := (decodeLogic.funct3(2)) ? B(decodeLogic.csr_uimm, 32 bits) | src1Data
-              cssrLogic.ena := True
+              CSRLogic.ena := True
               // write old value to destination reigster, 
               // if destination is x0 register design doesnt write anyway
               dest := decodeLogic.destination.asUInt
@@ -914,8 +914,8 @@ class RV32Core() extends Component{
         is(isIllegal){
           if(CSR_EXT){
             // next state is trap
-            cssrLogic.mtinst := decodeLogic.instrSwapped
-            cssrLogic.mcause := RVCSR.TRAP_EXC_ILLEGAL_INSTR
+            CSRLogic.mtinst := decodeLogic.instrSwapped
+            CSRLogic.mcause := RVCSR.TRAP_EXC_ILLEGAL_INSTR
           }
         }
       }
@@ -953,20 +953,20 @@ class RV32Core() extends Component{
     }.elsewhen(controlFSM.isActive(stateTrap)){
       if(CSR_EXT){
         // mask MSB with 0 to represent trap cause
-        cssrLogic.mcause := cssrLogic.mcause & B(32 bits, 31->false, default->true)
-        cssrLogic.mtval := (pcLogic.programCounter - 4).asBits
-        cssrLogic.mepc := (pcLogic.programCounter - 4).asBits
-        pcLogic.programCounter := U(cssrLogic.mtvec(31 downto 2) << 2, 32 bits)
+        CSRLogic.mcause := CSRLogic.mcause & B(32 bits, 31->false, default->true)
+        CSRLogic.mtval := (pcLogic.programCounter - 4).asBits
+        CSRLogic.mepc := (pcLogic.programCounter - 4).asBits
+        pcLogic.programCounter := U(CSRLogic.mtvec(31 downto 2) << 2, 32 bits)
       } 
     }.elsewhen(controlFSM.isActive(stateInterrupt)){
       if(CSR_EXT){
         when(controlFSM.timerIRQPending){
-          cssrLogic.mstatus(MSTATUS_MPIE) := cssrLogic.mstatus(MSTATUS_MIE) // save old irq enable
-          cssrLogic.mstatus(MSTATUS_MIE) := False // disable interrupts while in traphandler per default
-          cssrLogic.mcause := B(32 bits, 31->true, default->false) | 7 // 7 = Machine timer interrupt
-          cssrLogic.mtval := (pcLogic.programCounter - 4).asBits // last valid instruction before irq
-          cssrLogic.mepc := pcLogic.programCounter.asBits // next pc to execute after irq handler
-          pcLogic.programCounter := U(cssrLogic.mtvec(31 downto 2) << 2, 32 bits) // jump to traphandler
+          CSRLogic.mstatus(MSTATUS_MPIE) := CSRLogic.mstatus(MSTATUS_MIE) // save old irq enable
+          CSRLogic.mstatus(MSTATUS_MIE) := False // disable interrupts while in traphandler per default
+          CSRLogic.mcause := B(32 bits, 31->true, default->false) | 7 // 7 = Machine timer interrupt
+          CSRLogic.mtval := (pcLogic.programCounter - 4).asBits // last valid instruction before irq
+          CSRLogic.mepc := pcLogic.programCounter.asBits // next pc to execute after irq handler
+          pcLogic.programCounter := U(CSRLogic.mtvec(31 downto 2) << 2, 32 bits) // jump to traphandler
         }
       }
     }.elsewhen(controlFSM.isActive(stateHalt)){
@@ -986,8 +986,8 @@ class RV32Core() extends Component{
   io.halted := controlFSM.halted
   io.fetchSync := controlFSM.fetchSync
 
-  // cssr control signal for minstret
-  cssrLogic.newFetch := controlFSM.newFetch
+  // CSR control signal for minstret
+  CSRLogic.newFetch := controlFSM.newFetch
 
   // debug logic for testing and debugging purposes on the fpga board
   // TODO: extend for irq state

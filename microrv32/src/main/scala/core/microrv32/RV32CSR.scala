@@ -4,7 +4,7 @@ import spinal.core._
 /*
  * Constants and Masks and Enum definitions for CSR extension
  */
-object CSSROpcode{
+object CSROpcode{
   // for RV32 Zicsr Extension (CSR)
   // readablity constants for opcode, func3, func7, func12 in different appearances
   // used by decode logic
@@ -32,7 +32,7 @@ object RVCSR{
   //def TRAP_EXC_ECALL_M_MODE = B(32 bits, 31->false, (30 downto 0) -> 11, default -> false)
   def TRAP_EXC_ECALL_M_MODE = B"0000_0000_0000_0000_0000_0000_0000_1011"
 
-  // memory map for cssr registers
+  // memory map for CSR registers
   // Machine Information Registers
   def MVENDORID_ADDR = U"xF11"
   //def MVENDORID_ADDR = M"1111_0001_0001" // M"xF11"
@@ -74,8 +74,8 @@ object RVCSR{
   
 }
 
-// enum to control operation for cssr logic
-object CSSRAccessType extends SpinalEnum{
+// enum to control operation for CSR logic
+object CSRAccessType extends SpinalEnum{
   // with csridle the datapath logic can be simplified later
   // additionally provides a read-enable that is seperated from write-enable
   val CSRidle, CSRread, CSRwrite, CSRset, CSRclear = newElement()

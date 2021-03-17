@@ -44,7 +44,7 @@ sw_basic-c:
 	make dump-code -C sw/basic-c > sw/basic-c/dump.txt
 	make hex -C sw/basic-c
 
-sw_cssr-tests:
+sw_csr-tests:
 	make dump-code -C sw/csrTests/ > sw/csrTests/dump.txt
 	make hex -C sw/csrTests/
 	
@@ -77,4 +77,4 @@ clean:
 	rm simWorkspace/MicroRV32Top/rtl/*.bin
 	make clean -C vtb/
 
-.PHONY: clean rtl sim_verilog synth sw_basic-asm sw_instr sw_basic-c sw_cssr-tests sw_led_blink sw_led_c sw_timer_irq
+.PHONY: clean rtl sim_verilog synth sw_basic-asm sw_instr sw_basic-c sw_csr-tests sw_led_blink sw_led_c sw_timer_irq
