@@ -1,1 +1,0 @@
-["core.microrv32.GPIOLEDSim","core.microrv32.MicroRV32TopSim","core.microrv32.MicroRV32TopVerilog","core.microrv32.peripheral.uart.SBUartTopSim","core.microrv32.tb.RVCLICTopSim"]
