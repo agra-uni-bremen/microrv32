@@ -1,4 +1,4 @@
-This work was supported in part by the German Federal Ministry of Education and Research (BMBF) within the project Scale4Edge under contract no.~16ME0127 and within the project VerSys under contract no.~01IW19001.simROM = sw/basic-led-blink/blink.hex
+simROM = sw/basic-led-blink/blink.hex
 sim_spinal:
 	sbt "runMain core.microrv32.MicroRV32TopSim $(simROM)"
 
