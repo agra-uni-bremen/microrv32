@@ -1,4 +1,4 @@
-simROM = sw/basic-led-blink/blink.hex
+This work was supported in part by the German Federal Ministry of Education and Research (BMBF) within the project Scale4Edge under contract no.~16ME0127 and within the project VerSys under contract no.~01IW19001.simROM = sw/basic-led-blink/blink.hex
 sim_spinal:
 	sbt "runMain core.microrv32.MicroRV32TopSim $(simROM)"
 
@@ -64,11 +64,11 @@ sw_timer_irq:
 	make dump-code -C sw/basic-timerirq/ > sw/basic-timerirq/dump.txt
 	make hex -C sw/basic-timerirq/
 
-show_sim_linux:
-	gtkwave vtb/sim/spinalhdl_trace.gtkw &
-
-show_sim_win:
-	gtkwave.exe vtb/sim/spinal_windows.gtkw &
+#show_sim_linux:
+#	gtkwave vtb/sim/spinalhdl_trace.gtkw &
+#
+#show_sim_win:
+#	gtkwave.exe vtb/sim/spinal_windows.gtkw &
 
 clean:
 	rm rtl/*.v
