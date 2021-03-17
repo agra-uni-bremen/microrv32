@@ -1,0 +1,146 @@
+[*]
+[*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
+[*] Wed Apr 15 10:55:13 2020
+[*]
+[dumpfile] "/home/sallar/work/riscv-core2/core/vtb/sim/tb.vcd"
+[dumpfile_mtime] "Wed Apr 15 10:52:54 2020"
+[dumpfile_size] 521896
+[savefile] "/home/sallar/work/riscv-core2/core/vtb/sim/tb.gtkw"
+[timestart] 0
+[size] 1366 727
+[pos] -1 -1
+*-17.643139 445000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] MicroRV32Top_TB.
+[treeopen] MicroRV32Top_TB.DUT.
+[treeopen] MicroRV32Top_TB.DUT.cpu.
+[sst_width] 255
+[signals_width] 352
+[sst_expanded] 1
+[sst_vpaned_height] 203
+@28
+MicroRV32Top_TB.clk
+MicroRV32Top_TB.rst
+@200
+-dut
+@28
+MicroRV32Top_TB.DUT._zz_1_
+MicroRV32Top_TB.DUT.clk
+MicroRV32Top_TB.DUT.cpu_io_halted
+@22
+MicroRV32Top_TB.DUT.cpu_io_sb_SBaddress[31:0]
+@28
+MicroRV32Top_TB.DUT.cpu_io_sb_SBvalid
+@22
+MicroRV32Top_TB.DUT.cpu_io_sb_SBwdata[31:0]
+MicroRV32Top_TB.DUT.ram_io_sb_SBrdata[31:0]
+@28
+MicroRV32Top_TB.DUT.ram_io_sb_SBready
+MicroRV32Top_TB.DUT.reset
+@200
+-cpu
+@28
+MicroRV32Top_TB.DUT.cpu._zz_6_
+MicroRV32Top_TB.DUT.cpu.clk
+@22
+MicroRV32Top_TB.DUT.cpu.controlFSM_memAddr[31:0]
+@28
+MicroRV32Top_TB.DUT.cpu.controlFSM_memReady
+MicroRV32Top_TB.DUT.cpu.controlFSM_memValid
+MicroRV32Top_TB.DUT.cpu.controlFSM_wantExit
+@200
+-pc
+@28
+MicroRV32Top_TB.DUT.cpu.pcLogic_pcEna
+@22
+MicroRV32Top_TB.DUT.cpu.pcLogic_programCounter[31:0]
+@200
+-decode
+@22
+MicroRV32Top_TB.DUT.cpu.decodeLogic_instruction[31:0]
+MicroRV32Top_TB.DUT.cpu.decodeLogic_instrSwapped[31:0]
+@820
+MicroRV32Top_TB.DUT.cpu.decodeLogic_iType_string[71:0]
+@22
+MicroRV32Top_TB.DUT.cpu.decodeLogic_iType[3:0]
+@28
+MicroRV32Top_TB.DUT.cpu.decodeLogic_decoded
+@22
+MicroRV32Top_TB.DUT.cpu.decodeLogic_imm_signed[31:0]
+MicroRV32Top_TB.DUT.cpu.decodeLogic_immediate[31:0]
+@23
+MicroRV32Top_TB.DUT.cpu.decodeLogic_shamt[4:0]
+@22
+MicroRV32Top_TB.DUT.cpu.decodeLogic_funct7[6:0]
+MicroRV32Top_TB.DUT.cpu.decodeLogic_destination[4:0]
+MicroRV32Top_TB.DUT.cpu.decodeLogic_source2[4:0]
+@28
+MicroRV32Top_TB.DUT.cpu.decodeLogic_funct3[2:0]
+@22
+MicroRV32Top_TB.DUT.cpu.decodeLogic_source1[4:0]
+MicroRV32Top_TB.DUT.cpu.decodeLogic_opcode[6:0]
+@200
+-cpuio
+@28
+MicroRV32Top_TB.DUT.cpu.io_halted
+@22
+MicroRV32Top_TB.DUT.cpu.io_sb_SBaddress[31:0]
+MicroRV32Top_TB.DUT.cpu.io_sb_SBrdata[31:0]
+@28
+MicroRV32Top_TB.DUT.cpu.io_sb_SBready
+MicroRV32Top_TB.DUT.cpu.io_sb_SBvalid
+@22
+MicroRV32Top_TB.DUT.cpu.io_sb_SBwdata[31:0]
+MicroRV32Top_TB.DUT.cpu.regs_io_rs1Data[31:0]
+MicroRV32Top_TB.DUT.cpu.regs_io_rs2Data[31:0]
+@200
+-alu
+@22
+MicroRV32Top_TB.DUT.cpu.aluLogic_opA[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_opB[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_output[31:0]
+@28
+MicroRV32Top_TB.DUT.cpu.aluLogic_output_bool
+@22
+MicroRV32Top_TB.DUT.cpu.aluLogic_add[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_sub[31:0]
+@28
+MicroRV32Top_TB.DUT.cpu.aluLogic_equal
+MicroRV32Top_TB.DUT.cpu.aluLogic_ge_u
+MicroRV32Top_TB.DUT.cpu.aluLogic_lt_u
+MicroRV32Top_TB.DUT.cpu.aluLogic_unequal
+@22
+MicroRV32Top_TB.DUT.cpu.aluLogic_bitAnd[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_bitOr[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_bitXor[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_shiftL[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_shiftRA[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_shiftR[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_shiftLI[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_shiftRAI[31:0]
+MicroRV32Top_TB.DUT.cpu.aluLogic_shiftRI[31:0]
+@200
+-regfile
+@22
+MicroRV32Top_TB.DUT.cpu.regs._zz_2_[31:0]
+MicroRV32Top_TB.DUT.cpu.regs.io_rdData[31:0]
+MicroRV32Top_TB.DUT.cpu.regs.io_rd[4:0]
+MicroRV32Top_TB.DUT.cpu.regs.io_rs1Data[31:0]
+MicroRV32Top_TB.DUT.cpu.regs.io_rs1[4:0]
+MicroRV32Top_TB.DUT.cpu.regs.io_rs2Data[31:0]
+MicroRV32Top_TB.DUT.cpu.regs.io_rs2[4:0]
+@28
+MicroRV32Top_TB.DUT.cpu.regs.io_wrEna
+@200
+-ram
+@22
+MicroRV32Top_TB.DUT.ram.io_sb_SBaddress[31:0]
+MicroRV32Top_TB.DUT.ram.io_sb_SBrdata[31:0]
+@28
+MicroRV32Top_TB.DUT.ram.io_sb_SBready
+MicroRV32Top_TB.DUT.ram.io_sb_SBvalid
+@22
+MicroRV32Top_TB.DUT.ram.io_sb_SBwdata[31:0]
+@28
+MicroRV32Top_TB.DUT.ram.io_sel
+[pattern_trace] 1
+[pattern_trace] 0

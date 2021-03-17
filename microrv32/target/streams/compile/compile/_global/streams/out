@@ -1,0 +1,7 @@
+[0m[[0m[31merror[0m] [0m[0m/home/sallar/work/riscv-core2/core/src/main/scala/core/microrv32/RV32Core.scala:549:122: not found: type False[0m
+[0m[[0m[31merror[0m] [0m[0m    val timerIRQPending = CSR_EXT ? cssrLogic.mip(MIP_MTIP) & cssrLogic.mie(MIP_MTIP) & cssrLogic.mstatus(MSTATUS_MIE) : False[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                                                                         ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/sallar/work/riscv-core2/core/src/main/scala/core/microrv32/RV32Core.scala:549:35: value ? is not a member of Boolean[0m
+[0m[[0m[31merror[0m] [0m[0m    val timerIRQPending = CSR_EXT ? cssrLogic.mip(MIP_MTIP) & cssrLogic.mie(MIP_MTIP) & cssrLogic.mstatus(MSTATUS_MIE) : False[0m
+[0m[[0m[31merror[0m] [0m[0m                                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

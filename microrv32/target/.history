@@ -1,0 +1,29 @@
+runMain core.microrv32.MicroRV32TopSim
+discoveredMainClasses
+show discoveredMainClasses
+run core.microrv32.peripheral.uart.SBUartTopSim
+runMain core.microrv32.peripheral.uart.SBUartTopSim
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-tasks-1-term/riscv-main.hex
+time
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-tasks-1-term/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-queues-2-term/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/freeRTOS-prebuilt/simple-queues-2/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-queues-2-term/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-tasks-1-term/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-queues-2-term/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/fibonacci/fibo.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/fibonacci/fibo.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/gcd/gcd.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/qsort/qsort.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/fibonacci/fibo.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/qsort/qsort.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-queues-2-term/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-tasks-1-term/riscv-main.elf
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-tasks-1-term/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-queues-2-term/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/freeRTOS-prebuilt/simple-queues-2/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/tmp/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/freeRTOS-simple-tasks-1-term/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/tmp/riscv-main.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/qsort/qsort.hex
+runMain core.microrv32.MicroRV32TopSim sw/benchmarks/dhrystone/dhrystone.hex

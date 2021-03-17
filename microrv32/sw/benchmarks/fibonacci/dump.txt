@@ -1,0 +1,154 @@
+riscv32-unknown-elf-gcc bootstrap.S main.c -o main -march=rv32i -mabi=ilp32 -nostartfiles -Wl,--no-relax -T link.ld
+riscv32-unknown-elf-objdump -D main
+
+main:     Dateiformat elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	000070b3          	and	ra,zero,zero
+80000004:	00007133          	and	sp,zero,zero
+80000008:	000071b3          	and	gp,zero,zero
+8000000c:	00007233          	and	tp,zero,zero
+80000010:	000072b3          	and	t0,zero,zero
+80000014:	00007333          	and	t1,zero,zero
+80000018:	000073b3          	and	t2,zero,zero
+8000001c:	00007433          	and	s0,zero,zero
+80000020:	000074b3          	and	s1,zero,zero
+80000024:	00007533          	and	a0,zero,zero
+80000028:	000075b3          	and	a1,zero,zero
+8000002c:	00007633          	and	a2,zero,zero
+80000030:	000076b3          	and	a3,zero,zero
+80000034:	00007733          	and	a4,zero,zero
+80000038:	000077b3          	and	a5,zero,zero
+8000003c:	00007833          	and	a6,zero,zero
+80000040:	000078b3          	and	a7,zero,zero
+80000044:	00007933          	and	s2,zero,zero
+80000048:	000079b3          	and	s3,zero,zero
+8000004c:	00007a33          	and	s4,zero,zero
+80000050:	00007ab3          	and	s5,zero,zero
+80000054:	00007b33          	and	s6,zero,zero
+80000058:	00007bb3          	and	s7,zero,zero
+8000005c:	00007c33          	and	s8,zero,zero
+80000060:	00007cb3          	and	s9,zero,zero
+80000064:	00007d33          	and	s10,zero,zero
+80000068:	00007db3          	and	s11,zero,zero
+8000006c:	00007e33          	and	t3,zero,zero
+80000070:	00007eb3          	and	t4,zero,zero
+80000074:	00007f33          	and	t5,zero,zero
+80000078:	00007fb3          	and	t6,zero,zero
+8000007c:	00001117          	auipc	sp,0x1
+80000080:	82010113          	addi	sp,sp,-2016 # 8000089c <main>
+80000084:	019000ef          	jal	ra,8000089c <main>
+80000088:	05d00893          	li	a7,93
+8000008c:	00000513          	li	a0,0
+80000090:	020102b7          	lui	t0,0x2010
+80000094:	f1402873          	csrr	a6,mhartid
+80000098:	0102a023          	sw	a6,0(t0) # 2010000 <SYSCALL_ADDR>
+
+8000009c <stack_begin>:
+	...
+
+8000089c <main>:
+8000089c:	fc010113          	addi	sp,sp,-64
+800008a0:	02812e23          	sw	s0,60(sp)
+800008a4:	04010413          	addi	s0,sp,64
+800008a8:	00000613          	li	a2,0
+800008ac:	00000693          	li	a3,0
+800008b0:	fcc42823          	sw	a2,-48(s0)
+800008b4:	fcd42a23          	sw	a3,-44(s0)
+800008b8:	00100713          	li	a4,1
+800008bc:	00000793          	li	a5,0
+800008c0:	fce42423          	sw	a4,-56(s0)
+800008c4:	fcf42623          	sw	a5,-52(s0)
+800008c8:	00100713          	li	a4,1
+800008cc:	00000793          	li	a5,0
+800008d0:	fce42023          	sw	a4,-64(s0)
+800008d4:	fcf42223          	sw	a5,-60(s0)
+800008d8:	fec42423          	sw	a2,-24(s0)
+800008dc:	fed42623          	sw	a3,-20(s0)
+800008e0:	fd042703          	lw	a4,-48(s0)
+800008e4:	fd442783          	lw	a5,-44(s0)
+800008e8:	fee42023          	sw	a4,-32(s0)
+800008ec:	fef42223          	sw	a5,-28(s0)
+800008f0:	fc842703          	lw	a4,-56(s0)
+800008f4:	fcc42783          	lw	a5,-52(s0)
+800008f8:	fce42c23          	sw	a4,-40(s0)
+800008fc:	fcf42e23          	sw	a5,-36(s0)
+80000900:	0840006f          	j	80000984 <main+0xe8>
+80000904:	fe042603          	lw	a2,-32(s0)
+80000908:	fe442683          	lw	a3,-28(s0)
+8000090c:	fd842503          	lw	a0,-40(s0)
+80000910:	fdc42583          	lw	a1,-36(s0)
+80000914:	00a60733          	add	a4,a2,a0
+80000918:	00070813          	mv	a6,a4
+8000091c:	00c83833          	sltu	a6,a6,a2
+80000920:	00b687b3          	add	a5,a3,a1
+80000924:	00f806b3          	add	a3,a6,a5
+80000928:	00068793          	mv	a5,a3
+8000092c:	fce42023          	sw	a4,-64(s0)
+80000930:	fcf42223          	sw	a5,-60(s0)
+80000934:	fd842703          	lw	a4,-40(s0)
+80000938:	fdc42783          	lw	a5,-36(s0)
+8000093c:	fee42023          	sw	a4,-32(s0)
+80000940:	fef42223          	sw	a5,-28(s0)
+80000944:	fc042703          	lw	a4,-64(s0)
+80000948:	fc442783          	lw	a5,-60(s0)
+8000094c:	fce42c23          	sw	a4,-40(s0)
+80000950:	fcf42e23          	sw	a5,-36(s0)
+80000954:	fe842603          	lw	a2,-24(s0)
+80000958:	fec42683          	lw	a3,-20(s0)
+8000095c:	00100513          	li	a0,1
+80000960:	00000593          	li	a1,0
+80000964:	00a60733          	add	a4,a2,a0
+80000968:	00070813          	mv	a6,a4
+8000096c:	00c83833          	sltu	a6,a6,a2
+80000970:	00b687b3          	add	a5,a3,a1
+80000974:	00f806b3          	add	a3,a6,a5
+80000978:	00068793          	mv	a5,a3
+8000097c:	fee42423          	sw	a4,-24(s0)
+80000980:	fef42623          	sw	a5,-20(s0)
+80000984:	fec42783          	lw	a5,-20(s0)
+80000988:	00079e63          	bnez	a5,800009a4 <main+0x108>
+8000098c:	fec42783          	lw	a5,-20(s0)
+80000990:	f6079ae3          	bnez	a5,80000904 <main+0x68>
+80000994:	fe842703          	lw	a4,-24(s0)
+80000998:	000017b7          	lui	a5,0x1
+8000099c:	77078793          	addi	a5,a5,1904 # 1770 <SYSCALL_ADDR-0x200e890>
+800009a0:	f6e7f2e3          	bgeu	a5,a4,80000904 <main+0x68>
+800009a4:	00000793          	li	a5,0
+800009a8:	00078513          	mv	a0,a5
+800009ac:	03c12403          	lw	s0,60(sp)
+800009b0:	04010113          	addi	sp,sp,64
+800009b4:	00008067          	ret
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	1f41                	addi	t5,t5,-16
+   2:	0000                	unimp
+   4:	7200                	flw	fs0,32(a2)
+   6:	7369                	lui	t1,0xffffa
+   8:	01007663          	bgeu	zero,a6,14 <SYSCALL_ADDR-0x200ffec>
+   c:	0015                	c.nop	5
+   e:	0000                	unimp
+  10:	1004                	addi	s1,sp,32
+  12:	7205                	lui	tp,0xfffe1
+  14:	3376                	fld	ft6,376(sp)
+  16:	6932                	flw	fs2,12(sp)
+  18:	7032                	flw	ft0,44(sp)
+  1a:	0030                	addi	a2,sp,8
+  1c:	0108                	addi	a0,sp,128
+  1e:	0b0a                	slli	s6,s6,0x2
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	3a434347          	fmsub.d	ft6,ft6,ft4,ft7,rmm
+   4:	2820                	fld	fs0,80(s0)
+   6:	29554e47          	fmsub.s	ft8,fa0,fs5,ft5,rmm
+   a:	3120                	fld	fs0,96(a0)
+   c:	2e30                	fld	fa2,88(a2)
+   e:	2e32                	fld	ft8,264(sp)
+  10:	0030                	addi	a2,sp,8

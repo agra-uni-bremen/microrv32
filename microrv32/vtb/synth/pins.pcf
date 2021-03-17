@@ -1,0 +1,43 @@
+#12mhz onboard clk
+set_io --warn-no-port clk J3
+#external clock pin, driven by stimulus generator
+#set_io --warn-no-port clk L3
+
+set_io --warn-no-port io_gpioLed[0] B5
+set_io --warn-no-port io_gpioLed[1] B4
+set_io --warn-no-port io_gpioLed[2] A2
+set_io --warn-no-port io_gpioLed[3] A1
+set_io --warn-no-port io_gpioLed[4] C5
+set_io --warn-no-port io_gpioLed[5] C4
+set_io --warn-no-port io_gpioLed[6] B3
+set_io --warn-no-port io_gpioLed[7] C3
+
+set_io --warn-no-port reset B1 -pullup no
+set_io --warn-no-port io_cpuFetch C1
+set_io --warn-no-port io_cpuHalted D1
+
+set_io --warn-no-port io_cpuDbgState[0] E2
+set_io --warn-no-port io_cpuDbgState[1] F2
+set_io --warn-no-port io_cpuDbgState[2] G2
+
+set_io --warn-no-port io_dbgBus[0] B16
+set_io --warn-no-port io_dbgBus[1] B15
+set_io --warn-no-port io_dbgBus[2] D14
+set_io --warn-no-port io_dbgBus[3] D16
+set_io --warn-no-port io_dbgBus[4] D15
+set_io --warn-no-port io_dbgBus[5] E16
+set_io --warn-no-port io_dbgBus[6] E14
+set_io --warn-no-port io_dbgBus[7] F16
+set_io --warn-no-port io_dbgBus[8] F15
+set_io --warn-no-port io_dbgBus[9] G16
+set_io --warn-no-port io_dbgBus[10] G15
+set_io --warn-no-port io_dbgBus[11] H16
+set_io --warn-no-port io_dbgBus[12] H14
+set_io --warn-no-port io_dbgBus[13] J15
+set_io --warn-no-port io_dbgBus[14] F14
+set_io --warn-no-port io_dbgBus[15] G14
+
+set_io --warn-no-port io_uart_txd A11
+set_io --warn-no-port io_uart_rxd B10 -pullup yes
+
+set_io --warn-no-port io_dbgClk N2

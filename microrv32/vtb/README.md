@@ -1,0 +1,2 @@
+This is an additional testbench directory with a hand-written verilog testbench to run the simulation with a verilog simulator instead of verilator.
+It probably is outdated by now, but does not require much adaptation to work again.
