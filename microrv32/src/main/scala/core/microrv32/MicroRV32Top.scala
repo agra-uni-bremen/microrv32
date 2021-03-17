@@ -27,11 +27,14 @@ class MicroRV32Top(initHexfile:String) extends Component {
     val uart = master(new Uart())
   }
   // Create clock domain for divider and slow clock signal
+  // for clock divider use, every module has to be surrounded by "slowClk( )":
+  // i.e like this "val cpu = slowCD( new RV32Core() )"
   // val slowClk = Bool()
   // val slowCD = ClockDomain(slowClk,ClockDomain.current.readResetWire)
   // val clkDiv = new ClockDivider(ClockDomain.current,12000000, 12000000) // divide 12 mhz onboard clock to 10khz
   // slowClk := clkDiv.io.outClk
   // io.dbgClk := clkDiv.io.outClk
+  
   val cpu = new RV32Core()
   /*
    * NOTE: Make word count (second parameter of Memory) passable through top class and as makefile/sbt parameter
