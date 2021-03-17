@@ -1,24 +1,50 @@
-MicroRV32
+µRV32 - MicroRV32
 ===
+## Key features of our µRV32
+* VP based co-design and co-simulation tool flow
+* RV32I core support with CSR Registers for SW traps and timer IRQ
+* CLINT/CLIC based timer interrupt
+* Peripherals 
+    * UART
+    * LEDs
+    * Shutdown
+* FreeRTOS support
+* Suitable for FPGA synthesis (tested on Lattice Semiconductor HX8K)
+* Software examples for platform use with platform dependent code available
+
+![VP-RTL codesign/cosim flow](img/cosim.png)
+
+For related information, e.g. verification, please visit http://www.systemc-verification.org/ or contact riscv@systemc-verification.org. We accept pull requests and in general contributions are very welcome.
+
 ## Prerequisites
-To fully operate around the MicroRV32 several requirements are needed.
+To fully operate the µRV32 several requirements are needed.
 
 ### RISC-V Toolchain
 Compiling the RISC-V software in the `sw` directory the [offcial RISC-V GNU toolchain](https://github.com/riscv/riscv-gnu-toolchain) is needed.
-The toolchain has to be installed as the `rv32i` variant. To configure the installation as such use this configure command:
+The toolchain has to be installed and used as the `rv32i` variant. To configure the installation as such use this configure command:
 ```bash
 ./configure --prefix=<RV32I-DIST-PATH> -march=rv32i -mabi=ilp32
 ```
 
+### RISC-V VP
+Using the RISC-V Virtual Prototype (VP) has a seperate list of prerequisits which need to be fulfilled in order to run the VP. 
+The VP contains a platform implementation of the µRV32, called `microrv32-vp`, that can be used to develop software and prepare ISA and platform extensions.
+Refer to the RISC-V VP `README.md` for further information.  
+
+
 ### SpinalHDL
 Simulating the SpinalHDL modules and the SoC requires the SpinalHDL toolchain. See the [official documentation](https://spinalhdl.github.io/SpinalDoc-RTD/SpinalHDL/Getting%20Started/getting_started.html#requirements-things-to-download-to-get-started) or the [SpinalHDL base project](https://github.com/SpinalHDL/SpinalTemplateSbt). For simulation the Verilator backend of SpinalHDL is used. Further information on SpinalHDL can be found in the [official GitHub repository](https://github.com/SpinalHDL/SpinalHDL). The Makefiles in this project make use of the SBT-Version of SpinalHDL.
+The `microrv32` directory contains the `README.md` from the SpinalTemplateSbt Base Project for this purpose.
 
 ### IceStorm FPGA Toolchain
 To synthesize and configure the MicroRV32 onto an FPGA the [IceStorm Toolchain](http://www.clifford.at/icestorm/) is used. Necessary tools from the installation guide are `IceStorm Tools (icepack, icebox, iceprog, icetime, chip databases)`, `NextPNR (place&route tool, Arachne-PNR replacement)` and `Yosys (Verilog synthesis)`.
 
-# Overview 
-MicroRV32 is a SpinalHDL based implementation of the RISC-V ISA.
-The platform is built for the use on FPGAs and aims for research and educational use.
+## Overview 
+µRV32 is bundle of a SpinalHDL based RTL implementation of the RISC-V ISA and a SystemC TLM 2.0 based VP of the RTL model.
+The platform is built for the use on FPGAs and aims for research and educational use. 
+The VP enables fast development and design exploration cycles for software development and hardware extensions of the ISA or the platform.
+
+The following description elaborates on the details of the RTL implementation. For further information on the VP visit the [Github repository of the VP](https://github.com/agra-uni-bremen/riscv-vp)
 
 The RV32 core was tested with the [official RISC-V unit tests](https://github.com/riscv/riscv-tests).
 
@@ -71,11 +97,10 @@ Uncommenting the respective line instantiates the memory with the necessary memo
 
 After setting to respective memory size `make` can be used to execute the simulation. A list with make commands and short descriptions follows:
 * `make sim_spinal` -- default simulation task, will simulate `sw/basic-led-blink/blink.hex` unless option `simROM` is passed with other binary (i.e. `make sim_spinal simROM="sw/basic-uart-asm/uart.hex`)
-* `make show_sim_linux` -- opens GTKWave in background with MicroRV32 wavetrace
-* `make show_sim_win` -- opens GTKWave in background with MicroRV32 wavetrace
 * `make sim_spinal_freeRTOS-*` -- shorthand simulation call for freeRTOS examples
 * `rtl` -- generate Verilog from SpinalHDL
 * `synth` -- synthesize core with defined software (see `MicroRV32Top.scala`) in IceStorm toolchain for HX8K FPGA (on devlopment board) with predefined Pin-Constraints (`vtb/synth/pins.pcf`)
+* **Note**: `make show_sim_linux` and `make show_sim_win` are currently not supported due to GTKWave having issues with relative Paths. The user has to open the *.vcd Files from in the simWorkspace directory by hand and import the signals for scope and debugging purposes
 
 ## Additional documenation on the peripheral registers
 
@@ -94,3 +119,6 @@ Global address | Local addresss | Description | Mode
 0x8200000C | 0x0C | RXD FIFO Occupancy (returns number of elements in FIFO) | RO
 0x82000010 | 0x10 | RXD FIFO Almost Empty (returns '1' if FIFO contains one element) | RO
 0x82000014 | 0x14 | RXD FIFO Empty (returns '1' if FIFO is empty) | RO
+
+## Acknowledgements
+This work was supported in part by the German Federal Ministry of Education and Research (BMBF) within the project Scale4Edge under contract no.~16ME0127 and within the project VerSys under contract no.~01IW19001.
