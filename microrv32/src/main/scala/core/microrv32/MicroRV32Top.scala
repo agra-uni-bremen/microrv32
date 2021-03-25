@@ -27,14 +27,11 @@ class MicroRV32Top(initHexfile:String) extends Component {
     val uart = master(new Uart())
   }
   // Create clock domain for divider and slow clock signal
-  // for clock divider use, every module has to be surrounded by "slowClk( )":
-  // i.e like this "val cpu = slowCD( new RV32Core() )"
   // val slowClk = Bool()
   // val slowCD = ClockDomain(slowClk,ClockDomain.current.readResetWire)
   // val clkDiv = new ClockDivider(ClockDomain.current,12000000, 12000000) // divide 12 mhz onboard clock to 10khz
   // slowClk := clkDiv.io.outClk
   // io.dbgClk := clkDiv.io.outClk
-  
   val cpu = new RV32Core()
   /*
    * NOTE: Make word count (second parameter of Memory) passable through top class and as makefile/sbt parameter
@@ -48,13 +45,11 @@ class MicroRV32Top(initHexfile:String) extends Component {
    * This was more trivial when the wordcount of the 8bit wide memory was the same as the value passed to elf2bin.py
    * With that the second parameter of Memory is 0x1200 in hex or 4608 in decimal
    */
-  // val ram = new Memory(Bits(32 bits),8704,initHexfile)
   // val ram = new Memory(Bits(32 bits),8704,initHexfile) // riscv-ui-p-tests
-  // val ram = new Memory(Bits(32 bits),4104,initHexfile) // basic-led-c
+  val ram = new Memory(Bits(32 bits),4104,initHexfile) // basic-led-c, basic-timerirq, crc8, benchmarks (fibo, gcd) but not freeRTOS benchmarks
   // val ram = new Memory(Bits(32 bits),100,initHexfile) // basic-led-blink
-  //val ram = new Memory(Bits(32 bits),4104,initHexfile) // basic-timerirq
-  //val ram = new Memory(Bits(32 bits),393216,initHexfile) // freertos (simple-tasks, simple-queues, etc.) including benchmarks
-   val ram = new Memory(Bits(32 bits),4104,initHexfile) // benchmarks (fibo, gcd) but not freeRTOS benchmarks
+  // val ram = new Memory(Bits(32 bits),393216,initHexfile) // freertos (simple-tasks, simple-queues, etc.) including benchmarks
+   
   // val gpio = new GPIO()
   val gpio_led = new GPIOLED()
   val shutdown_periph = new Shutdown()
@@ -211,11 +206,7 @@ object MicroRV32TopVerilog {
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
       targetDirectory = "rtl"
       //).generateVerilog(new MicroRV32Top("sw/basic-led-c/led-c.hex"))
-      //).generateVerilog(new MicroRV32Top("sw/basic-uart-asm/uart.hex"))
-      //).generateVerilog(new MicroRV32Top("sw/basic-timerirq/timer.hex"))
-      //).generateVerilog(new MicroRV32Top("sw/benchmarks/fibonacci/fibo.hex"))
-      ).generateVerilog(new MicroRV32Top("sw/benchmarks/bubblesort/bubble.hex"))
-      // ).generateVerilog(new MicroRV32Top("sw/benchmarks/gcd/gcd.hex"))
+      ).generateVerilog(new MicroRV32Top(args(0)))
       .printPruned()
   }
 }

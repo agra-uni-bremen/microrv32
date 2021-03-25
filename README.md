@@ -98,9 +98,15 @@ Uncommenting the respective line instantiates the memory with the necessary memo
 After setting to respective memory size `make` can be used to execute the simulation. A list with make commands and short descriptions follows:
 * `make sim_spinal` -- default simulation task, will simulate `sw/basic-led-blink/blink.hex` unless option `simROM` is passed with other binary (i.e. `make sim_spinal simROM="sw/basic-uart-asm/uart.hex`)
 * `make sim_spinal_freeRTOS-*` -- shorthand simulation call for freeRTOS examples
-* `rtl` -- generate Verilog from SpinalHDL
-* `synth` -- synthesize core with defined software (see `MicroRV32Top.scala`) in IceStorm toolchain for HX8K FPGA (on devlopment board) with predefined Pin-Constraints (`vtb/synth/pins.pcf`)
+* `rtl` -- generate Verilog from SpinalHDL, will use `sw/basic-led-blink/blink.hex` unless option `synthROM` is passed with other binary (i.e. `make rtl synthROM="sw/basic-uart-asm/uart.hex`)
+* `synth` -- synthesize core with defined software (see `MicroRV32Top.scala`) in IceStorm toolchain for HX8K FPGA (on devlopment board) with predefined Pin-Constraints (`vtb/synth/pins.pcf`). Will use `sw/basic-led-blink/blink.hex` unless option `synthROM` is passed with other binary (i.e. `make rtl synthROM="sw/basic-uart-asm/uart.hex`)
 * **Note**: `make show_sim_linux` and `make show_sim_win` are currently not supported due to GTKWave having issues with relative Paths. The user has to open the *.vcd Files from in the simWorkspace directory by hand and import the signals for scope and debugging purposes
+
+### Common issues building the µRV32
+This section aims to collect a few of the common errors that one encounters building and simulating the platform.
+
+* When choosing different ROMs to load up, one error that can occur is: `[error] Exception in thread "main" java.lang.AssertionError: assertion failed: The initial content array size (100) is not equals to the memory size (4104).` This is due to the memory peripheral size not fitting the size of the ROM that had been passed. To resolve this issue, please adapt the size of the memory peripheral in the `MicroRV32Top.Scala`. In the section above a paragraph is dedicated to this.
+* When trying to generate RTL or synthesize the platform for FPGA use, one error that can occur is: `[error] Exception in thread "main" java.io.FileNotFoundException: rtl/MicroRV32Top.v (file or directory not found)`. This will mainly happen when thee is not `rtl` directory available, as SpinalHDL and the Makefile do not create or check for this. To resolve this issue, create a directory called `rtl`.
 
 ## Additional documenation on the peripheral registers
 

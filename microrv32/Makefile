@@ -1,4 +1,6 @@
 simROM = sw/basic-led-blink/blink.hex
+synthROM = sw/basic-led-blink/blink.hex
+
 sim_spinal:
 	sbt "runMain core.microrv32.MicroRV32TopSim $(simROM)"
 
@@ -18,7 +20,7 @@ sim_spinal_freeRTOS-standard-demo:
 	sbt "runMain core.microrv32.MicroRV32TopSim sw/freeRTOS-prebuilt/standard-demo/riscv-main.hex"
 
 rtl: 
-	sbt "runMain core.microrv32.MicroRV32TopVerilog"
+	sbt "runMain core.microrv32.MicroRV32TopVerilog $(synthROM)"
 
 sim_verilog: rtl
 	cp rtl/MicroRV32Top.v vtb/rtl/MicroRV32Top.v
@@ -44,7 +46,7 @@ sw_basic-c:
 	make dump-code -C sw/basic-c > sw/basic-c/dump.txt
 	make hex -C sw/basic-c
 
-sw_csr-tests:
+sw_cssr-tests:
 	make dump-code -C sw/csrTests/ > sw/csrTests/dump.txt
 	make hex -C sw/csrTests/
 	
@@ -64,11 +66,15 @@ sw_timer_irq:
 	make dump-code -C sw/basic-timerirq/ > sw/basic-timerirq/dump.txt
 	make hex -C sw/basic-timerirq/
 
-#show_sim_linux:
-#	gtkwave vtb/sim/spinalhdl_trace.gtkw &
-#
-#show_sim_win:
-#	gtkwave.exe vtb/sim/spinal_windows.gtkw &
+sw_crc:
+	make dump-code -C sw/crc8/ > sw/crc8/dump.txt
+	make hex -C sw/crc8/
+
+show_sim_linux:
+	gtkwave vtb/sim/spinalhdl_trace.gtkw &
+
+show_sim_win:
+	gtkwave.exe vtb/sim/spinal_windows.gtkw &
 
 clean:
 	rm rtl/*.v
@@ -77,4 +83,4 @@ clean:
 	rm simWorkspace/MicroRV32Top/rtl/*.bin
 	make clean -C vtb/
 
-.PHONY: clean rtl sim_verilog synth sw_basic-asm sw_instr sw_basic-c sw_csr-tests sw_led_blink sw_led_c sw_timer_irq
+.PHONY: clean rtl sim_verilog synth sw_basic-asm sw_instr sw_basic-c sw_cssr-tests sw_led_blink sw_led_c sw_timer_irq
