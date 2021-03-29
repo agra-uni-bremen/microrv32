@@ -23,7 +23,7 @@ To fully operate the µRV32 several requirements are needed.
 Compiling the RISC-V software in the `sw` directory the [offcial RISC-V GNU toolchain](https://github.com/riscv/riscv-gnu-toolchain) is needed.
 The toolchain has to be installed and used as the `rv32i` variant. To configure the installation as such use this configure command:
 ```bash
-./configure --prefix=<RV32I-DIST-PATH> -march=rv32i -mabi=ilp32
+./configure --prefix=<RV32I-DIST-PATH> --with-arch=rv32i --with-abi=ilp32
 ```
 
 ### RISC-V VP
