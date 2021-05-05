@@ -164,13 +164,7 @@ object GPIOBankSim {
           }
           dut.clockDomain.waitRisingEdge()
         }
-
-        // while(simSteps <= maxsimSteps){
-        //   //Wait a rising edge on the clock
-        //   dut.clockDomain.waitRisingEdge()
-        //   simSteps += 1
-        // }
-
+        
         dut.clockDomain.waitRisingEdge()
       }
   }
