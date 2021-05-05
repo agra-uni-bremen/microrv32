@@ -2,6 +2,8 @@ package core.microrv32
 
 import core.microrv32.peripheral.GPIOLED
 import core.microrv32.peripheral.uart.SBUart
+import core.microrv32.peripheral.gpiobank.SBGPIOBank
+import spinal.lib.io.{InOutWrapper, TriStateArray}
 import spinal.core._
 import spinal.lib._
 import spinal.lib.slave
@@ -25,6 +27,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
     val dbgBus = out Bits(16 bits)
     // val dbgClk = out Bool
     val uart = master(new Uart())
+    val gpioA = master(TriStateArray(8 bits))
   }
   // Create clock domain for divider and slow clock signal
   // val slowClk = Bool()
@@ -55,6 +58,8 @@ class MicroRV32Top(initHexfile:String) extends Component {
   val shutdown_periph = new Shutdown()
   val uartPeriph = new SBUart()
   val rvCLIC = new RVCLIC()
+  val gpioBankA = new SBGPIOBank()
+
   // bus interconnect
   /*
    * interconnecting works fine to a certain degree
@@ -70,6 +75,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
   cpu.io.sb <> shutdown_periph.io.sb
   cpu.io.sb <> uartPeriph.io.sb
   cpu.io.sb <> rvCLIC.io.sb
+  cpu.io.sb <> gpioBankA.io.sb
   
   cpu.io.sb.SBready.removeAssignments()
   cpu.io.sb.SBrdata.removeAssignments()
@@ -110,19 +116,20 @@ class MicroRV32Top(initHexfile:String) extends Component {
    * ram        | 0x80000000 - 0x80FFFFFF
    * gpio-leds  | 0x81000000 - 0x8100000F
    * uart       | 0x82000000 - 0x820000FF
+   * gpioBankA  | 0x83000000 - 0x830000FF
    */
   val addressMapping = new Area{
     val addr = cpu.io.sb.SBaddress
     val oldAddr = RegNextWhen(addr,cpu.io.sb.SBvalid)
     val lastValid = RegNext(cpu.io.sb.SBvalid)
-    val datasel = UInt(4 bits) // 2^4 = 16 address-range-selectors
+    val datasel = UInt(4 bits) // 2^4 = 16 address-range-selectors, nice magic numbers
     ram.io.sel := False
     gpio_led.io.sel := False
     shutdown_periph.io.sel := False
     uartPeriph.io.sel := False
     rvCLIC.io.sel := False
+    gpioBankA.io.sel := False
     datasel := 0
-    // TODO FIXME buffering address on bus transaction is not necessarily the way to go? -- working so long with it makes the dev blind
     // TODO if this stays multiple when (instead when,elsewhen) refactor towards function use to return hw for mapping
     // this helps readablity
     // MEMORY
@@ -132,6 +139,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
       shutdown_periph.io.sel := False
       uartPeriph.io.sel := False
       rvCLIC.io.sel := False
+      gpioBankA.io.sel := False
       datasel := 1
     }
     // LED
@@ -141,6 +149,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
       shutdown_periph.io.sel := False
       uartPeriph.io.sel := False
       rvCLIC.io.sel := False
+      gpioBankA.io.sel := False
       datasel := 2
     }
     // UART
@@ -150,7 +159,18 @@ class MicroRV32Top(initHexfile:String) extends Component {
       shutdown_periph.io.sel := False
       uartPeriph.io.sel := True
       rvCLIC.io.sel := False
+      gpioBankA.io.sel := False
       datasel := 4
+    }
+    // GPIO Bank A
+    when(isInRange(addr, U"h83000000", U"h830000FF") | isInRange(oldAddr, U"h83000000", U"h830000FF")){
+      ram.io.sel := False
+      gpio_led.io.sel := False
+      shutdown_periph.io.sel := False
+      uartPeriph.io.sel := False
+      rvCLIC.io.sel := False
+      gpioBankA.io.sel := True
+      datasel := 6
     }
     // CLIC - MTIME/MTIMECMP  -- #define CLINT_BASE  0x2000000
     when(isInRange(addr, U"h02000000", U"h0200ffff") | isInRange(oldAddr, U"h02000000", U"h0200ffff")){
@@ -178,6 +198,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
       3 -> shutdown_periph.io.sb.SBready,
       4 -> uartPeriph.io.sb.SBready,
       5 -> rvCLIC.io.sb.SBready,
+      6 -> gpioBankA.io.sb.SBready,
       default -> False
     )
     intconSBrdata := datasel.mux[Bits](
@@ -187,6 +208,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
       3 -> shutdown_periph.io.sb.SBrdata,
       4 -> uartPeriph.io.sb.SBrdata,
       5 -> rvCLIC.io.sb.SBrdata,
+      6 -> gpioBankA.io.sb.SBrdata,
       default -> 0
     )
   }
@@ -196,6 +218,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
   io.gpioLed := gpio_led.io.leds
   io.dbgBus := cpu.io.sb.SBaddress(15 downto 0).asBits
   io.uart <> uartPeriph.io.uart
+  io.gpioA <> gpioBankA.io.gpio
   
 }
 
