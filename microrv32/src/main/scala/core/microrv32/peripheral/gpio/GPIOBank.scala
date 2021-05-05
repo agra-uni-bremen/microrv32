@@ -3,15 +3,13 @@ package core.microrv32.peripheral.gpiobank
 import spinal.core._
 import spinal.lib.slave
 import spinal.lib._
+import spinal.lib.io.{InOutWrapper, TriStateArray}
 import core.microrv32.SimpleBus
 
-class GPIOBank() extends Component{
+class SBGPIOBank() extends Component{
     val io = new Bundle{
         val sb = slave(SimpleBus(32,32))
-        //val gpio = master(TriStateArray(8 bits)) // this is on toplevel instead
-        val gpioInput = in(Bits(8 bits))
-        val gpioDir = out(Bits(8 bits))
-        val gpioOut = out(Bits(8 bits))
+        val gpio = master(TriStateArray(8 bits))
         val sel = in(Bool)
     }
     val rdy = Reg(Bool) init(False)
@@ -22,13 +20,13 @@ class GPIOBank() extends Component{
     val SBGPIOLogic = new Area{
         intAddr := io.sb.SBaddress(7 downto 0)
         
-        directionReg := Reg(8 bits) init(0)
-        outputReg := Reg(8 bits) init(0)
+        val directionReg = Reg(Bits(8 bits)) init(0)
+        val outputReg = Reg(Bits(8 bits)) init(0)
         // buffer for 2 clocks to get rid of meta stability
-        inputStage := RegNext(io.gpioInput)
-        inputReg := RegNext(inputStage)
-        io.gpioDir := directionReg
-        io.gpioOut := outputReg
+        val inputStage = RegNext(io.gpio.read)
+        val inputReg = RegNext(inputStage)
+        io.gpio.writeEnable := directionReg
+        io.gpio.write := outputReg
         
         val sbDataOutputReg = Reg(Bits(32 bits)) init(0)
         sbDataOutputReg := 0
@@ -57,6 +55,5 @@ class GPIOBank() extends Component{
         rdy := True
     }
     io.sb.SBready := rdy
-    //io.sb.SBrdata := Mux(SBUartLogic.outputRegSel,SBUartLogic.outputBuff,SBUartLogic.sbDataOutputReg)
-    io.sb.SBrdata := sbDataOutputReg
+    io.sb.SBrdata := SBGPIOLogic.sbDataOutputReg
 }
