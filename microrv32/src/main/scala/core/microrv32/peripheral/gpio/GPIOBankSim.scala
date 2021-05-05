@@ -58,6 +58,7 @@ object GPIOBankSim {
         var gpioOutput : Int = 0
         var gpioInVar : Int = 0
         var gpioInput : BigInt = 0
+        var readMask = 0xff
 
         // starting values
         dut.io.sb.SBaddress #= 0
@@ -127,19 +128,19 @@ object GPIOBankSim {
         // T4: read in values through gpio and compare input register with input (all pins read)
         dut.clockDomain.waitRisingEdge()
         println("T4: read in values through gpio and compare input register with input")
-        write(0, 0x00000000)
-        var readMask = 0xff
+        readMask = 0xff 
+        write(0, 0x000000ff & ~readMask)
         for(i <- 0x00 to 0xff)
         {
-          gpioInVar = i & readMask
+          gpioInVar = i
           dut.io.gpio.read #= gpioInVar
           dut.clockDomain.waitRisingEdge()
           dut.clockDomain.waitRisingEdge()
           gpioInput = read(8).toBigInt & 0xff
           // dut.clockDomain.waitRisingEdge()
-          if((gpioInput & readMask) != gpioInVar)
+          if(gpioInput != (gpioInVar & readMask))
           {
-            printf("T4: GPIO Input not correct @ %h\n", i)
+            printf("T4: GPIO Input not correct @ %h = %h instead %h\n", i, gpioInput, (gpioInVar & readMask))
           }
           dut.clockDomain.waitRisingEdge()
         }
@@ -147,19 +148,19 @@ object GPIOBankSim {
         // T5: read in values through gpio and compare input register with input (masked enable)
         dut.clockDomain.waitRisingEdge()
         println("T5: read in values through gpio and compare input register with input (masked enable)")
-        write(0, 0x00000000)
         readMask = 0xAA
+        write(0, 0x000000ff & ~readMask)
         for(i <- 0x00 to 0xff)
         {
-          gpioInVar = i & readMask
+          gpioInVar = i
           dut.io.gpio.read #= gpioInVar
           dut.clockDomain.waitRisingEdge()
           dut.clockDomain.waitRisingEdge()
           gpioInput = read(8).toBigInt & 0xff
           // dut.clockDomain.waitRisingEdge()
-          if((gpioInput & readMask) != gpioInVar)
+          if(gpioInput != (gpioInVar & readMask))
           {
-            printf("T5: GPIO Input not correct @ %h\n", i)
+            printf("T5: GPIO Input not correct @ %h = %h instead %h\n", i, gpioInput, (gpioInVar & readMask))
           }
           dut.clockDomain.waitRisingEdge()
         }

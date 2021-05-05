@@ -25,6 +25,7 @@ class SBGPIOBank() extends Component{
         // buffer for 2 clocks to get rid of meta stability
         val inputStage = RegNext(io.gpio.read)
         val inputReg = RegNext(inputStage)
+        val inputVal = inputReg & ~directionReg
         io.gpio.writeEnable := directionReg
         io.gpio.write := outputReg
         
@@ -44,7 +45,7 @@ class SBGPIOBank() extends Component{
             }.elsewhen(intAddr === 4){
                 sbDataOutputReg := B(outputReg, 32 bits)
             }.elsewhen(intAddr === 8){
-                sbDataOutputReg := B(inputReg, 32 bits)
+                sbDataOutputReg := B(inputVal, 32 bits)
             }
         }
         // 
