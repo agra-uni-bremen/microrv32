@@ -5,6 +5,7 @@
 * RV32I core support with CSR Registers for SW traps and timer IRQ
 * CLINT/CLIC based timer interrupt
 * Peripherals 
+    * GPIO
     * UART
     * LEDs
     * Shutdown
@@ -55,6 +56,7 @@ Peripherals on platform:
 * LED peripheral: Maps FPGA development board LEDs as periphieral to platform
 * UART peripiheral: Serial transmit/receive (currently at fixed baudrate and polling only) -- best used as output-terminal
 * CLIC (Core Local Interrupt Controller): Provide timer interrupt via `mtime` and `mtimecmp`, if `mtime >= mtimecmp` interrupt is pending (if enabled)
+* GPIO (General Purpose Input Output): Offers 8-bit wide GPIO banks that can be added in the toplevel and mapped to the users need, the default platform includes one GPIO bank. Each GPIO bank has a register for the direction, the input and the output values. 
 
 These are memory mapped into the global address space of the RV32 core.
 
@@ -77,6 +79,7 @@ Shutdown   | 0x02010000 | 0x020103FF
 Memory     | 0x80000000 | 0x80FFFFFF
 LEDs       | 0x81000000 | 0x8100000F
 UART       | 0x82000000 | 0x820000FF
+GPIO       | 0x83000000 | 0x830000FF
 
 ## Using and executing examples
 The platform comes with several software examples testing components and showing the useage of periphrals in the RISC-V environment.
@@ -125,6 +128,17 @@ Global address | Local addresss | Description | Mode
 0x8200000C | 0x0C | RXD FIFO Occupancy (returns number of elements in FIFO) | RO
 0x82000010 | 0x10 | RXD FIFO Almost Empty (returns '1' if FIFO contains one element) | RO
 0x82000014 | 0x14 | RXD FIFO Empty (returns '1' if FIFO is empty) | RO
+
+
+### GPIO
+The GPIO peripheral offers lightweight I/O pin functionaly. The GPIO bank is 8 bit wide and multiple ones can be added in the toplevel design, and mapped to various parts of the address space. The peripheral offers a register to set the direction of each of the 8 pins. By default all pins are set to input mode. The input values are not debounced in the periphral. 
+The following table provides an overview of the available registers. (W=Write, R=Ready, O=Only (RO = Ready Only, WO = Write Only))
+
+Global address | Local addresss | Description | Mode
+---|---|---|---
+0x83000000 | 0x00 | Direction register, default=0x00, setting a bit to one, sets the respective GPIO pin as output, and forwards the value of bit at the output register to the GPIO pin | RW
+0x83000004 | 0x04 | Output register, default=0x00, setting a bit to one, sets the respective pin for the tri-state driver. If the tri-state direction is set to output (see direction register) then its forwarded to the respective GPIO pin | RW
+0x83000008 | 0x08 | Input register, reading from this will return the logic values on each pin, if the direction is set to read in the values from the GPIO pins (default, see direction register). If a bit is set 1 it correlates to logic HIGH, if a bit is set 0 it correclates to logic LOW. The GPIO pin is forwarded through two D-Flipflops for synchronization and stabilization. No debouncing is present. | RO
 
 ## Acknowledgements
 This work was supported in part by the German Federal Ministry of Education and Research (BMBF) within the project Scale4Edge under contract no.~16ME0127 and within the project VerSys under contract no.~01IW19001.

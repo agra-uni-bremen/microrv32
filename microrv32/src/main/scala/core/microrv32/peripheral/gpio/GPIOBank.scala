@@ -6,6 +6,21 @@ import spinal.lib._
 import spinal.lib.io.{InOutWrapper, TriStateArray}
 import core.microrv32.SimpleBus
 
+/**
+ * This GPIO  peripheral supplies a 8 bit wide I/O bank
+ * The direction can be set to output through the direction register (1 = output, 0 = input, default = 0)
+ * The input is read through 2 flip flops to stabilize it, yet debouncing is still required.
+ * The registers are all 8 bit wide, each bit represents a pin that has a direction, output value and input value.
+ * Internal memory map:
+ * 
+ *    internal 
+ *        address | description
+ *    ============+============
+ *         0x0    | direction register, 1 = output pin, 0 = input pin, default value = 0
+ *         0x4    | output register, 1 = HIGH, 0 = LOW, if direction[i] = 1, then output[i] is forwarded to pin[i]
+ *         0x8    | input register, 1 = HIGH, 0 = LOW, if direction[i] = 0, then pin[i] is forwarded to input[i] via 2 d-ff
+ * 
+ */
 class SBGPIOBank() extends Component{
     val io = new Bundle{
         val sb = slave(SimpleBus(32,32))
