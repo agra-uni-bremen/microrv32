@@ -12,13 +12,15 @@ import core.microrv32.Tools._
 import spinal.lib.com.uart._
 
 /*
- * Top level of MicroRV32 platform.
+ * Top level of MicroRV32 platform for the Lattice Semiconductor HX8K FPGA .
+ * It is a copy of the general MicroRV32 adding specific IO primitives for GPIO.
+ * This is due to the primitives not being available for simulation with Verilator.
  * Memory mapping and IO mapping
  * Having a clock divider for top level clock spreading.
  * Binding cpu, memory and peripherals to memory mapped bus
  * By default builds blink-example for fpga use for code generation
  */
-class MicroRV32Top(initHexfile:String) extends Component {
+class MicroRV32TopHX8K(initHexfile:String) extends Component {
   val io = new Bundle {
     // clock and reset through spinalhdl
     val gpioLed = out Bits(8 bits)
@@ -55,10 +57,12 @@ class MicroRV32Top(initHexfile:String) extends Component {
   // val ram = new Memory(Bits(32 bits),100,initHexfile) // basic-led-blink
   // val ram = new Memory(Bits(32 bits),393216,initHexfile) // freertos (simple-tasks, simple-queues, etc.) including benchmarks
    
+  // val gpio = new GPIO()
   val gpio_led = new GPIOLED()
   val shutdown_periph = new Shutdown()
   val uartPeriph = new SBUart()
   val rvCLIC = new RVCLIC()
+  val gpioBankA = new SBGPIOBank()
 
   // bus interconnect
   /*
@@ -75,6 +79,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
   cpu.io.sb <> shutdown_periph.io.sb
   cpu.io.sb <> uartPeriph.io.sb
   cpu.io.sb <> rvCLIC.io.sb
+  cpu.io.sb <> gpioBankA.io.sb
   
   cpu.io.sb.SBready.removeAssignments()
   cpu.io.sb.SBrdata.removeAssignments()
@@ -115,7 +120,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
    * ram        | 0x80000000 - 0x80FFFFFF
    * gpio-leds  | 0x81000000 - 0x8100000F
    * uart       | 0x82000000 - 0x820000FF
-   * gpioBankA  | 0x83000000 - 0x830000FF ## not for simulation only platform
+   * gpioBankA  | 0x83000000 - 0x830000FF
    */
   val addressMapping = new Area{
     val addr = cpu.io.sb.SBaddress
@@ -127,6 +132,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
     shutdown_periph.io.sel := False
     uartPeriph.io.sel := False
     rvCLIC.io.sel := False
+    gpioBankA.io.sel := False
     datasel := 0
     // TODO if this stays multiple when (instead when,elsewhen) refactor towards function use to return hw for mapping
     // this helps readablity
@@ -137,6 +143,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
       shutdown_periph.io.sel := False
       uartPeriph.io.sel := False
       rvCLIC.io.sel := False
+      gpioBankA.io.sel := False
       datasel := 1
     }
     // LED
@@ -146,6 +153,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
       shutdown_periph.io.sel := False
       uartPeriph.io.sel := False
       rvCLIC.io.sel := False
+      gpioBankA.io.sel := False
       datasel := 2
     }
     // UART
@@ -155,18 +163,19 @@ class MicroRV32Top(initHexfile:String) extends Component {
       shutdown_periph.io.sel := False
       uartPeriph.io.sel := True
       rvCLIC.io.sel := False
+      gpioBankA.io.sel := False
       datasel := 4
     }
     // GPIO Bank A
-    // when(isInRange(addr, U"h83000000", U"h830000FF") | isInRange(oldAddr, U"h83000000", U"h830000FF")){
-    //   ram.io.sel := False
-    //   gpio_led.io.sel := False
-    //   shutdown_periph.io.sel := False
-    //   uartPeriph.io.sel := False
-    //   rvCLIC.io.sel := False
-    //   gpioBankA.io.sel := True
-    //   datasel := 6
-    // }
+    when(isInRange(addr, U"h83000000", U"h830000FF") | isInRange(oldAddr, U"h83000000", U"h830000FF")){
+      ram.io.sel := False
+      gpio_led.io.sel := False
+      shutdown_periph.io.sel := False
+      uartPeriph.io.sel := False
+      rvCLIC.io.sel := False
+      gpioBankA.io.sel := True
+      datasel := 6
+    }
     // CLIC - MTIME/MTIMECMP  -- #define CLINT_BASE  0x2000000
     when(isInRange(addr, U"h02000000", U"h0200ffff") | isInRange(oldAddr, U"h02000000", U"h0200ffff")){
       ram.io.sel := False
@@ -174,6 +183,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
       shutdown_periph.io.sel := False
       uartPeriph.io.sel := False
       rvCLIC.io.sel := True
+      gpioBankA.io.sel := False
       datasel := 5
     }
     // SHUTDOWN SYSCALL
@@ -183,6 +193,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
       shutdown_periph.io.sel := True
       uartPeriph.io.sel := False
       rvCLIC.io.sel := False
+      gpioBankA.io.sel := False
       datasel := 3
     }
     // mux bus slave signals for ready and data back towards cpu
@@ -193,6 +204,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
       3 -> shutdown_periph.io.sb.SBready,
       4 -> uartPeriph.io.sb.SBready,
       5 -> rvCLIC.io.sb.SBready,
+      6 -> gpioBankA.io.sb.SBready,
       default -> False
     )
     intconSBrdata := datasel.mux[Bits](
@@ -202,6 +214,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
       3 -> shutdown_periph.io.sb.SBrdata,
       4 -> uartPeriph.io.sb.SBrdata,
       5 -> rvCLIC.io.sb.SBrdata,
+      6 -> gpioBankA.io.sb.SBrdata,
       default -> 0
     )
   }
@@ -211,17 +224,36 @@ class MicroRV32Top(initHexfile:String) extends Component {
   io.gpioLed := gpio_led.io.leds
   io.dbgBus := cpu.io.sb.SBaddress(15 downto 0).asBits
   io.uart <> uartPeriph.io.uart
+  
+  // create SB_IO primitves for each GPIO pin of bank A - instanciate, and connect
+  for(i <- 0 until 8) {
+    println("set_io " + gpioBankA.io.gpio.getName() + "_" + i)
+    // val newIo = inout(Analog(Bool)).setWeakName(gpioBankA.io.gpio.getName() + "_" + i)
+    val sbio = SB_IO("101001")
+    //io.gpioA.setWeakName(gpioBankA.io.gpio.getName() + "_" + i)
+    sbio.PACKAGE_PIN := io.gpioA(i)
+    sbio.OUTPUT_ENABLE := gpioBankA.io.gpio.writeEnable(i)
+    sbio.D_OUT_0 := gpioBankA.io.gpio.write(i)
+    gpioBankA.io.gpio.read(i) := sbio.D_IN_0
+    //io.gpioA(i) := sbio.PACKAGE_PIN
+  }
+
+  //io.testOut := io.testIn
+  // gpioBankA.io.gpio.setAsDirectionLess.unsetName().allowDirectionLessIo
+  //io.gpioA <> gpioBankA.io.gpio
+  
+
 
 }
 
 //Generate the Top Verilog
-object MicroRV32TopVerilog {
+object MicroRV32TopHX8KVerilog {
   def main(args: Array[String]) {
     SpinalConfig(
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
       targetDirectory = "rtl"
-      //).generateVerilog(new MicroRV32Top("sw/basic-led-c/led-c.hex"))
-      ).generateVerilog(new MicroRV32Top(args(0)))
+      //).generateVerilog(new MicroRV32TopHX8K("sw/basic-led-c/led-c.hex"))
+      ).generateVerilog(new MicroRV32TopHX8K(args(0)))
       .printPruned()
   }
 }

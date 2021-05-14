@@ -40,4 +40,16 @@ set_io --warn-no-port io_dbgBus[15] G14
 set_io --warn-no-port io_uart_txd A11
 set_io --warn-no-port io_uart_rxd B10 -pullup yes
 
-set_io --warn-no-port io_dbgClk N2
+set_io --warn-no-port io_gpioA_0 T11
+set_io --warn-no-port io_gpioA_1 P10
+set_io --warn-no-port io_gpioA_2 N10
+set_io --warn-no-port io_gpioA_3 M11
+set_io --warn-no-port io_gpioA_4 N12
+set_io --warn-no-port io_gpioA_5 P13
+set_io --warn-no-port io_gpioA_6 T13
+set_io --warn-no-port io_gpioA_7 T14
+
+set_io --warn-no-port io_testIn T15
+set_io --warn-no-port io_testOut T16
+
+#set_io --warn-no-port io_dbgClk N2

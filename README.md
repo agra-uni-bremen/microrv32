@@ -60,6 +60,8 @@ Peripherals on platform:
 
 These are memory mapped into the global address space of the RV32 core.
 
+For the purpose of FPGA usage a toplevel configuration for the use on the Lattice Semiconductor HX8K FPGA is in `MicroRV32TopHX8K.scala`. There a `SB_IO` primitive for the GPIO use through the Lattice Semiconductor Technology Library has been used. A seperate top level has been made available since the primitive cannot be simulated with Verilator.
+
 The RV32 core is built in a classical RTL compatible structure of a datapath controlled by a finite state machine.
 
 ![RV32 core block diagram](img/rv32i+csr.png)
