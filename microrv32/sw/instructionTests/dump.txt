@@ -1,0 +1,94 @@
+make[1]: Entering directory '/home/user/work/riscv-core2/core/sw/instructionTests'
+riscv32-unknown-elf-ld instr.o -o main -T link.ld
+riscv32-unknown-elf-objdump -D main
+
+main:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	00000013          	nop
+80000004:	00100213          	li	tp,1
+80000008:	0aa00293          	li	t0,170
+8000000c:	05500313          	li	t1,85
+80000010:	0ff00013          	li	zero,255
+80000014:	006283b3          	add	t2,t0,t1
+80000018:	40628433          	sub	s0,t0,t1
+8000001c:	0062f4b3          	and	s1,t0,t1
+80000020:	0062e533          	or	a0,t0,t1
+80000024:	0062c5b3          	xor	a1,t0,t1
+80000028:	00431633          	sll	a2,t1,tp
+8000002c:	0042d6b3          	srl	a3,t0,tp
+80000030:	05528713          	addi	a4,t0,85
+80000034:	00efe7b7          	lui	a5,0xefe
+80000038:	0552f813          	andi	a6,t0,85
+8000003c:	0aa36893          	ori	a7,t1,170
+80000040:	0552c913          	xori	s2,t0,85
+80000044:	00131993          	slli	s3,t1,0x1
+80000048:	0012da13          	srli	s4,t0,0x1
+8000004c:	0de00113          	li	sp,222
+80000050:	0ad00193          	li	gp,173
+80000054:	0be00193          	li	gp,190
+80000058:	0ef00213          	li	tp,239
+8000005c:	00000293          	li	t0,0
+80000060:	0e22ad23          	sw	sp,250(t0)
+80000064:	0fa02303          	lw	t1,250(zero) # fa <_start-0x7fffff06>
+80000068:	0dead137          	lui	sp,0xdead
+8000006c:	00411113          	slli	sp,sp,0x4
+80000070:	0beef1b7          	lui	gp,0xbeef
+80000074:	00c1d193          	srli	gp,gp,0xc
+80000078:	00310233          	add	tp,sp,gp
+8000007c:	0e42ad23          	sw	tp,250(t0)
+80000080:	0fa02303          	lw	t1,250(zero) # fa <_start-0x7fffff06>
+80000084:	10429223          	sh	tp,260(t0)
+80000088:	10401383          	lh	t2,260(zero) # 104 <_start-0x7ffffefc>
+8000008c:	10405383          	lhu	t2,260(zero) # 104 <_start-0x7ffffefc>
+80000090:	10428223          	sb	tp,260(t0)
+80000094:	10400403          	lb	s0,260(zero) # 104 <_start-0x7ffffefc>
+80000098:	10404403          	lbu	s0,260(zero) # 104 <_start-0x7ffffefc>
+8000009c:	00001497          	auipc	s1,0x1
+800000a0:	fffff497          	auipc	s1,0xfffff
+800000a4:	03000093          	li	ra,48
+800000a8:	02f00113          	li	sp,47
+800000ac:	03000193          	li	gp,48
+
+800000b0 <br1>:
+800000b0:	00208063          	beq	ra,sp,800000b0 <br1>
+
+800000b4 <br2>:
+800000b4:	00309063          	bne	ra,gp,800000b4 <br2>
+
+800000b8 <br3>:
+800000b8:	0020c063          	blt	ra,sp,800000b8 <br3>
+
+800000bc <br4>:
+800000bc:	00115063          	bge	sp,ra,800000bc <br4>
+
+800000c0 <br5>:
+800000c0:	0020e063          	bltu	ra,sp,800000c0 <br5>
+
+800000c4 <br6>:
+800000c4:	00117063          	bgeu	sp,ra,800000c4 <br6>
+800000c8:	00400a67          	jalr	s4,4(zero) # 0 <_start-0x80000000>
+800000cc:	ff9ff06f          	j	800000c4 <br6>
+800000d0:	00000013          	nop
+
+800000d4 <end>:
+800000d4:	0000006f          	j	800000d4 <end>
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	1941                	addi	s2,s2,-16
+   2:	0000                	unimp
+   4:	7200                	flw	fs0,32(a2)
+   6:	7369                	lui	t1,0xffffa
+   8:	01007663          	bgeu	zero,a6,14 <_start-0x7fffffec>
+   c:	0000000f          	fence	unknown,unknown
+  10:	7205                	lui	tp,0xfffe1
+  12:	3376                	fld	ft6,376(sp)
+  14:	6932                	flw	fs2,12(sp)
+  16:	7032                	flw	ft0,44(sp)
+  18:	0030                	addi	a2,sp,8
+make[1]: Leaving directory '/home/user/work/riscv-core2/core/sw/instructionTests'

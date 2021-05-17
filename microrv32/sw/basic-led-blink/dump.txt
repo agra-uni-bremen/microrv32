@@ -1,0 +1,51 @@
+make[1]: Verzeichnis „/home/sallar/work/riscv-core2/core/sw/basic-led-blink“ wird betreten
+riscv32-unknown-elf-as blink.S -o blink.o -march=rv32i -mabi=ilp32
+riscv32-unknown-elf-ld blink.o -o main -T link.ld
+riscv32-unknown-elf-objdump -D main
+
+main:     Dateiformat elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	00000293          	li	t0,0
+80000004:	00000313          	li	t1,0
+
+80000008 <led_loop>:
+80000008:	00500513          	li	a0,5
+8000000c:	810002b7          	lui	t0,0x81000
+80000010:	00a2a023          	sw	a0,0(t0) # 81000000 <LED_ADDR+0x0>
+80000014:	00500513          	li	a0,5
+80000018:	044000ef          	jal	ra,8000005c <wait_func>
+8000001c:	00a00513          	li	a0,10
+80000020:	810002b7          	lui	t0,0x81000
+80000024:	00a2a023          	sw	a0,0(t0) # 81000000 <LED_ADDR+0x0>
+80000028:	00500513          	li	a0,5
+8000002c:	030000ef          	jal	ra,8000005c <wait_func>
+80000030:	00000513          	li	a0,0
+80000034:	810002b7          	lui	t0,0x81000
+80000038:	00a2a023          	sw	a0,0(t0) # 81000000 <LED_ADDR+0x0>
+8000003c:	00500513          	li	a0,5
+80000040:	01c000ef          	jal	ra,8000005c <wait_func>
+80000044:	fc5ff06f          	j	80000008 <led_loop>
+80000048:	05d00893          	li	a7,93
+8000004c:	00000513          	li	a0,0
+80000050:	020102b7          	lui	t0,0x2010
+80000054:	0112a023          	sw	a7,0(t0) # 2010000 <SYSCALL_ADDR>
+
+80000058 <end>:
+80000058:	0000006f          	j	80000058 <end>
+
+8000005c <wait_func>:
+8000005c:	00050e13          	mv	t3,a0
+80000060:	00100e93          	li	t4,1
+
+80000064 <wait_loop>:
+80000064:	000e0663          	beqz	t3,80000070 <wait_loop_end>
+80000068:	41de0e33          	sub	t3,t3,t4
+8000006c:	ff9ff06f          	j	80000064 <wait_loop>
+
+80000070 <wait_loop_end>:
+80000070:	00008067          	ret
+make[1]: Verzeichnis „/home/sallar/work/riscv-core2/core/sw/basic-led-blink“ wird verlassen

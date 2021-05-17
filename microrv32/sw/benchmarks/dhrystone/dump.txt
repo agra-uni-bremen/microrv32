@@ -1,0 +1,1289 @@
+
+main:     Dateiformat elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000074 <main>:
+main():
+80000074:	f7010113          	addi	x2,x2,-144
+80000078:	08812423          	sw	x8,136(x2)
+8000007c:	08912223          	sw	x9,132(x2)
+80000080:	09010413          	addi	x8,x2,144
+80000084:	09212023          	sw	x18,128(x2)
+80000088:	07312e23          	sw	x19,124(x2)
+8000008c:	07512a23          	sw	x21,116(x2)
+80000090:	07612823          	sw	x22,112(x2)
+80000094:	07712623          	sw	x23,108(x2)
+80000098:	07812423          	sw	x24,104(x2)
+8000009c:	07912223          	sw	x25,100(x2)
+800000a0:	07a12023          	sw	x26,96(x2)
+800000a4:	08112623          	sw	x1,140(x2)
+800000a8:	07412c23          	sw	x20,120(x2)
+800000ac:	05b12e23          	sw	x27,92(x2)
+800000b0:	800017b7          	lui	x15,0x80001
+800000b4:	ad878793          	addi	x15,x15,-1320 # 80000ad8 <_end+0xffffd288>
+800000b8:	fc010113          	addi	x2,x2,-64
+800000bc:	0007a283          	lw	x5,0(x15)
+800000c0:	00f10693          	addi	x13,x2,15
+800000c4:	80001737          	lui	x14,0x80001
+800000c8:	fc010113          	addi	x2,x2,-64
+800000cc:	af870713          	addi	x14,x14,-1288 # 80000af8 <_end+0xffffd2a8>
+800000d0:	0107a883          	lw	x17,16(x15)
+800000d4:	0147a803          	lw	x16,20(x15)
+800000d8:	0187a503          	lw	x10,24(x15)
+800000dc:	01c7d583          	lhu	x11,28(x15)
+800000e0:	01e7c603          	lbu	x12,30(x15)
+800000e4:	0047af03          	lw	x30,4(x15)
+800000e8:	0087ae83          	lw	x29,8(x15)
+800000ec:	00c7ae03          	lw	x28,12(x15)
+800000f0:	00f10793          	addi	x15,x2,15
+800000f4:	ff07f793          	andi	x15,x15,-16
+800000f8:	00072f83          	lw	x31,0(x14)
+800000fc:	00200393          	li	x7,2
+80000100:	ff06f693          	andi	x13,x13,-16
+80000104:	0077a423          	sw	x7,8(x15)
+80000108:	0057a823          	sw	x5,16(x15)
+8000010c:	02800393          	li	x7,40
+80000110:	80001c37          	lui	x24,0x80001
+80000114:	800012b7          	lui	x5,0x80001
+80000118:	00d7a023          	sw	x13,0(x15)
+8000011c:	0007a223          	sw	x0,4(x15)
+80000120:	0077a623          	sw	x7,12(x15)
+80000124:	06d2a823          	sw	x13,112(x5) # 80001070 <_end+0xffffd820>
+80000128:	06fc2a23          	sw	x15,116(x24) # 80001074 <_end+0xffffd824>
+8000012c:	00472303          	lw	x6,4(x14)
+80000130:	f9f42023          	sw	x31,-128(x8)
+80000134:	01c75683          	lhu	x13,28(x14)
+80000138:	0317a023          	sw	x17,32(x15)
+8000013c:	0307a223          	sw	x16,36(x15)
+80000140:	00872883          	lw	x17,8(x14)
+80000144:	00c72803          	lw	x16,12(x14)
+80000148:	02a7a423          	sw	x10,40(x15)
+8000014c:	02b79623          	sh	x11,44(x15)
+80000150:	01072503          	lw	x10,16(x14)
+80000154:	01472583          	lw	x11,20(x14)
+80000158:	02c78723          	sb	x12,46(x15)
+8000015c:	01872603          	lw	x12,24(x14)
+80000160:	01e74703          	lbu	x14,30(x14)
+80000164:	80001bb7          	lui	x23,0x80001
+80000168:	01e7aa23          	sw	x30,20(x15)
+8000016c:	01d7ac23          	sw	x29,24(x15)
+80000170:	01c7ae23          	sw	x28,28(x15)
+80000174:	f8e40f23          	sb	x14,-98(x8)
+80000178:	140b8793          	addi	x15,x23,320 # 80001140 <_end+0xffffd8f0>
+8000017c:	00a00713          	li	x14,10
+80000180:	64e7ae23          	sw	x14,1628(x15)
+80000184:	800019b7          	lui	x19,0x80001
+80000188:	800017b7          	lui	x15,0x80001
+8000018c:	800014b7          	lui	x9,0x80001
+80000190:	f8642223          	sw	x6,-124(x8)
+80000194:	f9142423          	sw	x17,-120(x8)
+80000198:	f9042623          	sw	x16,-116(x8)
+8000019c:	f8a42823          	sw	x10,-112(x8)
+800001a0:	f8b42a23          	sw	x11,-108(x8)
+800001a4:	f8c42c23          	sw	x12,-104(x8)
+800001a8:	f8d41e23          	sh	x13,-100(x8)
+800001ac:	0407ae23          	sw	x0,92(x15) # 8000105c <_end+0xffffd80c>
+800001b0:	00100a93          	li	x21,1
+800001b4:	b1898993          	addi	x19,x19,-1256 # 80000b18 <_end+0xffffd2c8>
+800001b8:	80001d37          	lui	x26,0x80001
+800001bc:	80001cb7          	lui	x25,0x80001
+800001c0:	80001937          	lui	x18,0x80001
+800001c4:	b3848493          	addi	x9,x9,-1224 # 80000b38 <_end+0xffffd2e8>
+800001c8:	80001b37          	lui	x22,0x80001
+800001cc:	5e0000ef          	jal	x1,800007ac <Proc_5>
+800001d0:	5ac000ef          	jal	x1,8000077c <Proc_4>
+800001d4:	01e9c783          	lbu	x15,30(x19)
+800001d8:	0009ae83          	lw	x29,0(x19)
+800001dc:	0049ae03          	lw	x28,4(x19)
+800001e0:	0089a303          	lw	x6,8(x19)
+800001e4:	00c9a883          	lw	x17,12(x19)
+800001e8:	0109a803          	lw	x16,16(x19)
+800001ec:	0149a603          	lw	x12,20(x19)
+800001f0:	0189a683          	lw	x13,24(x19)
+800001f4:	01c9d703          	lhu	x14,28(x19)
+800001f8:	faf40f23          	sb	x15,-66(x8)
+800001fc:	00200a13          	li	x20,2
+80000200:	00100793          	li	x15,1
+80000204:	fa040593          	addi	x11,x8,-96
+80000208:	f8040513          	addi	x10,x8,-128
+8000020c:	f6f42e23          	sw	x15,-132(x8)
+80000210:	f7442a23          	sw	x20,-140(x8)
+80000214:	fbd42023          	sw	x29,-96(x8)
+80000218:	fbc42223          	sw	x28,-92(x8)
+8000021c:	fa642423          	sw	x6,-88(x8)
+80000220:	fb142623          	sw	x17,-84(x8)
+80000224:	fb042823          	sw	x16,-80(x8)
+80000228:	fac42a23          	sw	x12,-76(x8)
+8000022c:	fad42c23          	sw	x13,-72(x8)
+80000230:	fae41e23          	sh	x14,-68(x8)
+80000234:	238000ef          	jal	x1,8000046c <Func_2>
+80000238:	00050793          	mv	x15,x10
+8000023c:	f7442503          	lw	x10,-140(x8)
+80000240:	0017b793          	seqz	x15,x15
+80000244:	06fd2423          	sw	x15,104(x26) # 80001068 <_end+0xffffd818>
+80000248:	02aa4863          	blt	x20,x10,80000278 <main+0x204>
+8000024c:	00251793          	slli	x15,x10,0x2
+80000250:	00a787b3          	add	x15,x15,x10
+80000254:	ffd78793          	addi	x15,x15,-3
+80000258:	f7840613          	addi	x12,x8,-136
+8000025c:	00300593          	li	x11,3
+80000260:	f6f42c23          	sw	x15,-136(x8)
+80000264:	160000ef          	jal	x1,800003c4 <Proc_7>
+80000268:	f7442503          	lw	x10,-140(x8)
+8000026c:	00150513          	addi	x10,x10,1
+80000270:	f6a42a23          	sw	x10,-140(x8)
+80000274:	fcaa5ce3          	bge	x20,x10,8000024c <main+0x1d8>
+80000278:	f7842683          	lw	x13,-136(x8)
+8000027c:	00050613          	mv	x12,x10
+80000280:	140b8593          	addi	x11,x23,320
+80000284:	078c8513          	addi	x10,x25,120 # 80001078 <_end+0xffffd828>
+80000288:	14c000ef          	jal	x1,800003d4 <Proc_8>
+8000028c:	074c2503          	lw	x10,116(x24)
+80000290:	38c000ef          	jal	x1,8000061c <Proc_1>
+80000294:	06494703          	lbu	x14,100(x18) # 80001064 <_end+0xffffd814>
+80000298:	04000793          	li	x15,64
+8000029c:	12e7f063          	bgeu	x15,x14,800003bc <main+0x348>
+800002a0:	04100d93          	li	x27,65
+800002a4:	00300a13          	li	x20,3
+800002a8:	000d8513          	mv	x10,x27
+800002ac:	04300593          	li	x11,67
+800002b0:	198000ef          	jal	x1,80000448 <Func_1>
+800002b4:	f7c42703          	lw	x14,-132(x8)
+800002b8:	001d8693          	addi	x13,x27,1
+800002bc:	08e50863          	beq	x10,x14,8000034c <main+0x2d8>
+800002c0:	06494703          	lbu	x14,100(x18)
+800002c4:	0ff6fd93          	andi	x27,x13,255
+800002c8:	ffb770e3          	bgeu	x14,x27,800002a8 <main+0x234>
+800002cc:	f7442583          	lw	x11,-140(x8)
+800002d0:	000a0513          	mv	x10,x20
+800002d4:	001a8a93          	addi	x21,x21,1
+800002d8:	5ac000ef          	jal	x1,80000884 <__mulsi3>
+800002dc:	f7842583          	lw	x11,-136(x8)
+800002e0:	5c8000ef          	jal	x1,800008a8 <__divsi3>
+800002e4:	00050793          	mv	x15,x10
+800002e8:	f7440513          	addi	x10,x8,-140
+800002ec:	f6f42a23          	sw	x15,-140(x8)
+800002f0:	2d0000ef          	jal	x1,800005c0 <Proc_2>
+800002f4:	06500793          	li	x15,101
+800002f8:	ecfa9ae3          	bne	x21,x15,800001cc <main+0x158>
+800002fc:	00100793          	li	x15,1
+80000300:	80001737          	lui	x14,0x80001
+80000304:	04f72e23          	sw	x15,92(x14) # 8000105c <_end+0xffffd80c>
+80000308:	f7040113          	addi	x2,x8,-144
+8000030c:	08c12083          	lw	x1,140(x2)
+80000310:	08812403          	lw	x8,136(x2)
+80000314:	08412483          	lw	x9,132(x2)
+80000318:	08012903          	lw	x18,128(x2)
+8000031c:	07c12983          	lw	x19,124(x2)
+80000320:	07812a03          	lw	x20,120(x2)
+80000324:	07412a83          	lw	x21,116(x2)
+80000328:	07012b03          	lw	x22,112(x2)
+8000032c:	06c12b83          	lw	x23,108(x2)
+80000330:	06812c03          	lw	x24,104(x2)
+80000334:	06412c83          	lw	x25,100(x2)
+80000338:	06012d03          	lw	x26,96(x2)
+8000033c:	05c12d83          	lw	x27,92(x2)
+80000340:	00000513          	li	x10,0
+80000344:	09010113          	addi	x2,x2,144
+80000348:	00008067          	ret
+8000034c:	f7c40593          	addi	x11,x8,-132
+80000350:	00000513          	li	x10,0
+80000354:	188000ef          	jal	x1,800004dc <Proc_6>
+80000358:	0004ae83          	lw	x29,0(x9)
+8000035c:	0044ae03          	lw	x28,4(x9)
+80000360:	0084a303          	lw	x6,8(x9)
+80000364:	00c4a883          	lw	x17,12(x9)
+80000368:	0104a803          	lw	x16,16(x9)
+8000036c:	0144a503          	lw	x10,20(x9)
+80000370:	0184a583          	lw	x11,24(x9)
+80000374:	01c4d603          	lhu	x12,28(x9)
+80000378:	01e4c683          	lbu	x13,30(x9)
+8000037c:	06494703          	lbu	x14,100(x18)
+80000380:	001d8793          	addi	x15,x27,1
+80000384:	fbd42023          	sw	x29,-96(x8)
+80000388:	fbc42223          	sw	x28,-92(x8)
+8000038c:	fa642423          	sw	x6,-88(x8)
+80000390:	fb142623          	sw	x17,-84(x8)
+80000394:	fb042823          	sw	x16,-80(x8)
+80000398:	faa42a23          	sw	x10,-76(x8)
+8000039c:	fab42c23          	sw	x11,-72(x8)
+800003a0:	fac41e23          	sh	x12,-68(x8)
+800003a4:	fad40f23          	sb	x13,-66(x8)
+800003a8:	075b2623          	sw	x21,108(x22) # 8000106c <_end+0xffffd81c>
+800003ac:	0ff7fd93          	andi	x27,x15,255
+800003b0:	000a8a13          	mv	x20,x21
+800003b4:	efb77ae3          	bgeu	x14,x27,800002a8 <main+0x234>
+800003b8:	f15ff06f          	j	800002cc <main+0x258>
+800003bc:	00300a13          	li	x20,3
+800003c0:	f0dff06f          	j	800002cc <main+0x258>
+
+800003c4 <Proc_7>:
+Proc_7():
+800003c4:	00250513          	addi	x10,x10,2
+800003c8:	00b505b3          	add	x11,x10,x11
+800003cc:	00b62023          	sw	x11,0(x12)
+800003d0:	00008067          	ret
+
+800003d4 <Proc_8>:
+Proc_8():
+800003d4:	00560713          	addi	x14,x12,5
+800003d8:	00171793          	slli	x15,x14,0x1
+800003dc:	00e787b3          	add	x15,x15,x14
+800003e0:	00379793          	slli	x15,x15,0x3
+800003e4:	00e787b3          	add	x15,x15,x14
+800003e8:	00261613          	slli	x12,x12,0x2
+800003ec:	00271813          	slli	x16,x14,0x2
+800003f0:	00379793          	slli	x15,x15,0x3
+800003f4:	01050533          	add	x10,x10,x16
+800003f8:	00f60833          	add	x16,x12,x15
+800003fc:	00d52023          	sw	x13,0(x10)
+80000400:	00d52223          	sw	x13,4(x10)
+80000404:	06e52c23          	sw	x14,120(x10)
+80000408:	010586b3          	add	x13,x11,x16
+8000040c:	0106a803          	lw	x16,16(x13)
+80000410:	00e6aa23          	sw	x14,20(x13)
+80000414:	00e6ac23          	sw	x14,24(x13)
+80000418:	00180713          	addi	x14,x16,1
+8000041c:	00e6a823          	sw	x14,16(x13)
+80000420:	00052703          	lw	x14,0(x10)
+80000424:	00c585b3          	add	x11,x11,x12
+80000428:	00f587b3          	add	x15,x11,x15
+8000042c:	000015b7          	lui	x11,0x1
+80000430:	00f587b3          	add	x15,x11,x15
+80000434:	fae7aa23          	sw	x14,-76(x15)
+80000438:	800017b7          	lui	x15,0x80001
+8000043c:	00500713          	li	x14,5
+80000440:	06e7a623          	sw	x14,108(x15) # 8000106c <_end+0xffffd81c>
+80000444:	00008067          	ret
+
+80000448 <Func_1>:
+Func_1():
+80000448:	0ff57513          	andi	x10,x10,255
+8000044c:	0ff5f593          	andi	x11,x11,255
+80000450:	00b50663          	beq	x10,x11,8000045c <Func_1+0x14>
+80000454:	00000513          	li	x10,0
+80000458:	00008067          	ret
+8000045c:	800017b7          	lui	x15,0x80001
+80000460:	06a782a3          	sb	x10,101(x15) # 80001065 <_end+0xffffd815>
+80000464:	00100513          	li	x10,1
+80000468:	00008067          	ret
+
+8000046c <Func_2>:
+Func_2():
+8000046c:	ff010113          	addi	x2,x2,-16
+80000470:	00812423          	sw	x8,8(x2)
+80000474:	00912223          	sw	x9,4(x2)
+80000478:	00112623          	sw	x1,12(x2)
+8000047c:	00050413          	mv	x8,x10
+80000480:	00058493          	mv	x9,x11
+80000484:	0034c583          	lbu	x11,3(x9)
+80000488:	00244503          	lbu	x10,2(x8)
+8000048c:	fbdff0ef          	jal	x1,80000448 <Func_1>
+80000490:	fe051ae3          	bnez	x10,80000484 <Func_2+0x18>
+80000494:	00048593          	mv	x11,x9
+80000498:	00040513          	mv	x10,x8
+8000049c:	4c0000ef          	jal	x1,8000095c <strcmp>
+800004a0:	00000793          	li	x15,0
+800004a4:	00a05a63          	blez	x10,800004b8 <Func_2+0x4c>
+800004a8:	800017b7          	lui	x15,0x80001
+800004ac:	00a00713          	li	x14,10
+800004b0:	06e7a623          	sw	x14,108(x15) # 8000106c <_end+0xffffd81c>
+800004b4:	00100793          	li	x15,1
+800004b8:	00c12083          	lw	x1,12(x2)
+800004bc:	00812403          	lw	x8,8(x2)
+800004c0:	00412483          	lw	x9,4(x2)
+800004c4:	00078513          	mv	x10,x15
+800004c8:	01010113          	addi	x2,x2,16
+800004cc:	00008067          	ret
+
+800004d0 <Func_3>:
+Func_3():
+800004d0:	ffe50513          	addi	x10,x10,-2
+800004d4:	00153513          	seqz	x10,x10
+800004d8:	00008067          	ret
+
+800004dc <Proc_6>:
+Proc_6():
+800004dc:	ff010113          	addi	x2,x2,-16
+800004e0:	00812423          	sw	x8,8(x2)
+800004e4:	00912223          	sw	x9,4(x2)
+800004e8:	00050413          	mv	x8,x10
+800004ec:	00112623          	sw	x1,12(x2)
+800004f0:	00058493          	mv	x9,x11
+800004f4:	fddff0ef          	jal	x1,800004d0 <Func_3>
+800004f8:	00040793          	mv	x15,x8
+800004fc:	00051463          	bnez	x10,80000504 <Proc_6+0x28>
+80000500:	00300793          	li	x15,3
+80000504:	00f4a023          	sw	x15,0(x9)
+80000508:	00200793          	li	x15,2
+8000050c:	04f40a63          	beq	x8,x15,80000560 <Proc_6+0x84>
+80000510:	0287e863          	bltu	x15,x8,80000540 <Proc_6+0x64>
+80000514:	00040a63          	beqz	x8,80000528 <Proc_6+0x4c>
+80000518:	800017b7          	lui	x15,0x80001
+8000051c:	06c7a703          	lw	x14,108(x15) # 8000106c <_end+0xffffd81c>
+80000520:	06400793          	li	x15,100
+80000524:	04e7dc63          	bge	x15,x14,8000057c <Proc_6+0xa0>
+80000528:	0004a023          	sw	x0,0(x9)
+8000052c:	00c12083          	lw	x1,12(x2)
+80000530:	00812403          	lw	x8,8(x2)
+80000534:	00412483          	lw	x9,4(x2)
+80000538:	01010113          	addi	x2,x2,16
+8000053c:	00008067          	ret
+80000540:	00400713          	li	x14,4
+80000544:	fee414e3          	bne	x8,x14,8000052c <Proc_6+0x50>
+80000548:	00c12083          	lw	x1,12(x2)
+8000054c:	00812403          	lw	x8,8(x2)
+80000550:	00f4a023          	sw	x15,0(x9)
+80000554:	00412483          	lw	x9,4(x2)
+80000558:	01010113          	addi	x2,x2,16
+8000055c:	00008067          	ret
+80000560:	00c12083          	lw	x1,12(x2)
+80000564:	00812403          	lw	x8,8(x2)
+80000568:	00100793          	li	x15,1
+8000056c:	00f4a023          	sw	x15,0(x9)
+80000570:	00412483          	lw	x9,4(x2)
+80000574:	01010113          	addi	x2,x2,16
+80000578:	00008067          	ret
+8000057c:	00c12083          	lw	x1,12(x2)
+80000580:	00812403          	lw	x8,8(x2)
+80000584:	00300793          	li	x15,3
+80000588:	00f4a023          	sw	x15,0(x9)
+8000058c:	00412483          	lw	x9,4(x2)
+80000590:	01010113          	addi	x2,x2,16
+80000594:	00008067          	ret
+
+80000598 <debug_printf>:
+debug_printf():
+80000598:	fe010113          	addi	x2,x2,-32
+8000059c:	00b12223          	sw	x11,4(x2)
+800005a0:	00c12423          	sw	x12,8(x2)
+800005a4:	00d12623          	sw	x13,12(x2)
+800005a8:	00e12823          	sw	x14,16(x2)
+800005ac:	00f12a23          	sw	x15,20(x2)
+800005b0:	01012c23          	sw	x16,24(x2)
+800005b4:	01112e23          	sw	x17,28(x2)
+800005b8:	02010113          	addi	x2,x2,32
+800005bc:	00008067          	ret
+
+800005c0 <Proc_2>:
+Proc_2():
+800005c0:	800017b7          	lui	x15,0x80001
+800005c4:	0657c703          	lbu	x14,101(x15) # 80001065 <_end+0xffffd815>
+800005c8:	04100793          	li	x15,65
+800005cc:	00f70463          	beq	x14,x15,800005d4 <Proc_2+0x14>
+800005d0:	00008067          	ret
+800005d4:	00052783          	lw	x15,0(x10)
+800005d8:	80001737          	lui	x14,0x80001
+800005dc:	06c72703          	lw	x14,108(x14) # 8000106c <_end+0xffffd81c>
+800005e0:	00978793          	addi	x15,x15,9
+800005e4:	40e787b3          	sub	x15,x15,x14
+800005e8:	00f52023          	sw	x15,0(x10)
+800005ec:	00008067          	ret
+
+800005f0 <Proc_3>:
+Proc_3():
+800005f0:	800017b7          	lui	x15,0x80001
+800005f4:	0747a603          	lw	x12,116(x15) # 80001074 <_end+0xffffd824>
+800005f8:	00060863          	beqz	x12,80000608 <Proc_3+0x18>
+800005fc:	00062703          	lw	x14,0(x12)
+80000600:	00e52023          	sw	x14,0(x10)
+80000604:	0747a603          	lw	x12,116(x15)
+80000608:	800017b7          	lui	x15,0x80001
+8000060c:	06c7a583          	lw	x11,108(x15) # 8000106c <_end+0xffffd81c>
+80000610:	00c60613          	addi	x12,x12,12
+80000614:	00a00513          	li	x10,10
+80000618:	dadff06f          	j	800003c4 <Proc_7>
+
+8000061c <Proc_1>:
+Proc_1():
+8000061c:	ff010113          	addi	x2,x2,-16
+80000620:	01212023          	sw	x18,0(x2)
+80000624:	80001937          	lui	x18,0x80001
+80000628:	07492783          	lw	x15,116(x18) # 80001074 <_end+0xffffd824>
+8000062c:	00812423          	sw	x8,8(x2)
+80000630:	00052403          	lw	x8,0(x10)
+80000634:	0007a703          	lw	x14,0(x15)
+80000638:	0047ae83          	lw	x29,4(x15)
+8000063c:	0087ae03          	lw	x28,8(x15)
+80000640:	0107a303          	lw	x6,16(x15)
+80000644:	0147a883          	lw	x17,20(x15)
+80000648:	0187a803          	lw	x16,24(x15)
+8000064c:	0207a583          	lw	x11,32(x15)
+80000650:	0247a603          	lw	x12,36(x15)
+80000654:	0287a683          	lw	x13,40(x15)
+80000658:	00912223          	sw	x9,4(x2)
+8000065c:	00112623          	sw	x1,12(x2)
+80000660:	00050493          	mv	x9,x10
+80000664:	01c7a503          	lw	x10,28(x15)
+80000668:	02c7a783          	lw	x15,44(x15)
+8000066c:	00e42023          	sw	x14,0(x8)
+80000670:	0004a703          	lw	x14,0(x9)
+80000674:	00a42e23          	sw	x10,28(x8)
+80000678:	02f42623          	sw	x15,44(x8)
+8000067c:	01d42223          	sw	x29,4(x8)
+80000680:	00500793          	li	x15,5
+80000684:	01c42423          	sw	x28,8(x8)
+80000688:	00642823          	sw	x6,16(x8)
+8000068c:	01142a23          	sw	x17,20(x8)
+80000690:	01042c23          	sw	x16,24(x8)
+80000694:	02b42023          	sw	x11,32(x8)
+80000698:	02c42223          	sw	x12,36(x8)
+8000069c:	02d42423          	sw	x13,40(x8)
+800006a0:	00f4a623          	sw	x15,12(x9)
+800006a4:	00f42623          	sw	x15,12(x8)
+800006a8:	00e42023          	sw	x14,0(x8)
+800006ac:	00040513          	mv	x10,x8
+800006b0:	f41ff0ef          	jal	x1,800005f0 <Proc_3>
+800006b4:	00442783          	lw	x15,4(x8)
+800006b8:	08078063          	beqz	x15,80000738 <Proc_1+0x11c>
+800006bc:	0004a783          	lw	x15,0(x9)
+800006c0:	00c12083          	lw	x1,12(x2)
+800006c4:	00812403          	lw	x8,8(x2)
+800006c8:	0007af83          	lw	x31,0(x15)
+800006cc:	0047af03          	lw	x30,4(x15)
+800006d0:	0087ae83          	lw	x29,8(x15)
+800006d4:	00c7ae03          	lw	x28,12(x15)
+800006d8:	0107a303          	lw	x6,16(x15)
+800006dc:	0147a883          	lw	x17,20(x15)
+800006e0:	0187a803          	lw	x16,24(x15)
+800006e4:	01c7a583          	lw	x11,28(x15)
+800006e8:	0207a603          	lw	x12,32(x15)
+800006ec:	0247a683          	lw	x13,36(x15)
+800006f0:	0287a703          	lw	x14,40(x15)
+800006f4:	02c7a783          	lw	x15,44(x15)
+800006f8:	01f4a023          	sw	x31,0(x9)
+800006fc:	01e4a223          	sw	x30,4(x9)
+80000700:	01d4a423          	sw	x29,8(x9)
+80000704:	01c4a623          	sw	x28,12(x9)
+80000708:	0064a823          	sw	x6,16(x9)
+8000070c:	0114aa23          	sw	x17,20(x9)
+80000710:	0104ac23          	sw	x16,24(x9)
+80000714:	00b4ae23          	sw	x11,28(x9)
+80000718:	02c4a023          	sw	x12,32(x9)
+8000071c:	02d4a223          	sw	x13,36(x9)
+80000720:	02e4a423          	sw	x14,40(x9)
+80000724:	02f4a623          	sw	x15,44(x9)
+80000728:	00012903          	lw	x18,0(x2)
+8000072c:	00412483          	lw	x9,4(x2)
+80000730:	01010113          	addi	x2,x2,16
+80000734:	00008067          	ret
+80000738:	0084a503          	lw	x10,8(x9)
+8000073c:	00600793          	li	x15,6
+80000740:	00840593          	addi	x11,x8,8
+80000744:	00f42623          	sw	x15,12(x8)
+80000748:	d95ff0ef          	jal	x1,800004dc <Proc_6>
+8000074c:	07492783          	lw	x15,116(x18)
+80000750:	00c42503          	lw	x10,12(x8)
+80000754:	00c40613          	addi	x12,x8,12
+80000758:	0007a783          	lw	x15,0(x15)
+8000075c:	00c12083          	lw	x1,12(x2)
+80000760:	00412483          	lw	x9,4(x2)
+80000764:	00f42023          	sw	x15,0(x8)
+80000768:	00812403          	lw	x8,8(x2)
+8000076c:	00012903          	lw	x18,0(x2)
+80000770:	00a00593          	li	x11,10
+80000774:	01010113          	addi	x2,x2,16
+80000778:	c4dff06f          	j	800003c4 <Proc_7>
+
+8000077c <Proc_4>:
+Proc_4():
+8000077c:	800017b7          	lui	x15,0x80001
+80000780:	0657c783          	lbu	x15,101(x15) # 80001065 <_end+0xffffd815>
+80000784:	80001737          	lui	x14,0x80001
+80000788:	06872683          	lw	x13,104(x14) # 80001068 <_end+0xffffd818>
+8000078c:	fbf78793          	addi	x15,x15,-65
+80000790:	0017b793          	seqz	x15,x15
+80000794:	00d7e7b3          	or	x15,x15,x13
+80000798:	06f72423          	sw	x15,104(x14)
+8000079c:	800017b7          	lui	x15,0x80001
+800007a0:	04200713          	li	x14,66
+800007a4:	06e78223          	sb	x14,100(x15) # 80001064 <_end+0xffffd814>
+800007a8:	00008067          	ret
+
+800007ac <Proc_5>:
+Proc_5():
+800007ac:	800017b7          	lui	x15,0x80001
+800007b0:	04100713          	li	x14,65
+800007b4:	06e782a3          	sb	x14,101(x15) # 80001065 <_end+0xffffd815>
+800007b8:	800017b7          	lui	x15,0x80001
+800007bc:	0607a423          	sw	x0,104(x15) # 80001068 <_end+0xffffd818>
+800007c0:	00008067          	ret
+
+800007c4 <_start>:
+_start():
+800007c4:	00000093          	li	x1,0
+800007c8:	00000113          	li	x2,0
+800007cc:	00000193          	li	x3,0
+800007d0:	00000213          	li	x4,0
+800007d4:	00000293          	li	x5,0
+800007d8:	00000313          	li	x6,0
+800007dc:	00000393          	li	x7,0
+800007e0:	00000413          	li	x8,0
+800007e4:	00000493          	li	x9,0
+800007e8:	00000513          	li	x10,0
+800007ec:	00000593          	li	x11,0
+800007f0:	00000613          	li	x12,0
+800007f4:	00000693          	li	x13,0
+800007f8:	00000713          	li	x14,0
+800007fc:	00000793          	li	x15,0
+80000800:	00000813          	li	x16,0
+80000804:	00000893          	li	x17,0
+80000808:	00000913          	li	x18,0
+8000080c:	00000993          	li	x19,0
+80000810:	00000a13          	li	x20,0
+80000814:	00000a93          	li	x21,0
+80000818:	00000b13          	li	x22,0
+8000081c:	00000b93          	li	x23,0
+80000820:	00000c13          	li	x24,0
+80000824:	00000c93          	li	x25,0
+80000828:	00000d13          	li	x26,0
+8000082c:	00000d93          	li	x27,0
+80000830:	00000e13          	li	x28,0
+80000834:	00000e93          	li	x29,0
+80000838:	00000f13          	li	x30,0
+8000083c:	00000f93          	li	x31,0
+80000840:	00001197          	auipc	x3,0x1
+80000844:	00818193          	addi	x3,x3,8 # 80001848 <__global_pointer$>
+80000848:	00003217          	auipc	x4,0x3
+8000084c:	04720213          	addi	x4,x4,71 # 8000388f <_end+0x3f>
+80000850:	fc027213          	andi	x4,x4,-64
+80000854:	f1402573          	csrr	x10,mhartid
+80000858:	00400593          	li	x11,4
+8000085c:	01151613          	slli	x12,x10,0x11
+80000860:	00c20233          	add	x4,x4,x12
+80000864:	00150113          	addi	x2,x10,1
+80000868:	01111113          	slli	x2,x2,0x11
+8000086c:	00410133          	add	x2,x2,x4
+80000870:	805ff0ef          	jal	x1,80000074 <main>
+
+80000874 <terminate_platform>:
+terminate_platform():
+80000874:	05d00893          	li	x17,93
+80000878:	020102b7          	lui	x5,0x2010
+8000087c:	f1402873          	csrr	x16,mhartid
+80000880:	0102a023          	sw	x16,0(x5) # 2010000 <SYSCALL_ADDR>
+
+80000884 <__mulsi3>:
+__mulsi3():
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/muldi3.S:37
+80000884:	00050613          	mv	x12,x10
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/muldi3.S:38
+80000888:	00000513          	li	x10,0
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/muldi3.S:40
+8000088c:	0015f693          	andi	x13,x11,1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/muldi3.S:41
+80000890:	00068463          	beqz	x13,80000898 <__mulsi3+0x14>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/muldi3.S:42
+80000894:	00c50533          	add	x10,x10,x12
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/muldi3.S:44
+80000898:	0015d593          	srli	x11,x11,0x1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/muldi3.S:45
+8000089c:	00161613          	slli	x12,x12,0x1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/muldi3.S:46
+800008a0:	fe0596e3          	bnez	x11,8000088c <__mulsi3+0x8>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/muldi3.S:47
+800008a4:	00008067          	ret
+
+800008a8 <__divsi3>:
+__divsi3():
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:69
+800008a8:	06054063          	bltz	x10,80000908 <__umodsi3+0x10>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:70
+800008ac:	0605c663          	bltz	x11,80000918 <__umodsi3+0x20>
+
+800008b0 <__udivsi3>:
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:74
+800008b0:	00058613          	mv	x12,x11
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:75
+800008b4:	00050593          	mv	x11,x10
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:76
+800008b8:	fff00513          	li	x10,-1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:77
+800008bc:	02060c63          	beqz	x12,800008f4 <__udivsi3+0x44>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:78
+800008c0:	00100693          	li	x13,1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:79
+800008c4:	00b67a63          	bgeu	x12,x11,800008d8 <__udivsi3+0x28>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:81
+800008c8:	00c05863          	blez	x12,800008d8 <__udivsi3+0x28>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:82
+800008cc:	00161613          	slli	x12,x12,0x1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:83
+800008d0:	00169693          	slli	x13,x13,0x1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:84
+800008d4:	feb66ae3          	bltu	x12,x11,800008c8 <__udivsi3+0x18>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:86
+800008d8:	00000513          	li	x10,0
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:88
+800008dc:	00c5e663          	bltu	x11,x12,800008e8 <__udivsi3+0x38>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:89
+800008e0:	40c585b3          	sub	x11,x11,x12
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:90
+800008e4:	00d56533          	or	x10,x10,x13
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:92
+800008e8:	0016d693          	srli	x13,x13,0x1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:93
+800008ec:	00165613          	srli	x12,x12,0x1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:94
+800008f0:	fe0696e3          	bnez	x13,800008dc <__udivsi3+0x2c>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:96
+800008f4:	00008067          	ret
+
+800008f8 <__umodsi3>:
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:101
+800008f8:	00008293          	mv	x5,x1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:102
+800008fc:	fb5ff0ef          	jal	x1,800008b0 <__udivsi3>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:103
+80000900:	00058513          	mv	x10,x11
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:104
+80000904:	00028067          	jr	x5
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:109
+80000908:	40a00533          	neg	x10,x10
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:111
+8000090c:	00b04863          	bgtz	x11,8000091c <__umodsi3+0x24>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:113
+80000910:	40b005b3          	neg	x11,x11
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:114
+80000914:	f9dff06f          	j	800008b0 <__udivsi3>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:116
+80000918:	40b005b3          	neg	x11,x11
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:118
+8000091c:	00008293          	mv	x5,x1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:119
+80000920:	f91ff0ef          	jal	x1,800008b0 <__udivsi3>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:120
+80000924:	40a00533          	neg	x10,x10
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:121
+80000928:	00028067          	jr	x5
+
+8000092c <__modsi3>:
+__modsi3():
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:125
+8000092c:	00008293          	mv	x5,x1
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:126
+80000930:	0005ca63          	bltz	x11,80000944 <__modsi3+0x18>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:127
+80000934:	00054c63          	bltz	x10,8000094c <__modsi3+0x20>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:129
+80000938:	f79ff0ef          	jal	x1,800008b0 <__udivsi3>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:130
+8000093c:	00058513          	mv	x10,x11
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:131
+80000940:	00028067          	jr	x5
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:133
+80000944:	40b005b3          	neg	x11,x11
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:134
+80000948:	fe0558e3          	bgez	x10,80000938 <__modsi3+0xc>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:136
+8000094c:	40a00533          	neg	x10,x10
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:137
+80000950:	f61ff0ef          	jal	x1,800008b0 <__udivsi3>
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:138
+80000954:	40b00533          	neg	x10,x11
+/home/sallar/tools/riscv-gnu-toolchain/build-gcc-newlib-stage2/riscv32-unknown-elf/libgcc/../../.././riscv-gcc/libgcc/config/riscv/div.S:139
+80000958:	00028067          	jr	x5
+
+8000095c <strcmp>:
+strcmp():
+8000095c:	00b56733          	or	x14,x10,x11
+80000960:	fff00393          	li	x7,-1
+80000964:	00377713          	andi	x14,x14,3
+80000968:	10071063          	bnez	x14,80000a68 <strcmp+0x10c>
+8000096c:	7f7f87b7          	lui	x15,0x7f7f8
+80000970:	f7f78793          	addi	x15,x15,-129 # 7f7f7f7f <SYSCALL_ADDR+0x7d7e7f7f>
+80000974:	00052603          	lw	x12,0(x10)
+80000978:	0005a683          	lw	x13,0(x11) # 1000 <_tbss_end+0x1000>
+8000097c:	00f672b3          	and	x5,x12,x15
+80000980:	00f66333          	or	x6,x12,x15
+80000984:	00f282b3          	add	x5,x5,x15
+80000988:	0062e2b3          	or	x5,x5,x6
+8000098c:	10729263          	bne	x5,x7,80000a90 <strcmp+0x134>
+80000990:	08d61663          	bne	x12,x13,80000a1c <strcmp+0xc0>
+80000994:	00452603          	lw	x12,4(x10)
+80000998:	0045a683          	lw	x13,4(x11)
+8000099c:	00f672b3          	and	x5,x12,x15
+800009a0:	00f66333          	or	x6,x12,x15
+800009a4:	00f282b3          	add	x5,x5,x15
+800009a8:	0062e2b3          	or	x5,x5,x6
+800009ac:	0c729e63          	bne	x5,x7,80000a88 <strcmp+0x12c>
+800009b0:	06d61663          	bne	x12,x13,80000a1c <strcmp+0xc0>
+800009b4:	00852603          	lw	x12,8(x10)
+800009b8:	0085a683          	lw	x13,8(x11)
+800009bc:	00f672b3          	and	x5,x12,x15
+800009c0:	00f66333          	or	x6,x12,x15
+800009c4:	00f282b3          	add	x5,x5,x15
+800009c8:	0062e2b3          	or	x5,x5,x6
+800009cc:	0c729863          	bne	x5,x7,80000a9c <strcmp+0x140>
+800009d0:	04d61663          	bne	x12,x13,80000a1c <strcmp+0xc0>
+800009d4:	00c52603          	lw	x12,12(x10)
+800009d8:	00c5a683          	lw	x13,12(x11)
+800009dc:	00f672b3          	and	x5,x12,x15
+800009e0:	00f66333          	or	x6,x12,x15
+800009e4:	00f282b3          	add	x5,x5,x15
+800009e8:	0062e2b3          	or	x5,x5,x6
+800009ec:	0c729263          	bne	x5,x7,80000ab0 <strcmp+0x154>
+800009f0:	02d61663          	bne	x12,x13,80000a1c <strcmp+0xc0>
+800009f4:	01052603          	lw	x12,16(x10)
+800009f8:	0105a683          	lw	x13,16(x11)
+800009fc:	00f672b3          	and	x5,x12,x15
+80000a00:	00f66333          	or	x6,x12,x15
+80000a04:	00f282b3          	add	x5,x5,x15
+80000a08:	0062e2b3          	or	x5,x5,x6
+80000a0c:	0a729c63          	bne	x5,x7,80000ac4 <strcmp+0x168>
+80000a10:	01450513          	addi	x10,x10,20
+80000a14:	01458593          	addi	x11,x11,20
+80000a18:	f4d60ee3          	beq	x12,x13,80000974 <strcmp+0x18>
+80000a1c:	01061713          	slli	x14,x12,0x10
+80000a20:	01069793          	slli	x15,x13,0x10
+80000a24:	00f71e63          	bne	x14,x15,80000a40 <strcmp+0xe4>
+80000a28:	01065713          	srli	x14,x12,0x10
+80000a2c:	0106d793          	srli	x15,x13,0x10
+80000a30:	40f70533          	sub	x10,x14,x15
+80000a34:	0ff57593          	andi	x11,x10,255
+80000a38:	02059063          	bnez	x11,80000a58 <strcmp+0xfc>
+80000a3c:	00008067          	ret
+80000a40:	01075713          	srli	x14,x14,0x10
+80000a44:	0107d793          	srli	x15,x15,0x10
+80000a48:	40f70533          	sub	x10,x14,x15
+80000a4c:	0ff57593          	andi	x11,x10,255
+80000a50:	00059463          	bnez	x11,80000a58 <strcmp+0xfc>
+80000a54:	00008067          	ret
+80000a58:	0ff77713          	andi	x14,x14,255
+80000a5c:	0ff7f793          	andi	x15,x15,255
+80000a60:	40f70533          	sub	x10,x14,x15
+80000a64:	00008067          	ret
+80000a68:	00054603          	lbu	x12,0(x10)
+80000a6c:	0005c683          	lbu	x13,0(x11)
+80000a70:	00150513          	addi	x10,x10,1
+80000a74:	00158593          	addi	x11,x11,1
+80000a78:	00d61463          	bne	x12,x13,80000a80 <strcmp+0x124>
+80000a7c:	fe0616e3          	bnez	x12,80000a68 <strcmp+0x10c>
+80000a80:	40d60533          	sub	x10,x12,x13
+80000a84:	00008067          	ret
+80000a88:	00450513          	addi	x10,x10,4
+80000a8c:	00458593          	addi	x11,x11,4
+80000a90:	fcd61ce3          	bne	x12,x13,80000a68 <strcmp+0x10c>
+80000a94:	00000513          	li	x10,0
+80000a98:	00008067          	ret
+80000a9c:	00850513          	addi	x10,x10,8
+80000aa0:	00858593          	addi	x11,x11,8
+80000aa4:	fcd612e3          	bne	x12,x13,80000a68 <strcmp+0x10c>
+80000aa8:	00000513          	li	x10,0
+80000aac:	00008067          	ret
+80000ab0:	00c50513          	addi	x10,x10,12
+80000ab4:	00c58593          	addi	x11,x11,12
+80000ab8:	fad618e3          	bne	x12,x13,80000a68 <strcmp+0x10c>
+80000abc:	00000513          	li	x10,0
+80000ac0:	00008067          	ret
+80000ac4:	01050513          	addi	x10,x10,16
+80000ac8:	01058593          	addi	x11,x11,16
+80000acc:	f8d61ee3          	bne	x12,x13,80000a68 <strcmp+0x10c>
+80000ad0:	00000513          	li	x10,0
+80000ad4:	00008067          	ret
+
+Disassembly of section .rodata:
+
+80000ad8 <.rodata>:
+80000ad8:	4844                	lw	x9,20(x8)
+80000ada:	5952                	lw	x18,52(x2)
+80000adc:	4e4f5453          	0x4e4f5453
+80000ae0:	2045                	jal	80000b80 <strcmp+0x224>
+80000ae2:	5250                	lw	x12,36(x12)
+80000ae4:	4152474f          	fnmadd.s	f14,f4,f21,f8,rmm
+80000ae8:	2c4d                	jal	80000d9a <strcmp+0x43e>
+80000aea:	5320                	lw	x8,96(x14)
+80000aec:	20454d4f          	fnmadd.s	f26,f10,f4,f4,rmm
+80000af0:	49525453          	0x49525453
+80000af4:	474e                	lw	x14,208(x2)
+80000af6:	0000                	unimp
+80000af8:	4844                	lw	x9,20(x8)
+80000afa:	5952                	lw	x18,52(x2)
+80000afc:	4e4f5453          	0x4e4f5453
+80000b00:	2045                	jal	80000ba0 <strcmp+0x244>
+80000b02:	5250                	lw	x12,36(x12)
+80000b04:	4152474f          	fnmadd.s	f14,f4,f21,f8,rmm
+80000b08:	2c4d                	jal	80000dba <strcmp+0x45e>
+80000b0a:	3120                	fld	f8,96(x10)
+80000b0c:	20545327          	0x20545327
+80000b10:	49525453          	0x49525453
+80000b14:	474e                	lw	x14,208(x2)
+80000b16:	0000                	unimp
+80000b18:	4844                	lw	x9,20(x8)
+80000b1a:	5952                	lw	x18,52(x2)
+80000b1c:	4e4f5453          	0x4e4f5453
+80000b20:	2045                	jal	80000bc0 <strcmp+0x264>
+80000b22:	5250                	lw	x12,36(x12)
+80000b24:	4152474f          	fnmadd.s	f14,f4,f21,f8,rmm
+80000b28:	2c4d                	jal	80000dda <strcmp+0x47e>
+80000b2a:	3220                	fld	f8,96(x12)
+80000b2c:	20444e27          	fsq	f4,540(x8)
+80000b30:	49525453          	0x49525453
+80000b34:	474e                	lw	x14,208(x2)
+80000b36:	0000                	unimp
+80000b38:	4844                	lw	x9,20(x8)
+80000b3a:	5952                	lw	x18,52(x2)
+80000b3c:	4e4f5453          	0x4e4f5453
+80000b40:	2045                	jal	80000be0 <strcmp+0x284>
+80000b42:	5250                	lw	x12,36(x12)
+80000b44:	4152474f          	fnmadd.s	f14,f4,f21,f8,rmm
+80000b48:	2c4d                	jal	80000dfa <strcmp+0x49e>
+80000b4a:	3320                	fld	f8,96(x14)
+80000b4c:	20445227          	0x20445227
+80000b50:	49525453          	0x49525453
+80000b54:	474e                	lw	x14,208(x2)
+	...
+
+Disassembly of section .tohost:
+
+80001000 <tohost>:
+	...
+
+80001040 <fromhost>:
+	...
+
+Disassembly of section .sbss:
+
+80001048 <Dhrystones_Per_Second>:
+__bss_start():
+80001048:	0000                	unimp
+	...
+
+8000104c <Microseconds>:
+8000104c:	0000                	unimp
+	...
+
+80001050 <User_Time>:
+80001050:	0000                	unimp
+	...
+
+80001054 <End_Time>:
+80001054:	0000                	unimp
+	...
+
+80001058 <Begin_Time>:
+80001058:	0000                	unimp
+	...
+
+8000105c <Done>:
+8000105c:	0000                	unimp
+	...
+
+80001060 <Reg>:
+80001060:	0000                	unimp
+	...
+
+80001064 <Ch_2_Glob>:
+	...
+
+80001065 <Ch_1_Glob>:
+80001065:	0000                	unimp
+	...
+
+80001068 <Bool_Glob>:
+80001068:	0000                	unimp
+	...
+
+8000106c <Int_Glob>:
+8000106c:	0000                	unimp
+	...
+
+80001070 <Next_Ptr_Glob>:
+80001070:	0000                	unimp
+	...
+
+80001074 <Ptr_Glob>:
+80001074:	0000                	unimp
+	...
+
+Disassembly of section .bss:
+
+80001078 <Arr_1_Glob>:
+	...
+
+80001140 <Arr_2_Glob>:
+	...
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	3a434347          	fmsub.d	f6,f6,f4,f7,rmm
+   4:	2820                	fld	f8,80(x8)
+   6:	29554e47          	fmsub.s	f28,f10,f21,f5,rmm
+   a:	3120                	fld	f8,96(x10)
+   c:	2e30                	fld	f12,88(x12)
+   e:	2e32                	fld	f28,264(x2)
+  10:	0030                	addi	x12,x2,8
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	1f41                	addi	x30,x30,-16
+   2:	0000                	unimp
+   4:	7200                	flw	f8,32(x12)
+   6:	7369                	lui	x6,0xffffa
+   8:	01007663          	bgeu	x0,x16,14 <_tbss_end+0x14>
+   c:	0015                	c.nop	5
+   e:	0000                	unimp
+  10:	1004                	addi	x9,x2,32
+  12:	7205                	lui	x4,0xfffe1
+  14:	3376                	fld	f6,376(x2)
+  16:	6932                	flw	f18,12(x2)
+  18:	7032                	flw	f0,44(x2)
+  1a:	0030                	addi	x12,x2,8
+  1c:	0108                	addi	x10,x2,128
+  1e:	0b0a                	slli	x22,x22,0x2
+
+Disassembly of section .debug_aranges:
+
+00000000 <.debug_aranges>:
+   0:	001c                	0x1c
+   2:	0000                	unimp
+   4:	0002                	c.slli64	x0
+   6:	0000                	unimp
+   8:	0000                	unimp
+   a:	0004                	0x4
+   c:	0000                	unimp
+   e:	0000                	unimp
+  10:	0884                	addi	x9,x2,80
+  12:	8000                	0x8000
+  14:	0024                	addi	x9,x2,8
+	...
+  1e:	0000                	unimp
+  20:	001c                	0x1c
+  22:	0000                	unimp
+  24:	0002                	c.slli64	x0
+  26:	0026                	c.slli	x0,0x9
+  28:	0000                	unimp
+  2a:	0004                	0x4
+  2c:	0000                	unimp
+  2e:	0000                	unimp
+  30:	08a8                	addi	x10,x2,88
+  32:	8000                	0x8000
+  34:	00b4                	addi	x13,x2,72
+	...
+
+Disassembly of section .debug_info:
+
+00000000 <.debug_info>:
+   0:	0022                	c.slli	x0,0x8
+   2:	0000                	unimp
+   4:	0002                	c.slli64	x0
+   6:	0000                	unimp
+   8:	0000                	unimp
+   a:	0104                	addi	x9,x2,128
+   c:	0000                	unimp
+   e:	0000                	unimp
+  10:	0884                	addi	x9,x2,80
+  12:	8000                	0x8000
+  14:	08a8                	addi	x10,x2,88
+  16:	8000                	0x8000
+  18:	0000                	unimp
+  1a:	0000                	unimp
+  1c:	0032                	c.slli	x0,0xc
+  1e:	0000                	unimp
+  20:	008c                	addi	x11,x2,64
+  22:	0000                	unimp
+  24:	8001                	c.srli64	x8
+  26:	0022                	c.slli	x0,0x8
+  28:	0000                	unimp
+  2a:	0002                	c.slli64	x0
+  2c:	0014                	0x14
+  2e:	0000                	unimp
+  30:	0104                	addi	x9,x2,128
+  32:	0092                	slli	x1,x1,0x4
+  34:	0000                	unimp
+  36:	08a8                	addi	x10,x2,88
+  38:	8000                	0x8000
+  3a:	095c                	addi	x15,x2,148
+  3c:	8000                	0x8000
+  3e:	0098                	addi	x14,x2,64
+  40:	0000                	unimp
+  42:	0032                	c.slli	x0,0xc
+  44:	0000                	unimp
+  46:	008c                	addi	x11,x2,64
+  48:	0000                	unimp
+  4a:	8001                	c.srli64	x8
+
+Disassembly of section .debug_abbrev:
+
+00000000 <.debug_abbrev>:
+   0:	1101                	addi	x2,x2,-32
+   2:	1000                	addi	x8,x2,32
+   4:	1106                	slli	x2,x2,0x21
+   6:	1201                	addi	x4,x4,-32
+   8:	0301                	addi	x6,x6,0
+   a:	1b0e                	slli	x22,x22,0x23
+   c:	250e                	fld	f10,192(x2)
+   e:	130e                	slli	x6,x6,0x23
+  10:	0005                	c.nop	1
+  12:	0000                	unimp
+  14:	1101                	addi	x2,x2,-32
+  16:	1000                	addi	x8,x2,32
+  18:	1106                	slli	x2,x2,0x21
+  1a:	1201                	addi	x4,x4,-32
+  1c:	0301                	addi	x6,x6,0
+  1e:	1b0e                	slli	x22,x22,0x23
+  20:	250e                	fld	f10,192(x2)
+  22:	130e                	slli	x6,x6,0x23
+  24:	0005                	c.nop	1
+	...
+
+Disassembly of section .debug_line:
+
+00000000 <.debug_line>:
+   0:	008e                	slli	x1,x1,0x3
+   2:	0000                	unimp
+   4:	00480003          	lb	x0,4(x16)
+   8:	0000                	unimp
+   a:	0101                	addi	x2,x2,0
+   c:	000d0efb          	0xd0efb
+  10:	0101                	addi	x2,x2,0
+  12:	0101                	addi	x2,x2,0
+  14:	0000                	unimp
+  16:	0100                	addi	x8,x2,128
+  18:	0000                	unimp
+  1a:	2e01                	jal	32a <_tbss_end+0x32a>
+  1c:	2f2e                	fld	f30,200(x2)
+  1e:	2e2e                	fld	f28,200(x2)
+  20:	2f2e2e2f          	0x2f2e2e2f
+  24:	2f2e                	fld	f30,200(x2)
+  26:	6972                	flw	f18,28(x2)
+  28:	2d766373          	csrrsi	x6,0x2d7,12
+  2c:	2f636367          	0x2f636367
+  30:	696c                	flw	f11,84(x10)
+  32:	6762                	flw	f14,24(x2)
+  34:	632f6363          	bltu	x30,x18,65a <_tbss_end+0x65a>
+  38:	69666e6f          	jal	x28,666ce <_tbss_end+0x666ce>
+  3c:	69722f67          	0x69722f67
+  40:	00766373          	csrrsi	x6,0x7,12
+  44:	6d00                	flw	f8,24(x10)
+  46:	6c75                	lui	x24,0x1d
+  48:	6964                	flw	f9,84(x10)
+  4a:	00532e33          	slt	x28,x6,x5
+  4e:	0001                	nop
+  50:	0000                	unimp
+  52:	0500                	addi	x8,x2,640
+  54:	8402                	jr	x8
+  56:	0008                	0x8
+  58:	0380                	addi	x8,x2,448
+  5a:	0124                	addi	x9,x2,136
+  5c:	04090103          	lb	x2,64(x18)
+  60:	0100                	addi	x8,x2,128
+  62:	04090203          	lb	x4,64(x18)
+  66:	0100                	addi	x8,x2,128
+  68:	04090103          	lb	x2,64(x18)
+  6c:	0100                	addi	x8,x2,128
+  6e:	04090103          	lb	x2,64(x18)
+  72:	0100                	addi	x8,x2,128
+  74:	04090203          	lb	x4,64(x18)
+  78:	0100                	addi	x8,x2,128
+  7a:	04090103          	lb	x2,64(x18)
+  7e:	0100                	addi	x8,x2,128
+  80:	04090103          	lb	x2,64(x18)
+  84:	0100                	addi	x8,x2,128
+  86:	04090103          	lb	x2,64(x18)
+  8a:	0100                	addi	x8,x2,128
+  8c:	0409                	addi	x8,x8,2
+  8e:	0000                	unimp
+  90:	0101                	addi	x2,x2,0
+  92:	0164                	addi	x9,x2,140
+  94:	0000                	unimp
+  96:	00450003          	lb	x0,4(x10)
+  9a:	0000                	unimp
+  9c:	0101                	addi	x2,x2,0
+  9e:	000d0efb          	0xd0efb
+  a2:	0101                	addi	x2,x2,0
+  a4:	0101                	addi	x2,x2,0
+  a6:	0000                	unimp
+  a8:	0100                	addi	x8,x2,128
+  aa:	0000                	unimp
+  ac:	2e01                	jal	3bc <_tbss_end+0x3bc>
+  ae:	2f2e                	fld	f30,200(x2)
+  b0:	2e2e                	fld	f28,200(x2)
+  b2:	2f2e2e2f          	0x2f2e2e2f
+  b6:	2f2e                	fld	f30,200(x2)
+  b8:	6972                	flw	f18,28(x2)
+  ba:	2d766373          	csrrsi	x6,0x2d7,12
+  be:	2f636367          	0x2f636367
+  c2:	696c                	flw	f11,84(x10)
+  c4:	6762                	flw	f14,24(x2)
+  c6:	632f6363          	bltu	x30,x18,6ec <_tbss_end+0x6ec>
+  ca:	69666e6f          	jal	x28,66760 <_tbss_end+0x66760>
+  ce:	69722f67          	0x69722f67
+  d2:	00766373          	csrrsi	x6,0x7,12
+  d6:	6400                	flw	f8,8(x8)
+  d8:	7669                	lui	x12,0xffffa
+  da:	532e                	lw	x6,232(x2)
+  dc:	0100                	addi	x8,x2,128
+  de:	0000                	unimp
+  e0:	0000                	unimp
+  e2:	0205                	addi	x4,x4,1
+  e4:	08a8                	addi	x10,x2,88
+  e6:	8000                	0x8000
+  e8:	0100c403          	lbu	x8,16(x1)
+  ec:	04090103          	lb	x2,64(x18)
+  f0:	0100                	addi	x8,x2,128
+  f2:	04090403          	lb	x8,64(x18)
+  f6:	0100                	addi	x8,x2,128
+  f8:	04090103          	lb	x2,64(x18)
+  fc:	0100                	addi	x8,x2,128
+  fe:	04090103          	lb	x2,64(x18)
+ 102:	0100                	addi	x8,x2,128
+ 104:	04090103          	lb	x2,64(x18)
+ 108:	0100                	addi	x8,x2,128
+ 10a:	04090103          	lb	x2,64(x18)
+ 10e:	0100                	addi	x8,x2,128
+ 110:	04090103          	lb	x2,64(x18)
+ 114:	0100                	addi	x8,x2,128
+ 116:	04090203          	lb	x4,64(x18)
+ 11a:	0100                	addi	x8,x2,128
+ 11c:	04090103          	lb	x2,64(x18)
+ 120:	0100                	addi	x8,x2,128
+ 122:	04090103          	lb	x2,64(x18)
+ 126:	0100                	addi	x8,x2,128
+ 128:	04090103          	lb	x2,64(x18)
+ 12c:	0100                	addi	x8,x2,128
+ 12e:	04090203          	lb	x4,64(x18)
+ 132:	0100                	addi	x8,x2,128
+ 134:	04090203          	lb	x4,64(x18)
+ 138:	0100                	addi	x8,x2,128
+ 13a:	04090103          	lb	x2,64(x18)
+ 13e:	0100                	addi	x8,x2,128
+ 140:	04090103          	lb	x2,64(x18)
+ 144:	0100                	addi	x8,x2,128
+ 146:	04090203          	lb	x4,64(x18)
+ 14a:	0100                	addi	x8,x2,128
+ 14c:	04090103          	lb	x2,64(x18)
+ 150:	0100                	addi	x8,x2,128
+ 152:	04090103          	lb	x2,64(x18)
+ 156:	0100                	addi	x8,x2,128
+ 158:	04090203          	lb	x4,64(x18)
+ 15c:	0100                	addi	x8,x2,128
+ 15e:	04090503          	lb	x10,64(x18)
+ 162:	0100                	addi	x8,x2,128
+ 164:	04090103          	lb	x2,64(x18)
+ 168:	0100                	addi	x8,x2,128
+ 16a:	04090103          	lb	x2,64(x18)
+ 16e:	0100                	addi	x8,x2,128
+ 170:	04090103          	lb	x2,64(x18)
+ 174:	0100                	addi	x8,x2,128
+ 176:	04090503          	lb	x10,64(x18)
+ 17a:	0100                	addi	x8,x2,128
+ 17c:	04090203          	lb	x4,64(x18)
+ 180:	0100                	addi	x8,x2,128
+ 182:	04090203          	lb	x4,64(x18)
+ 186:	0100                	addi	x8,x2,128
+ 188:	04090103          	lb	x2,64(x18)
+ 18c:	0100                	addi	x8,x2,128
+ 18e:	04090203          	lb	x4,64(x18)
+ 192:	0100                	addi	x8,x2,128
+ 194:	04090203          	lb	x4,64(x18)
+ 198:	0100                	addi	x8,x2,128
+ 19a:	04090103          	lb	x2,64(x18)
+ 19e:	0100                	addi	x8,x2,128
+ 1a0:	04090103          	lb	x2,64(x18)
+ 1a4:	0100                	addi	x8,x2,128
+ 1a6:	04090103          	lb	x2,64(x18)
+ 1aa:	0100                	addi	x8,x2,128
+ 1ac:	04090403          	lb	x8,64(x18)
+ 1b0:	0100                	addi	x8,x2,128
+ 1b2:	04090103          	lb	x2,64(x18)
+ 1b6:	0100                	addi	x8,x2,128
+ 1b8:	04090103          	lb	x2,64(x18)
+ 1bc:	0100                	addi	x8,x2,128
+ 1be:	04090203          	lb	x4,64(x18)
+ 1c2:	0100                	addi	x8,x2,128
+ 1c4:	04090103          	lb	x2,64(x18)
+ 1c8:	0100                	addi	x8,x2,128
+ 1ca:	04090103          	lb	x2,64(x18)
+ 1ce:	0100                	addi	x8,x2,128
+ 1d0:	04090203          	lb	x4,64(x18)
+ 1d4:	0100                	addi	x8,x2,128
+ 1d6:	04090103          	lb	x2,64(x18)
+ 1da:	0100                	addi	x8,x2,128
+ 1dc:	04090203          	lb	x4,64(x18)
+ 1e0:	0100                	addi	x8,x2,128
+ 1e2:	04090103          	lb	x2,64(x18)
+ 1e6:	0100                	addi	x8,x2,128
+ 1e8:	04090103          	lb	x2,64(x18)
+ 1ec:	0100                	addi	x8,x2,128
+ 1ee:	04090103          	lb	x2,64(x18)
+ 1f2:	0100                	addi	x8,x2,128
+ 1f4:	0409                	addi	x8,x8,2
+ 1f6:	0000                	unimp
+ 1f8:	0101                	addi	x2,x2,0
+
+Disassembly of section .debug_str:
+
+00000000 <.debug_str>:
+   0:	2e2e                	fld	f28,200(x2)
+   2:	2f2e2e2f          	0x2f2e2e2f
+   6:	2e2e                	fld	f28,200(x2)
+   8:	722f2e2f          	0x722f2e2f
+   c:	7369                	lui	x6,0xffffa
+   e:	672d7663          	bgeu	x26,x18,67a <_tbss_end+0x67a>
+  12:	6c2f6363          	bltu	x30,x2,6d8 <_tbss_end+0x6d8>
+  16:	6269                	lui	x4,0x1a
+  18:	2f636367          	0x2f636367
+  1c:	666e6f63          	bltu	x28,x6,69a <_tbss_end+0x69a>
+  20:	6769                	lui	x14,0x1a
+  22:	7369722f          	0x7369722f
+  26:	6d2f7663          	bgeu	x30,x18,6f2 <_tbss_end+0x6f2>
+  2a:	6c75                	lui	x24,0x1d
+  2c:	6964                	flw	f9,84(x10)
+  2e:	00532e33          	slt	x28,x6,x5
+  32:	6d6f682f          	0x6d6f682f
+  36:	2f65                	jal	7ee <_tbss_end+0x7ee>
+  38:	6c6c6173          	csrrsi	x2,0x6c6,24
+  3c:	7261                	lui	x4,0xffff8
+  3e:	6f6f742f          	0x6f6f742f
+  42:	736c                	flw	f11,100(x14)
+  44:	7369722f          	0x7369722f
+  48:	672d7663          	bgeu	x26,x18,6b4 <_tbss_end+0x6b4>
+  4c:	756e                	flw	f10,248(x2)
+  4e:	742d                	lui	x8,0xfffeb
+  50:	636c6f6f          	jal	x30,c6686 <_tbss_end+0xc6686>
+  54:	6168                	flw	f10,68(x10)
+  56:	6e69                	lui	x28,0x1a
+  58:	6975622f          	0x6975622f
+  5c:	646c                	flw	f11,76(x8)
+  5e:	672d                	lui	x14,0xb
+  60:	6e2d6363          	bltu	x26,x2,746 <_tbss_end+0x746>
+  64:	7765                	lui	x14,0xffff9
+  66:	696c                	flw	f11,84(x10)
+  68:	2d62                	fld	f26,24(x2)
+  6a:	67617473          	csrrci	x8,0x676,2
+  6e:	3265                	jal	fffffa16 <_end+0x7fffc1c6>
+  70:	7369722f          	0x7369722f
+  74:	32337663          	bgeu	x6,x3,3a0 <_tbss_end+0x3a0>
+  78:	752d                	lui	x10,0xfffeb
+  7a:	6b6e                	flw	f22,216(x2)
+  7c:	6f6e                	flw	f30,216(x2)
+  7e:	652d6e77          	0x652d6e77
+  82:	666c                	flw	f11,76(x12)
+  84:	62696c2f          	0x62696c2f
+  88:	00636367          	0x636367
+  8c:	20554e47          	fmsub.s	f28,f10,f5,f4,rmm
+  90:	5341                	li	x6,-16
+  92:	3220                	fld	f8,96(x12)
+  94:	332e                	fld	f6,232(x2)
+  96:	0035                	c.nop	13
+  98:	2e2e                	fld	f28,200(x2)
+  9a:	2f2e2e2f          	0x2f2e2e2f
+  9e:	2e2e                	fld	f28,200(x2)
+  a0:	722f2e2f          	0x722f2e2f
+  a4:	7369                	lui	x6,0xffffa
+  a6:	672d7663          	bgeu	x26,x18,712 <_tbss_end+0x712>
+  aa:	6c2f6363          	bltu	x30,x2,770 <_tbss_end+0x770>
+  ae:	6269                	lui	x4,0x1a
+  b0:	2f636367          	0x2f636367
+  b4:	666e6f63          	bltu	x28,x6,732 <_tbss_end+0x732>
+  b8:	6769                	lui	x14,0x1a
+  ba:	7369722f          	0x7369722f
+  be:	642f7663          	bgeu	x30,x2,70a <_tbss_end+0x70a>
+  c2:	7669                	lui	x12,0xffffa
+  c4:	532e                	lw	x6,232(x2)
+	...

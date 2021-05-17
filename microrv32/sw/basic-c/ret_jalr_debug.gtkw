@@ -1,0 +1,193 @@
+[*]
+[*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
+[*] Wed May 13 15:05:57 2020
+[*]
+[dumpfile] "\\wsl$\Ubuntu\home\user\work\riscv-core2\core\sw\basic-c\simWorkspace\MicroRV32Top\test.vcd"
+[savefile] "\\wsl$\Ubuntu\home\user\work\riscv-core2\core\sw\basic-c\ret_jalr_debug.gtkw"
+[timestart] 0
+[size] 1920 1017
+[pos] -35 -35
+*-8.231241 276 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.MicroRV32Top.
+[treeopen] TOP.MicroRV32Top.cpu.
+[sst_width] 43
+[signals_width] 362
+[sst_expanded] 0
+[sst_vpaned_height] 301
+@28
+TOP.MicroRV32Top.cpu_io_fetchSync
+@c00820
+TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+@28
+(0)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(1)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(2)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(3)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(4)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(5)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(6)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(7)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(8)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(9)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(10)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(11)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(12)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(13)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(14)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(15)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(16)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(17)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(18)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(19)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(20)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(21)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(22)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(23)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(24)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(25)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(26)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(27)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(28)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(29)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(30)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(31)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(32)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(33)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(34)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(35)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(36)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(37)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(38)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(39)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(40)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(41)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(42)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(43)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(44)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(45)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(46)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(47)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(48)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(49)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(50)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(51)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(52)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(53)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(54)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(55)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(56)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(57)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(58)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(59)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(60)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(61)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(62)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(63)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(64)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(65)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(66)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(67)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(68)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(69)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(70)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+(71)TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+@1401200
+-group_end
+@28
+TOP.MicroRV32Top.cpu.pcLogic_pcEna
+@22
+TOP.MicroRV32Top.cpu.pcLogic_programCounter[31:0]
+@200
+-regfile
+@22
+TOP.MicroRV32Top.cpu.regs.regFile(0)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(1)[31:0]
+@c00023
+TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+@28
+(0)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(1)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(2)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(3)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(4)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(5)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(6)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(7)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(8)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(9)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(10)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(11)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(12)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(13)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(14)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(15)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(16)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(17)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(18)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(19)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(20)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(21)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(22)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(23)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(24)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(25)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(26)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(27)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(28)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(29)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(30)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+(31)TOP.MicroRV32Top.cpu.regs.regFile(2)[31:0]
+@1401203
+-group_end
+@22
+TOP.MicroRV32Top.cpu.regs.regFile(3)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(4)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(5)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(6)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(7)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(8)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(9)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(10)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(11)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(12)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(13)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(14)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(15)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(16)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(17)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(18)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(19)[31:0]
+@c00022
+#{TOP.MicroRV32Top.cpu.regs.regFile([31:20])[31:0]} (31)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0] (31)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (30)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (29)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (28)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (27)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (26)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (25)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (24)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (23)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (22)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (21)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (20)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (19)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (18)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (17)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (16)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (15)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (14)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (13)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (12)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (11)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (10)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (9)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (8)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (7)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (6)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (5)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (4)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (3)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (2)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (1)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0] (0)TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0]
+@22
++{TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0]} TOP.MicroRV32Top.cpu.regs.regFile(20)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(21)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(22)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(23)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(24)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(25)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(26)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(27)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(28)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(29)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(30)[31:0]
+TOP.MicroRV32Top.cpu.regs.regFile(31)[31:0]
+@1401202
+-group_end
+@22
+TOP.MicroRV32Top.cpu.regs.io_rdData[31:0]
+TOP.MicroRV32Top.cpu.regs.io_rd[4:0]
+TOP.MicroRV32Top.cpu.regs.io_rs1Data[31:0]
+TOP.MicroRV32Top.cpu.regs.io_rs1[4:0]
+TOP.MicroRV32Top.cpu.regs.io_rs2Data[31:0]
+TOP.MicroRV32Top.cpu.regs.io_rs2[4:0]
+@28
+TOP.MicroRV32Top.cpu.regs.io_wrEna
+[pattern_trace] 1
+[pattern_trace] 0
+!010000@@
+?"ISCT_JALR
+@c00821
+TOP.MicroRV32Top.cpu.decodeLogic_iType_string[71:0]
+!!

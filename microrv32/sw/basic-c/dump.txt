@@ -1,0 +1,117 @@
+make[1]: Entering directory '/home/user/work/riscv-core2/core/sw/basic-c'
+riscv32-unknown-elf-gcc bootstrap.S main.c sum.c -o main -march=rv32i -mabi=ilp32 -nostartfiles -Wl,--no-relax -T link.ld
+riscv32-unknown-elf-objdump -D main
+
+main:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	00001117          	auipc	sp,0x1
+80000004:	81c10113          	addi	sp,sp,-2020 # 8000081c <main>
+80000008:	015000ef          	jal	ra,8000081c <main>
+8000000c:	05d00893          	li	a7,93
+80000010:	00000513          	li	a0,0
+80000014:	020102b7          	lui	t0,0x2010
+80000018:	0112a023          	sw	a7,0(t0) # 2010000 <SYSCALL_ADDR>
+
+8000001c <stack_begin>:
+	...
+
+8000081c <main>:
+8000081c:	fe010113          	addi	sp,sp,-32
+80000820:	00112e23          	sw	ra,28(sp)
+80000824:	00812c23          	sw	s0,24(sp)
+80000828:	02010413          	addi	s0,sp,32
+8000082c:	00600793          	li	a5,6
+80000830:	fef42623          	sw	a5,-20(s0)
+80000834:	00700793          	li	a5,7
+80000838:	fef42423          	sw	a5,-24(s0)
+8000083c:	fec42703          	lw	a4,-20(s0)
+80000840:	fe842783          	lw	a5,-24(s0)
+80000844:	00f70733          	add	a4,a4,a5
+80000848:	800017b7          	lui	a5,0x80001
+8000084c:	0007a783          	lw	a5,0(a5) # 80001000 <_end+0xfffffff8>
+80000850:	00f70733          	add	a4,a4,a5
+80000854:	800017b7          	lui	a5,0x80001
+80000858:	0047a783          	lw	a5,4(a5) # 80001004 <_end+0xfffffffc>
+8000085c:	00f707b3          	add	a5,a4,a5
+80000860:	fef42623          	sw	a5,-20(s0)
+80000864:	fec42503          	lw	a0,-20(s0)
+80000868:	00000097          	auipc	ra,0x0
+8000086c:	024080e7          	jalr	36(ra) # 8000088c <sum>
+80000870:	fea42623          	sw	a0,-20(s0)
+80000874:	fec42783          	lw	a5,-20(s0)
+80000878:	00078513          	mv	a0,a5
+8000087c:	01c12083          	lw	ra,28(sp)
+80000880:	01812403          	lw	s0,24(sp)
+80000884:	02010113          	addi	sp,sp,32
+80000888:	00008067          	ret
+
+8000088c <sum>:
+8000088c:	fd010113          	addi	sp,sp,-48
+80000890:	02812623          	sw	s0,44(sp)
+80000894:	03010413          	addi	s0,sp,48
+80000898:	fca42e23          	sw	a0,-36(s0)
+8000089c:	fdc42783          	lw	a5,-36(s0)
+800008a0:	fef42623          	sw	a5,-20(s0)
+800008a4:	00100793          	li	a5,1
+800008a8:	fef42423          	sw	a5,-24(s0)
+800008ac:	0200006f          	j	800008cc <sum+0x40>
+800008b0:	fec42703          	lw	a4,-20(s0)
+800008b4:	fe842783          	lw	a5,-24(s0)
+800008b8:	00f707b3          	add	a5,a4,a5
+800008bc:	fef42623          	sw	a5,-20(s0)
+800008c0:	fe842783          	lw	a5,-24(s0)
+800008c4:	00178793          	addi	a5,a5,1
+800008c8:	fef42423          	sw	a5,-24(s0)
+800008cc:	fe842703          	lw	a4,-24(s0)
+800008d0:	fdc42783          	lw	a5,-36(s0)
+800008d4:	fcf74ee3          	blt	a4,a5,800008b0 <sum+0x24>
+800008d8:	fec42783          	lw	a5,-20(s0)
+800008dc:	00078513          	mv	a0,a5
+800008e0:	02c12403          	lw	s0,44(sp)
+800008e4:	03010113          	addi	sp,sp,48
+800008e8:	00008067          	ret
+
+Disassembly of section .sdata:
+
+80001000 <x>:
+80001000:	0005                	c.nop	1
+	...
+
+Disassembly of section .bss:
+
+80001004 <y>:
+80001004:	0000                	unimp
+	...
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	1b41                	addi	s6,s6,-16
+   2:	0000                	unimp
+   4:	7200                	flw	fs0,32(a2)
+   6:	7369                	lui	t1,0xffffa
+   8:	01007663          	bgeu	zero,a6,14 <SYSCALL_ADDR-0x200ffec>
+   c:	0011                	c.nop	4
+   e:	0000                	unimp
+  10:	1004                	addi	s1,sp,32
+  12:	7205                	lui	tp,0xfffe1
+  14:	3376                	fld	ft6,376(sp)
+  16:	6932                	flw	fs2,12(sp)
+  18:	7032                	flw	ft0,44(sp)
+  1a:	0030                	addi	a2,sp,8
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	3a434347          	fmsub.d	ft6,ft6,ft4,ft7,rmm
+   4:	2820                	fld	fs0,80(s0)
+   6:	29554e47          	fmsub.s	ft8,fa0,fs5,ft5,rmm
+   a:	3920                	fld	fs0,112(a0)
+   c:	322e                	fld	ft4,232(sp)
+   e:	302e                	fld	ft0,232(sp)
+	...
+make[1]: Leaving directory '/home/user/work/riscv-core2/core/sw/basic-c'

@@ -1,0 +1,67 @@
+make[1]: Entering directory '/home/user/work/riscv-core2/core/sw/basic-uart-asm'
+riscv32-unknown-elf-as uart.S -o uart.o -march=rv32i -mabi=ilp32
+riscv32-unknown-elf-ld uart.o -o main -T link.ld
+riscv32-unknown-elf-objdump -D main
+
+main:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	00000293          	li	t0,0
+80000004:	00000313          	li	t1,0
+80000008:	00000393          	li	t2,0
+8000000c:	00a00513          	li	a0,10
+80000010:	810002b7          	lui	t0,0x81000
+80000014:	00a2a023          	sw	a0,0(t0) # 81000000 <UART_RX_DATA_ADDR+0xfefffff8>
+80000018:	00000317          	auipc	t1,0x0
+8000001c:	05430313          	addi	t1,t1,84 # 8000006c <hello>
+
+80000020 <hello_loop>:
+80000020:	00030503          	lb	a0,0(t1)
+80000024:	02050a63          	beqz	a0,80000058 <end_hello_loop>
+80000028:	820002b7          	lui	t0,0x82000
+8000002c:	00a2a023          	sw	a0,0(t0) # 82000000 <UART_RX_DATA_ADDR+0xfffffff8>
+80000030:	00100e13          	li	t3,1
+80000034:	820002b7          	lui	t0,0x82000
+80000038:	00428293          	addi	t0,t0,4 # 82000004 <UART_RX_DATA_ADDR+0xfffffffc>
+8000003c:	01c2a023          	sw	t3,0(t0)
+80000040:	00130313          	addi	t1,t1,1
+
+80000044 <wait_chr_send>:
+80000044:	820002b7          	lui	t0,0x82000
+80000048:	00428293          	addi	t0,t0,4 # 82000004 <UART_RX_DATA_ADDR+0xfffffffc>
+8000004c:	0002a383          	lw	t2,0(t0)
+80000050:	fe038ae3          	beqz	t2,80000044 <wait_chr_send>
+80000054:	fcdff06f          	j	80000020 <hello_loop>
+
+80000058 <end_hello_loop>:
+80000058:	05d00893          	li	a7,93
+8000005c:	00000513          	li	a0,0
+80000060:	020102b7          	lui	t0,0x2010
+80000064:	0112a023          	sw	a7,0(t0) # 2010000 <SYSCALL_ADDR>
+
+80000068 <end>:
+80000068:	0000006f          	j	80000068 <end>
+
+8000006c <hello>:
+8000006c:	6568                	flw	fa0,76(a0)
+8000006e:	6c6c                	flw	fa1,92(s0)
+80000070:	0000006f          	j	80000070 <hello+0x4>
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	1941                	addi	s2,s2,-16
+   2:	0000                	unimp
+   4:	7200                	flw	fs0,32(a2)
+   6:	7369                	lui	t1,0xffffa
+   8:	01007663          	bgeu	zero,a6,14 <SYSCALL_ADDR-0x200ffec>
+   c:	0000000f          	fence	unknown,unknown
+  10:	7205                	lui	tp,0xfffe1
+  12:	3376                	fld	ft6,376(sp)
+  14:	6932                	flw	fs2,12(sp)
+  16:	7032                	flw	ft0,44(sp)
+  18:	0030                	addi	a2,sp,8
+make[1]: Leaving directory '/home/user/work/riscv-core2/core/sw/basic-uart-asm'
