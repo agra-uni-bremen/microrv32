@@ -5,6 +5,10 @@ top_synth:
 	yosys -d -s synth/top.ys -l synth/synth_top.log
 	nextpnr-ice40 -l synth/pnr_top.log --hx8k --package ct256 --json synth/top.json --pcf synth/pins.pcf --asc synth/top.asc
 	icepack -v synth/top.asc synth/top.bit
+top_synth_hx8k:
+	yosys -d -s synth/top.ys -l synth/synth_top.log
+	nextpnr-ice40 -l synth/pnr_top.log --hx8k --package ct256 --json synth/top.json --pcf synth/pins.pcf --asc synth/top.asc
+	icepack -v synth/top.asc synth/top.bit
 clean:
 	rm -f sim/*.log
 	rm -f sim/*.vvp

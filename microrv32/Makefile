@@ -22,6 +22,9 @@ sim_spinal_freeRTOS-standard-demo:
 rtl: 
 	sbt "runMain core.microrv32.MicroRV32TopVerilog $(synthROM)"
 
+rtl_hx8k: 
+	sbt "runMain core.microrv32.MicroRV32TopHX8KVerilog $(synthROM)"
+
 sim_verilog: rtl
 	cp rtl/MicroRV32Top.v vtb/rtl/MicroRV32Top.v
 	cp rtl/MicroRV32Top.v_toplevel_cpu_regs_regFile.bin vtb/MicroRV32Top.v_toplevel_cpu_regs_regFile.bin
@@ -33,6 +36,12 @@ synth: rtl
 	cp rtl/MicroRV32Top.v_toplevel_cpu_regs_regFile.bin vtb/MicroRV32Top.v_toplevel_cpu_regs_regFile.bin
 	cp rtl/MicroRV32Top.v_toplevel_ram_memRam_*.bin vtb/
 	make top_synth -C vtb
+
+synth_hx8k: rtl_hx8k 
+	cp rtl/MicroRV32TopHX8K.v vtb/rtl/MicroRV32TopHX8K.v
+	cp rtl/MicroRV32TopHX8K.v_toplevel_cpu_regs_regFile.bin vtb/MicroRV32TopHX8K.v_toplevel_cpu_regs_regFile.bin
+	cp rtl/MicroRV32TopHX8K.v_toplevel_ram_memRam_*.bin vtb/
+	make top_synth_hx8k -C vtb
 
 sw_basic-asm:
 	make dump-code -C sw/basic-asm > sw/basic-asm/dump.txt
@@ -69,6 +78,10 @@ sw_timer_irq:
 sw_crc:
 	make dump-code -C sw/crc8/ > sw/crc8/dump.txt
 	make hex -C sw/crc8/
+
+sw_gpio2:
+	make dump-code -C sw/gpio-2/ > sw/gpio-2/dump.txt
+	make hex -C sw/gpio-2/
 
 show_sim_linux:
 	gtkwave vtb/sim/spinalhdl_trace.gtkw &
