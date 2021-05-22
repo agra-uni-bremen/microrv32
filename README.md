@@ -68,7 +68,7 @@ The RV32 core is built in a classical RTL compatible structure of a datapath con
 
 For the finite state machine refer to the state diagram.
 
-![RV32 core state machine](img/core-fsm.png)
+![RV32 core state machine](img/core-fsm_annotated.png)
 
 Interrupts are checked before each new fetch and transition the program flow to the traphandler of the software. After return from the traphandler, the program execution continues at the last instruction.
 
@@ -141,6 +141,19 @@ Global address | Local addresss | Description | Mode
 0x83000000 | 0x00 | Direction register, default=0x00, setting a bit to one, sets the respective GPIO pin as output, and forwards the value of bit at the output register to the GPIO pin | RW
 0x83000004 | 0x04 | Output register, default=0x00, setting a bit to one, sets the respective pin for the tri-state driver. If the tri-state direction is set to output (see direction register) then its forwarded to the respective GPIO pin | RW
 0x83000008 | 0x08 | Input register, reading from this will return the logic values on each pin, if the direction is set to read in the values from the GPIO pins (default, see direction register). If a bit is set 1 it correlates to logic HIGH, if a bit is set 0 it correclates to logic LOW. The GPIO pin is forwarded through two D-Flipflops for synchronization and stabilization. No debouncing is present. | RO
+
+## FPGA Statistics 
+
+The following Synthesis + Place & Route statistics are for the MicroRV32TopHX8K.scala @ commit 09d0d2c with the initial ROM: blink.hex (32 bits x 100 words). FPGA target: Lattice Semiconductor HX8K FPGA
+
+Description | Value
+---|---
+Maximum frequency f_max | 30.51 MHz (at target 12 MHz)
+Logic Cells | 4298 / 7680 (55%)
+BRAM | 9 / 32 (28%)
+IO Cells | 41 / 256 (16%)
+Synth. + PnR Time | 39.18s
+
 
 ## Acknowledgements
 This work was supported in part by the German Federal Ministry of Education and Research (BMBF) within the project Scale4Edge under contract no.~16ME0127 and within the project VerSys under contract no.~01IW19001.
