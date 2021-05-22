@@ -28,9 +28,9 @@ The toolchain has to be installed and used as the `rv32i` variant. To configure 
 ```
 
 ### RISC-V VP
-Using the RISC-V Virtual Prototype (VP) has a seperate list of prerequisits which need to be fulfilled in order to run the VP. 
+Using the [RISC-V Virtual Prototype (VP)](https://github.com/agra-uni-bremen/riscv-vp) has a seperate list of prerequisits which need to be fulfilled in order to run the VP. 
 The VP contains a platform implementation of the µRV32, called `microrv32-vp`, that can be used to develop software and prepare ISA and platform extensions.
-Refer to the RISC-V VP `README.md` for further information.  
+Refer to the RISC-V VP `README.md` for further information.
 
 
 ### SpinalHDL
