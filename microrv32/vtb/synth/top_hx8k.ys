@@ -1,0 +1,7 @@
+read_verilog rtl/MicroRV32Top.v
+hierarchy -top MicroRV32Top
+fsm_info
+synth_ice40
+show
+write_blif synth/top.blif
+write_json synth/top.json

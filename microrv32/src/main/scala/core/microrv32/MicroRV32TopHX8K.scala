@@ -53,8 +53,8 @@ class MicroRV32TopHX8K(initHexfile:String) extends Component {
    * With that the second parameter of Memory is 0x1200 in hex or 4608 in decimal
    */
   // val ram = new Memory(Bits(32 bits),8704,initHexfile) // riscv-ui-p-tests
-  val ram = new Memory(Bits(32 bits),4104,initHexfile) // basic-led-c, basic-timerirq, crc8, benchmarks (fibo, gcd) but not freeRTOS benchmarks
-  // val ram = new Memory(Bits(32 bits),100,initHexfile) // basic-led-blink
+  //val ram = new Memory(Bits(32 bits),4104,initHexfile) // basic-led-c, basic-timerirq, crc8, benchmarks (fibo, gcd) but not freeRTOS benchmarks
+  val ram = new Memory(Bits(32 bits),100,initHexfile) // basic-led-blink
   // val ram = new Memory(Bits(32 bits),393216,initHexfile) // freertos (simple-tasks, simple-queues, etc.) including benchmarks
    
   // val gpio = new GPIO()
