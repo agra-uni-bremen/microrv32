@@ -154,6 +154,30 @@ BRAM | 9 / 32 (28%)
 IO Cells | 41 / 256 (16%)
 Synth. + PnR Time | 39.18s
 
+## How To Cite
+The ideas, concepts and additional details on the MicroRV32 are further described in the following publication as  part of the [DESTION21](https://dl.acm.org/doi/proceedings/10.1145/3445034) proceedings:
+```
+@inproceedings{10.1145/3445034.3460508,
+   author = {Ahmadi-Pour, Sallar and Herdt, Vladimir and Drechsler, Rolf},
+   title = {MircoRV32: An Open Source RISC-V Cross-Level Platform for Education and Research},
+   year = {2021},
+   isbn = {9781450383165},
+   publisher = {Association for Computing Machinery},
+   address = {New York, NY, USA},
+   url = {https://doi.org/10.1145/3445034.3460508},
+   doi = {10.1145/3445034.3460508},
+   abstract = {In this paper we propose μRV32 (MicroRV32) an open source RISC-V platform for education and research. μRV32 integrates several peripherals alongside a 32 bit RISC-V core interconnected with a generic bus system. It supports bare-metal applications as well as the FreeRTOS operating system. Beside an RTL implementation in the modern SpinalHDL language (μRV32 RTL) we also provide a corresponding binary compatible Virtual Prototype (VP) that is implemented in standard compliant SystemC TLM (μRV32 VP). In combination the VP and RTL descriptions pave the way for advanced cross-level methodologies in the RISC-V context. Moreover, based on a readily available open source tool flow, μRV32 RTL can be exported into a Verilog description and simulated with the Verilator tool or synthesized onto an FPGA. The tool flow is very accessible and fully supported under Linux. As part of our experiments we provide a set of ready to use application benchmarks and report execution performance results of μRV32 at the RTL, VP and FPGA level together with a proof-of-concept FPGA synthesis statistic.},
+   booktitle = {Proceedings of the Workshop on Design Automation for CPS and IoT},
+   pages = {30–35},
+   numpages = {6},
+   keywords = {open source, FPGA, RTL, virtual prototype, RISC-V},
+   location = {Nashville, Tennessee},
+   series = {Destion '21}
+}
+```
 
 ## Acknowledgements
 This work was supported in part by the German Federal Ministry of Education and Research (BMBF) within the project Scale4Edge under contract no.~16ME0127 and within the project VerSys under contract no.~01IW19001.
+
+## License
+The microrv32 code is licensed under the MIT (see `LICENSE.MIT`). Consult the license file and copyright headers for more information.
