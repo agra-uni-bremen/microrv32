@@ -155,7 +155,7 @@ IO Cells | 41 / 256 (16%)
 Synth. + PnR Time | 39.18s
 
 ## How To Cite
-The ideas, concepts and additional details on the MicroRV32 are further described in the following publication as  part of the [DESTION21](https://dl.acm.org/doi/proceedings/10.1145/3445034) proceedings:
+The ideas, concepts and additional details on the MicroRV32 are further described in the following publication as  part of the [Destion '21](https://dl.acm.org/doi/proceedings/10.1145/3445034) proceedings:
 ```
 @inproceedings{10.1145/3445034.3460508,
    author = {Ahmadi-Pour, Sallar and Herdt, Vladimir and Drechsler, Rolf},
