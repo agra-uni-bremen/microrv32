@@ -421,21 +421,23 @@ class ControlUnit(dbg : Boolean) extends Component{
         // import ControlUnit.fsm._
         io.dbgState := B"0000"
         when(fsm.isActive(fsm.stateInit)){
-        io.dbgState := B"0001"
-        }//.elsewhen(controlFSM.isActive(stateFetch)){
-        //   io.dbgState := B"001"
-        // }.elsewhen(controlFSM.isActive(stateDecode)){
-        //   io.dbgState := B"010"
-        // }.elsewhen(controlFSM.isActive(stateExecute)){
-        //   io.dbgState := B"011"
-        // }.elsewhen(controlFSM.isActive(stateWriteBack)){
-        //   io.dbgState := B"100"
-        // }.elsewhen(controlFSM.isActive(stateCSR)){
-        //   io.dbgState := B"101"
-        // }.elsewhen(controlFSM.isActive(stateTrap)){
-        //   io.dbgState := B"110"
-        // }.elsewhen(controlFSM.isActive(stateHalt)){
-        //   io.dbgState := B"111"
-        // }
+        io.dbgState := B"0000"
+        }.elsewhen(fsm.isActive(fsm.stateFetch)){
+          io.dbgState := B"0001"
+        }.elsewhen(fsm.isActive(fsm.stateDecode)){
+          io.dbgState := B"0010"
+        }.elsewhen(fsm.isActive(fsm.stateExecute)){
+          io.dbgState := B"0011"
+        }.elsewhen(fsm.isActive(fsm.stateWriteBack)){
+          io.dbgState := B"0100"
+        }.elsewhen(fsm.isActive(fsm.stateCSR)){
+          io.dbgState := B"0101"
+        }.elsewhen(fsm.isActive(fsm.stateTrap)){
+          io.dbgState := B"0110"
+        }.elsewhen(fsm.isActive(fsm.stateHalt)){
+          io.dbgState := B"0111"
+        }.elsewhen(fsm.isActive(fsm.stateInterrupt)){
+          io.dbgState := B"1001"
+        }
   }
 }
