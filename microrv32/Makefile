@@ -27,19 +27,19 @@ rtl_hx8k:
 
 sim_verilog: rtl
 	cp rtl/MicroRV32Top.v vtb/rtl/MicroRV32Top.v
-	cp rtl/MicroRV32Top.v_toplevel_cpu_regs_regFile.bin vtb/MicroRV32Top.v_toplevel_cpu_regs_regFile.bin
+	cp rtl/MicroRV32Top.v_toplevel_cpu_cpu_regs_regFile.bin vtb/MicroRV32Top.v_toplevel_cpu_cpu_regs_regFile.bin
 	cp rtl/MicroRV32Top.v_toplevel_ram_memRam_*.bin vtb/MicroRV32Top.v_toplevel_ram_memRam_*.bin
 	make top_sim -C vtb 
 
 synth: rtl 
 	cp rtl/MicroRV32Top.v vtb/rtl/MicroRV32Top.v
-	cp rtl/MicroRV32Top.v_toplevel_cpu_regs_regFile.bin vtb/MicroRV32Top.v_toplevel_cpu_regs_regFile.bin
+	cp rtl/MicroRV32Top.v_toplevel_cpu_cpu_regs_regFile.bin vtb/MicroRV32Top.v_toplevel_cpu_cpu_regs_regFile.bin
 	cp rtl/MicroRV32Top.v_toplevel_ram_memRam_*.bin vtb/
 	make top_synth -C vtb
 
 synth_hx8k: rtl_hx8k 
 	cp rtl/MicroRV32TopHX8K.v vtb/rtl/MicroRV32TopHX8K.v
-	cp rtl/MicroRV32TopHX8K.v_toplevel_cpu_regs_regFile.bin vtb/MicroRV32TopHX8K.v_toplevel_cpu_regs_regFile.bin
+	cp rtl/MicroRV32TopHX8K.v_toplevel_cpu_cpu_regs_regFile.bin vtb/MicroRV32TopHX8K.v_toplevel_cpu_cpu_regs_regFile.bin
 	cp rtl/MicroRV32TopHX8K.v_toplevel_ram_memRam_*.bin vtb/
 	make top_synth_hx8k -C vtb
 

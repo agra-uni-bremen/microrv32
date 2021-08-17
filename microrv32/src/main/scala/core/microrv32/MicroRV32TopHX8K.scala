@@ -39,7 +39,7 @@ class MicroRV32TopHX8K(initHexfile:String) extends Component {
   // val clkDiv = new ClockDivider(ClockDomain.current,12000000, 12000000) // divide 12 mhz onboard clock to 10khz
   // slowClk := clkDiv.io.outClk
   // io.dbgClk := clkDiv.io.outClk
-  val cpu = new RV32Core()
+  val cpu = new SBRV32Core()
   /*
    * NOTE: Make word count (second parameter of Memory) passable through top class and as makefile/sbt parameter
    * REMINDER: The amount of words per hexfile is four (4) times less than that of the 

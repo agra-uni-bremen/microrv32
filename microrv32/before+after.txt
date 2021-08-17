@@ -1,0 +1,69 @@
+############################
+BEFORE
+############################
+
+=== MicroRV32Top ===
+
+   Number of wires:               2075
+   Number of wire bits:          11651
+   Number of public wires:        2075
+   Number of public wire bits:   11651
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               4881
+     SB_CARRY                      951
+     SB_DFF                          9
+     SB_DFFE                        48
+     SB_DFFER                      342
+     SB_DFFES                        6
+     SB_DFFR                       355
+     SB_DFFS                         5
+     SB_LUT4                      3156
+     SB_RAM40_4K                     9
+     
+Info: Device utilisation:
+Info:            ICESTORM_LC:  4096/ 7680    53%
+Info:           ICESTORM_RAM:     9/   32    28%
+Info:                  SB_IO:    41/  256    16%
+Info:                  SB_GB:     6/    8    75%
+Info:           ICESTORM_PLL:     0/    2     0%
+Info:            SB_WARMBOOT:     0/    1     0%
+
+Info: Max frequency for clock 'clk$SB_IO_IN_$glb_clk': 31.71 MHz (PASS at 12.00 MHz)
+
+
+
+############################
+AFTER
+############################
+
+=== MicroRV32Top ===
+
+   Number of wires:               2554
+   Number of wire bits:          15538
+   Number of public wires:        2554
+   Number of public wire bits:   15538
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               7267
+     SB_CARRY                     1010
+     SB_DFF                          9
+     SB_DFFE                      1072
+     SB_DFFER                      437
+     SB_DFFES                        7
+     SB_DFFR                       261
+     SB_DFFS                         4
+     SB_LUT4                      4462
+     SB_RAM40_4K                     5
+     
+Info: Device utilisation:
+Info: 	         ICESTORM_LC:  6487/ 7680    84%
+Info: 	        ICESTORM_RAM:     5/   32    15%
+Info: 	               SB_IO:    42/  256    16%
+Info: 	               SB_GB:     6/    8    75%
+Info: 	        ICESTORM_PLL:     0/    2     0%
+Info: 	         SB_WARMBOOT:     0/    1     0%
+
+Info: Max frequency for clock 'clk$SB_IO_IN_$glb_clk': 20.45 MHz (PASS at 12.00 MHz)

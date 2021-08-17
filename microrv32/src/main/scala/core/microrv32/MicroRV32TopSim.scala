@@ -49,12 +49,12 @@ object MicroRV32TopSim {
       .compile{
         val top = new MicroRV32Top(args(0))
         //make signals public in simulation scope
-        top.cpu.pcLogic.programCounter.simPublic()
-        top.cpu.controlFSM.newFetch.simPublic()
-        top.cpu.io.halted.simPublic()
-        top.ram.memRam.simPublic()
-        top.clockDomain.reset.simPublic()
-        top.uartPeriph.io.uart.rxd.simPublic()
+        top.cpu.cpu.programCounter.simPublic()
+        top.cpu.cpu.CSRLogic.newFetch.simPublic()
+        // top.cpu.io.halted.simPublic()
+        // top.ram.memRam.simPublic()
+        // top.clockDomain.reset.simPublic()
+        // top.uartPeriph.io.uart.rxd.simPublic()
         top
       }        
       .doSim{dut =>
@@ -112,9 +112,9 @@ object MicroRV32TopSim {
         dut.io.uart.rxd #= rxdSim
         val t1 = System.nanoTime
         while((simSteps <= maxsimSteps) || dutRunning){
-          var k = dut.cpu.pcLogic.programCounter.toBigInt
-          var i = dut.cpu.controlFSM.newFetch.toBoolean
-          var cpuHalt = dut.cpu.io.halted.toBoolean
+          var k = dut.cpu.cpu.programCounter.toBigInt
+          var i = dut.cpu.cpu.CSRLogic.newFetch.toBoolean
+          var cpuHalt = dut.io.cpuHalted.toBoolean
           
           dutRunning = !cpuHalt
           // println(simSteps)
@@ -148,6 +148,7 @@ object MicroRV32TopSim {
             println("Halted @ " + simEndTime + "ns")
             println("SimSteps: " + simSteps)
             println("CPU time: " + (t2-t1) + " ns")
+            printf("SIMPC : %X\n", simPC)
 
           }
           // if(simSteps >= resetRiEdge && simSteps <= resetFaEdge){
