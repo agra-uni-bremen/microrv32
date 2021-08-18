@@ -8,7 +8,6 @@ import core.microrv32.CSRAccessType
 import core.microrv32.CSRAccessType._
 import core.microrv32.RVOpcode._
 import core.microrv32.CSROpcode._
-import javax.net.ssl.TrustManager
 // import core.microrv32.rv32core.DecodeUnit
 //import core.microrv32.rv32core.DecodeUnit._
 
