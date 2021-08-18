@@ -458,3 +458,14 @@ class RiscV32Core(startVector : BigInt) extends Component{
     DestDataSelect.csrReadData -> CSRLogic.rval
   )
 }
+
+//Generate the Top Verilog
+object RiscV32CoreTop {
+  def main(args: Array[String]) {
+    SpinalConfig(
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+      targetDirectory = "rtl"
+      ).generateVerilog(new RiscV32Core(0x80000000l))
+      .printPruned()
+  }
+}
