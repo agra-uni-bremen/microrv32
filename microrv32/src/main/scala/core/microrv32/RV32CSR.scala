@@ -28,9 +28,14 @@ object RVCSR{
   def MSTATUS_DEFAULT = B(32 bits, (12 downto 11) -> B"11", default -> false)
 
   //def TRAP_EXC_ILLEGAL_INSTR = B(32 bits, 31->false, (30 downto 0) -> 2, default -> false)
-  def TRAP_EXC_ILLEGAL_INSTR = B"0000_0000_0000_0000_0000_0000_0000_0010"
+  // def TRAP_EXC_ILLEGAL_INSTR = B"0000_0000_0000_0000_0000_0000_0000_0010"
+  def TRAP_EXC_INSTR_ADDR_MISALIGN = B(32 bits, 31->false, default->false) | 0
+  def TRAP_EXC_ILLEGAL_INSTR = B(32 bits, 31->false, default->false) | 2
+  def TRAP_EXC_LD_ADDR_MISALIGN = B(32 bits, 31->false, default->false) | 4
+  def TRAP_EXC_ST_ADDR_MISALIGN = B(32 bits, 31->false, default->false) | 6
   //def TRAP_EXC_ECALL_M_MODE = B(32 bits, 31->false, (30 downto 0) -> 11, default -> false)
-  def TRAP_EXC_ECALL_M_MODE = B"0000_0000_0000_0000_0000_0000_0000_1011"
+  def TRAP_EXC_ECALL_M_MODE = B(32 bits, 31->false, default->false) | 11
+  def TRAP_MACHINE_TIMER_INTERRUPT = B(32 bits, 31->true, default->false) | 7
 
   // memory map for CSR registers
   // Machine Information Registers
@@ -64,6 +69,7 @@ object RVCSR{
   def MIE_RW_MASK        = B"0000_0000_0000_0000_0000_1000_1000_1000"
   def MTVEC_WRITE_MASK   = B"1111_1111_1111_1111_1111_1111_1111_1100"
   def MIP_RW_MASK        = B"0000_0000_0000_0000_0000_1000_1000_1000"
+  def MEPC_WRITE_MASK    = B"1111_1111_1111_1111_1111_1111_1111_1100"
 
   // mstatus access bits
   def MSTATUS_MIE  = 3

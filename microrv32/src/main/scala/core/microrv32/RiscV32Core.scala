@@ -89,6 +89,36 @@ case class CoreIO() extends Bundle{
   val irqTimer = in Bool
 }
 
+// case class RVFI(formal : Boolean = false) extends Bundle{
+//   if(formal){
+//     val valid = out Bits(1 bits)
+//     val order = out UInt(64 bits)
+//     val insn = out Bits(32 bits)
+//     val trap = out Bool 
+//     val halt = out Bool
+//     val intr = out Bits(1 bits)
+//     val mode = out Bits(2 bits)
+//     val ixl = out Bits(2 bits)
+
+//     val rs1_addr = out UInt(5 bits)
+//     val rs2_addr = out UInt(5 bits)
+//     val rs1_rdata = out Bits(32 bits)
+//     val rs2_rdata = out Bits(32 bits)
+
+//     val rd_addr = out UInt(5 bits)
+//     val rd_wdata = out Bits(32 bits)
+
+//     val pc_rdata = out UInt(32 bits)
+//     val pc_wdata = out UInt(32 bits)
+
+//     val mem_addr = out UInt(32 bits)
+//     val mem_rmask = out UInt(4 bits)
+//     val mem_wmask = out UInt(4 bits)
+//     val mem_rdata = out Bits(32 bits)
+//     val mem_wdata = out Bits(32 bits)
+//   }
+// }
+
 /*
  * RV32I_Zicsr Implementation 
  * Interfacing with a simple memory interface with valid-ready signaling
@@ -96,9 +126,43 @@ case class CoreIO() extends Bundle{
  * Outputting fetch synchronization signal and halting state
  * Offering debug state output of fsm
  */
-class RiscV32Core(startVector : BigInt) extends Component{
+class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Component{
   // IO Definition
   val io = new CoreIO()
+  // val rvfi = new RVFI()
+
+  // if(formal){
+    // val rvfi = new RVFI()
+  val rvfi = new Bundle{
+    val valid = out Bits(1 bits)
+    val order = out UInt(64 bits)
+    val insn = out Bits(32 bits)
+    val trap = out Bool 
+    val halt = out Bool
+    val intr = out Bits(1 bits)
+    val mode = out Bits(2 bits)
+    val ixl = out Bits(2 bits)
+
+    val rs1_addr = out UInt(5 bits)
+    val rs2_addr = out UInt(5 bits)
+    val rs1_rdata = out Bits(32 bits)
+    val rs2_rdata = out Bits(32 bits)
+
+    val rd_addr = out UInt(5 bits)
+    val rd_wdata = out Bits(32 bits)
+
+    val pc_rdata = out Bits(32 bits)
+    val pc_wdata = out Bits(32 bits)
+
+    val mem_addr = out Bits(32 bits)
+    val mem_rmask = out Bits(4 bits)
+    val mem_wmask = out Bits(4 bits)
+    val mem_rdata = out Bits(32 bits)
+    val mem_wdata = out Bits(32 bits)
+  }
+  // }else{
+  //   val rvfi = null
+  // }
   
   private final val DBG_EXT : Boolean = true
   private final val CSR_EXT : Boolean = true
@@ -129,6 +193,11 @@ class RiscV32Core(startVector : BigInt) extends Component{
   val instructionBuffer = Reg(Bits(32 bits)) init(0)
   // if there is a new instruciton at the instruction memory interface
   // buffer it for the decoder
+  /*
+  * This currently assumes that IMem.instructionReady is onlly asserted correctly by the bus 
+  * (i.e. fetch has been done and we wait for a response from the instruciton bus)
+  * This can cause issues and mess up any instruction exection in the ControlLogicUnit
+  */
   when(io.memIF.IMem.instructionReady){
     instructionBuffer := io.memIF.IMem.instruction
   }
@@ -306,7 +375,10 @@ class RiscV32Core(startVector : BigInt) extends Component{
         is(MEPC_ADDR){
           // RW
           rval := mepc
-          csrWriteAccess(toRegister = mepc, mask = DEFAULT_CSR_MASK, wval & DEFAULT_CSR_MASK)
+          // not masking mepc[1:0] (therefore allowing non-zero values for mepc[1:0]) allows riscv-formal to find issues for branches
+          // to show misbehavior use next line with default csr masks instead of the mepc masks
+          //csrWriteAccess(toRegister = mepc, mask = DEFAULT_CSR_MASK, wval & DEFAULT_CSR_MASK)
+          csrWriteAccess(toRegister = mepc, mask = MEPC_WRITE_MASK, wval & MEPC_WRITE_MASK)
         }
         is(MCAUSE_ADDR){
           // RW
@@ -373,8 +445,18 @@ class RiscV32Core(startVector : BigInt) extends Component{
     )
     CSRLogic.wval := csrValMux
     // direct RW for csr registers
+    val mcauseMux = Bits(32 bits)
+    mcauseMux := ctrlLogic.io.csrCtrl.mcauseSelect.mux(
+      MCauseSelect.trapInstrAddrMisalign -> RVCSR.TRAP_EXC_INSTR_ADDR_MISALIGN,
+      MCauseSelect.trapIllegalInstr -> RVCSR.TRAP_EXC_ILLEGAL_INSTR,
+      MCauseSelect.trapECallMachine -> RVCSR.TRAP_EXC_ECALL_M_MODE,
+      MCauseSelect.trapMachineTimerIRQ -> RVCSR.TRAP_MACHINE_TIMER_INTERRUPT
+      // default -> B(0, 32 bits)
+    )
+
     when(ctrlLogic.io.trapEntry){
-      CSRLogic.mcause := RVCSR.TRAP_EXC_ECALL_M_MODE
+      // CSRLogic.mcause := RVCSR.TRAP_EXC_ECALL_M_MODE
+      CSRLogic.mcause := mcauseMux
       CSRLogic.mtval := (programCounter - 4).asBits
     }
     when(ctrlLogic.io.trapExit){
@@ -384,7 +466,8 @@ class RiscV32Core(startVector : BigInt) extends Component{
     when(ctrlLogic.io.irqEntry){
       CSRLogic.mstatus(MSTATUS_MPIE) := CSRLogic.mstatus(MSTATUS_MIE) // save old irq enable
       CSRLogic.mstatus(MSTATUS_MIE) := False // disable interrupts while in traphandler per default
-      CSRLogic.mcause := B(32 bits, 31->true, default->false) | 7 // 7 = Machine timer interrupt
+      // CSRLogic.mcause := B(32 bits, 31->true, default->false) | 7 // 7 = Machine timer interrupt
+      CSRLogic.mcause := mcauseMux
       CSRLogic.mtval := (programCounter - 4).asBits // last valid instruction before irq
       CSRLogic.mepc := programCounter.asBits // next pc to execute after irq handler
     }
@@ -401,8 +484,11 @@ class RiscV32Core(startVector : BigInt) extends Component{
   io.memIF.DMem.readWrite := ctrlLogic.io.memCtrl.readWriteData
   io.memIF.DMem.enable := ctrlLogic.io.memCtrl.dataEna
   io.memIF.DMem.wrStrobe := ctrlLogic.io.memCtrl.strobeSelect.mux(
-    MemoryStrobeSelect.byte -> (B(1, 4 bits) |<< U(regs.io.rs1Data(1 downto 0), 2 bits)),
-    MemoryStrobeSelect.halfWord -> (regs.io.rs1Data(1) ? B"1100" | B"0011"),
+    // MemoryStrobeSelect.byte -> (B(1, 4 bits) |<< U(regs.io.rs1Data(1 downto 0), 2 bits)),
+    MemoryStrobeSelect.byte -> B"0001",
+    // MemoryStrobeSelect.halfWord -> (regs.io.rs1Data(1) ? B"1100" | B"0011"),
+    // MemoryStrobeSelect.halfWord -> (alu.io.output(1) ? B"1100" | B"0011"),
+    MemoryStrobeSelect.halfWord -> B"0011",
     MemoryStrobeSelect.word -> B"1111"
   )
   ctrlLogic.io.memCtrl.dataRdy := io.memIF.DMem.dataReady
@@ -411,12 +497,15 @@ class RiscV32Core(startVector : BigInt) extends Component{
   // either +4, jump-target, branch-target
   val incrPC = UInt(32 bits)
   val jalTarget = UInt(32 bits)
+  // val jalTmpTarget = UInt(32 bits)
   val jalrTarget = UInt(32 bits)
   val branchTarget = UInt(32 bits)
   val trapTarget = UInt(32 bits)
   val mretTarget = UInt(32 bits)
   incrPC := programCounter + 4
-  jalTarget := programCounter + decoder.io.immediate.asUInt - 4 // -4 because after fetch we increased PC
+  // TODO: maybe intoSInt instead asSInt here
+  jalTarget := programCounter - 4 + decoder.io.immediate.asUInt // -4 because after fetch we increased PC
+  //jalTmpTarget := jalTarget.asUInt
   jalrTarget := ((decoder.io.immediate.asUInt + regs.io.rs1Data.asUInt).asBits & ~B(1, 32 bits)).asUInt
   branchTarget := programCounter + decoder.io.immediate.asUInt - 4 // -4 because after fetch we increased PC
   trapTarget := U(CSRLogic.mtvec(31 downto 2) << 2, 32 bits)
@@ -430,6 +519,15 @@ class RiscV32Core(startVector : BigInt) extends Component{
     PCSelect.trapExitTarget -> mretTarget
   )
 
+  val jalMisalign = (jalTarget % 4 === 0) ? False | True
+  val jalrMisalign = (jalrTarget % 4 === 0) ? False | True
+  val branchMisalign = (branchTarget % 4 === 0) ? False | True
+  // misalign exception signals for ctrl logic
+  ctrlLogic.io.exceptions.misalignedJumpTarget := jalMisalign
+  ctrlLogic.io.exceptions.misalignedJumpLinkTarget := jalrMisalign
+  ctrlLogic.io.exceptions.misalignedBranchTarget := branchMisalign
+
+
   // Load data sign extension for signed loads
   val extMemData = Bits(32 bits)
   switch(decoder.io.instType){
@@ -440,6 +538,12 @@ class RiscV32Core(startVector : BigInt) extends Component{
         }
         is(RVOpcode.F3_LH){
           extMemData := S(io.memIF.DMem.readData(15 downto 0), 32 bits).asBits
+        }
+        is(RVOpcode.F3_LBU){
+          extMemData := U(io.memIF.DMem.readData(7 downto 0), 32 bits).asBits
+        }
+        is(RVOpcode.F3_LHU){
+          extMemData := U(io.memIF.DMem.readData(15 downto 0), 32 bits).asBits
         }
         default{
           extMemData := io.memIF.DMem.readData
@@ -457,6 +561,202 @@ class RiscV32Core(startVector : BigInt) extends Component{
     DestDataSelect.memReadData -> extMemData,
     DestDataSelect.csrReadData -> CSRLogic.rval
   )
+
+  if(formal){
+    // RVF
+    val rvfi_order = Reg(UInt(64 bits)) init(0)
+    val rvfi_insn = Reg(Bits(32 bits)) init(0)
+    val rvfi_trap = Reg(Bool) init(False)
+    val rvfi_intr = Reg(Bits(1 bits)) init(0)
+    val rvfi_mode = Reg(Bits(2 bits)) init(3)
+    val rvfi_ixl = Reg(Bits(2 bits)) init(1)
+
+    val rvfi_rs1_addr = Reg(UInt(5 bits)) init(0)
+    val rvfi_rs2_addr = Reg(UInt(5 bits)) init(0)
+    val rvfi_rs1_rdata = Reg(Bits(32 bits)) init(0)
+    val rvfi_rs2_rdata = Reg(Bits(32 bits)) init(0)
+
+    val rvfi_rd_addr = Reg(UInt(5 bits)) init(0)
+    val rvfi_rd_wdata = Reg(Bits(32 bits)) init(0)
+
+    val rvfi_pc_rdata = Reg(Bits(32 bits)) init(0)
+    val rvfi_pc_Wdata = Reg(Bits(32 bits)) init(0)
+
+    val rvfi_mem_addr = Reg(Bits(32 bits)) init(0)
+    val rvfi_mem_rmask = Reg(Bits(4 bits)) init(0)
+    val rvfi_mem_wmask = Reg(Bits(4 bits)) init(0)
+    val rvfi_mem_rdata = Reg(Bits(32 bits)) init(0)
+    val rvfi_mem_wdata = Reg(Bits(32 bits)) init(0)
+
+    val validOnce = Reg(Bool) init(True)
+
+    // order
+    when(io.dbgState === 1 & !validOnce){
+        rvfi.order := rvfi_order + 1
+        rvfi_order := rvfi_order + 1
+    }.otherwise{
+      rvfi.order := rvfi_order
+    }
+
+    // valid + insn
+    when(io.dbgState === 1){
+      rvfi_mem_wdata := 0
+      rvfi_mem_rdata := 0
+      rvfi_mem_rmask := 0
+      rvfi_mem_wmask := 0
+      when(!validOnce){
+        rvfi.valid := 1
+        rvfi.order := rvfi_order + 1
+        rvfi_order := rvfi_order + 1
+        validOnce := True
+      }.otherwise{
+        rvfi.valid := 0
+      }
+      when(io.memIF.IMem.instructionReady){
+        rvfi_insn := io.memIF.IMem.instruction
+      }
+    }.otherwise{
+      when(io.dbgState === 2){
+        validOnce := False
+      }
+      rvfi.order := rvfi_order
+      rvfi.valid := 0
+    }
+
+    // Trap
+    when(rvfi.valid === 1){
+      rvfi_trap := False
+    }
+    when(io.dbgState === 6){
+      rvfi_trap := True
+    }
+    when(io.dbgState === 7){
+      rvfi_trap := True
+    }
+
+  /*
+    val rvfi_BranchTrap = Reg(Bool) init(False)
+    val rvfi_PcTrap = Reg(Bool) init(False)
+    when(io.dbgState === 1){
+      rvfi_BranchTrap := False
+      rvfi_PcTrap := False
+    }
+    when(decodeLogic.iType === InstructionType.isBranch & io.dbgState === 2){
+      when((decodeLogic.immediate.asUInt + rvfi_pc_rdata) % 4 =/= 0){
+        rvfi_BranchTrap := True
+      }
+      when(rvfi_pc_rdata % 4 =/= 0){
+        rvfi_PcTrap := True
+      }
+    }
+    when(io.dbgState === 3){
+      when(aluLogic.output_bool){
+        when(rvfi_BranchTrap){
+          rvfi_trap := True
+        }
+      }.otherwise{
+        when(rvfi_PcTrap){
+          rvfi_trap := True
+        }
+      }
+    }
+  */
+
+    // PC
+    when(io.dbgState === 1){
+      rvfi_pc_rdata := io.memIF.IMem.address
+      rvfi.pc_wdata := io.memIF.IMem.address
+    }otherwise{
+      rvfi.pc_wdata := rvfi_pc_rdata
+    }
+
+    // Mem
+    when(io.memIF.DMem.dataReady){
+      rvfi_mem_addr := io.memIF.DMem.address
+      // when(io.sb.SBwrite){
+      when(io.memIF.DMem.readWrite){
+        rvfi_mem_wdata := io.memIF.DMem.writeData
+      }
+      when(io.memIF.DMem.readWrite){
+        rvfi_mem_wmask := io.memIF.DMem.wrStrobe
+      }.otherwise{
+        rvfi_mem_rmask := io.memIF.DMem.wrStrobe
+      }
+      // when(io.sb.SBsize === 4){
+      //   when(io.sb.SBwrite){
+      //     rvfi_mem_wmask := 15
+      //   }.otherwise{
+      //     rvfi_mem_rmask := 15
+      //   }
+      // }.otherwise{
+      //   when(io.sb.SBsize === 2){
+      //     when(io.sb.SBwrite){
+      //       rvfi_mem_wmask := 3
+      //     }.otherwise{
+      //       rvfi_mem_rmask := 3
+      //     }
+      //   }
+      //   when(io.sb.SBsize === 1){
+      //     when(io.sb.SBwrite){
+      //       rvfi_mem_wmask := 1
+      //     }.otherwise{
+      //       rvfi_mem_rmask := 1
+      //     }
+      //   }
+      // }
+    }
+    // Mem Writeback
+    // when(io.sb.SBready & !io.sb.SBwrite & io.dbgState === 4){
+    // when(io.memIF.DMem.dataReady){
+    when(io.memIF.DMem.dataReady & io.dbgState === 4){
+      rvfi_mem_rdata := io.memIF.DMem.readData
+    }
+      
+
+    // Regs
+    when(io.dbgState === 1){
+      rvfi_rd_addr := 0
+      rvfi_rd_wdata := 0
+    }
+    when(io.dbgState === 3){
+      rvfi_rs1_addr := regs.io.rs1
+      rvfi_rs2_addr := regs.io.rs2
+      rvfi_rs1_rdata := regs.io.rs1Data
+      rvfi_rs2_rdata := regs.io.rs2Data
+    }
+    when(regs.io.wrEna){
+      rvfi_rd_addr := regs.io.rd
+      when(regs.io.rd === 0){
+        rvfi_rd_wdata := 0
+      }.otherwise{
+        rvfi_rd_wdata := regs.io.rdData
+      }
+    }
+
+    // RVFI Outputs
+    rvfi.insn := rvfi_insn
+    rvfi.halt := io.halted
+    rvfi.trap := rvfi_trap
+    rvfi.intr := rvfi_intr
+    rvfi.mode := rvfi_mode
+    rvfi.ixl := rvfi_ixl
+
+    rvfi.rs1_addr := rvfi_rs1_addr
+    rvfi.rs2_addr := rvfi_rs2_addr
+    rvfi.rs1_rdata := rvfi_rs1_rdata
+    rvfi.rs2_rdata := rvfi_rs2_rdata
+
+    rvfi.rd_addr := rvfi_rd_addr
+    rvfi.rd_wdata := rvfi_rd_wdata
+
+    rvfi.pc_rdata := rvfi_pc_rdata
+
+    rvfi.mem_addr := rvfi_mem_addr
+    rvfi.mem_rmask := rvfi_mem_rmask
+    rvfi.mem_wmask := rvfi_mem_wmask
+    rvfi.mem_rdata := rvfi_mem_rdata
+    rvfi.mem_wdata := rvfi_mem_wdata
+  }
 }
 
 //Generate the Top Verilog
@@ -466,6 +766,17 @@ object RiscV32CoreTop {
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
       targetDirectory = "rtl"
       ).generateVerilog(new RiscV32Core(0x80000000l))
+      .printPruned()
+  }
+}
+
+//Generate the Top Verilog for RVFI Interface
+object RVFICore {
+  def main(args: Array[String]) {
+    SpinalConfig(
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+      targetDirectory = "rtl/rvfi"
+      ).generateVerilog(new RiscV32Core(0x80000000l, true))
       .printPruned()
   }
 }

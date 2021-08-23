@@ -1,23 +1,24 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Mon Aug 16 13:27:31 2021
+[*] Thu Aug 19 11:37:47 2021
 [*]
 [dumpfile] "/home/sallar/work/micrrv32-refactor/microrv32/simWorkspace/MicroRV32Top/test.vcd"
-[dumpfile_mtime] "Mon Aug 16 13:27:30 2021"
-[dumpfile_size] 352409246644
+[dumpfile_mtime] "Wed Aug 18 13:55:51 2021"
+[dumpfile_size] 78533499
 [savefile] "/home/sallar/work/micrrv32-refactor/microrv32/vtb/sim/spinalhdl_trace.gtkw"
-[timestart] 273605800
+[timestart] 0
 [size] 1920 1027
 [pos] -1 -1
-*-17.000000 273929500 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-21.000000 7080000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.MicroRV32Top.
 [treeopen] TOP.MicroRV32Top.cpu.
 [treeopen] TOP.MicroRV32Top.cpu.cpu.
 [treeopen] TOP.MicroRV32Top.cpu.cpu.decoder.
-[sst_width] 39
+[treeopen] TOP.MicroRV32Top.uartPeriph.
+[sst_width] 253
 [signals_width] 478
-[sst_expanded] 0
+[sst_expanded] 1
 [sst_vpaned_height] 120
 @c00200
 -top
@@ -118,14 +119,16 @@ TOP.MicroRV32Top.shutdown_periph_io_sb_SBrdata[31:0]
 TOP.MicroRV32Top.shutdown_periph_io_sb_SBready
 @1401200
 -shutdown
-@c00200
+@c00201
 -uart
 @22
 TOP.MicroRV32Top.uartPeriph_io_sb_SBrdata[31:0]
 @28
 TOP.MicroRV32Top.uartPeriph_io_sb_SBready
 TOP.MicroRV32Top.uartPeriph_io_uart_txd
-@1401200
+@820
+TOP.MicroRV32Top.uartPeriph.uartCtrl_1.io_write_payload[7:0]
+@1401201
 -uart
 @1000200
 -mrvtop
@@ -847,7 +850,7 @@ TOP.MicroRV32Top.cpu.io_sb_SBwdata[31:0]
 TOP.MicroRV32Top.cpu.io_sb_SBwrite
 @1000200
 -SB
-@23
+@22
 TOP.MicroRV32Top.cpu.cpu.programCounter[31:0]
 [pattern_trace] 1
 [pattern_trace] 0

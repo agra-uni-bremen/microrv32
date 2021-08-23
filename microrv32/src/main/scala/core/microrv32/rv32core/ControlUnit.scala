@@ -48,11 +48,16 @@ object CSRDataSelect extends SpinalEnum{
     val reg1Data, csrImmData = newElement()
 }
 
+object MCauseSelect extends SpinalEnum{
+    val trapInstrAddrMisalign, trapIllegalInstr, trapECallMachine, trapMachineTimerIRQ = newElement()
+}
+
 case class CSRControl() extends Bundle{
     val writeSelect = out(CSRDataSelect())
     val enable = out Bool
     val newFetch = out Bool
     val illegalAccess = in Bool
+    val mcauseSelect = out(MCauseSelect())
 }
 
 object MemoryStrobeSelect extends SpinalEnum{
@@ -68,6 +73,12 @@ case class MemoryControl() extends Bundle{
     val dataEna = out Bool
     val dataRdy = in Bool
     val strobeSelect = out(MemoryStrobeSelect())
+}
+
+case class ExceptionControl() extends Bundle{
+    val misalignedJumpTarget = in Bool
+    val misalignedJumpLinkTarget = in Bool
+    val misalignedBranchTarget = in Bool
 }
 
 case class ControlBundle() extends Bundle{
@@ -90,6 +101,7 @@ case class ControlBundle() extends Bundle{
     val trapEntry = out Bool
     val trapExit = out Bool
     val irqEntry = out Bool
+    val exceptions = in(ExceptionControl())
     // 
     val halt = in Bool
     val halted = out Bool
@@ -115,6 +127,7 @@ class ControlUnit(dbg : Boolean) extends Component{
     io.csrCtrl.enable := False
     io.csrCtrl.writeSelect := CSRDataSelect.reg1Data
     io.csrCtrl.newFetch := False
+    io.csrCtrl.mcauseSelect := MCauseSelect.trapECallMachine
     // MEMORY
     io.memCtrl.fetchEna := False
     io.memCtrl.readWriteData := False
@@ -165,6 +178,11 @@ class ControlUnit(dbg : Boolean) extends Component{
                 when(io.validDecode){
                     goto(stateExecute)
                 }.otherwise{
+                    // when(io.instrType === isIllegal){
+
+                    // }.elsewhen(io.instrType === isUndef){
+
+                    // }
                     goto(stateHalt)
                 }
             }
@@ -206,37 +224,60 @@ class ControlUnit(dbg : Boolean) extends Component{
                     }
                     is(isCT_JAL){
                         // TODO: check for misalignment and jump to other state
-                        // reg[dest] = pc
-                        io.aluCtrl.opA := OpASelect.opPC
-                        io.aluCtrl.opB := OpBSelect.opZero
-                        io.regCtrl.regFileWR := True
-                        io.regCtrl.regDestSel := DestDataSelect.aluRes
-                        // pc = pc + IMM
-                        io.pcCtrl.pcValSel := PCSelect.jalTarget
-                        io.pcCtrl.enablePC := True
-                        goto(stateFetch)
+                        // when(!io.exceptions.misalignedJumpTarget){
+                            // reg[dest] = pc
+                            io.aluCtrl.opA := OpASelect.opPC
+                            io.aluCtrl.opB := OpBSelect.opZero
+                            io.regCtrl.regDestSel := DestDataSelect.aluRes
+                            // pc = pc + IMM
+                            io.pcCtrl.pcValSel := PCSelect.jalTarget
+                            when(io.exceptions.misalignedJumpTarget){
+                                goto(stateTrap)
+                            }.otherwise{
+                                // enable write pc and write rd if there is no misalignment issue
+                                io.pcCtrl.enablePC := True
+                                io.regCtrl.regFileWR := True
+                                goto(stateFetch)
+                            }
+                        // }.otherwise{
+                        //     goto(stateTrap)
+                        // }
                     }
                     is(isCT_JALR){
                         // TODO: check for misalignment and jump to other state
                         // reg[dest] = pc
                         io.aluCtrl.opA := OpASelect.opPC
                         io.aluCtrl.opB := OpBSelect.opZero
-                        io.regCtrl.regFileWR := True
                         io.regCtrl.regDestSel := DestDataSelect.aluRes
                         // pc = (reg[rs1] + IMM) & ~0x1
                         io.pcCtrl.pcValSel := PCSelect.jalrTarget
-                        io.pcCtrl.enablePC := True
-                        goto(stateFetch)
+                        when(io.exceptions.misalignedJumpLinkTarget){
+                            goto(stateTrap)
+                        }.otherwise{
+                            // enable write pc and write rd if there is no misalignment issue
+                            io.regCtrl.regFileWR := True
+                            io.pcCtrl.enablePC := True
+                            goto(stateFetch)
+                        }
                     }
                     is(isBranch){
                         // IF opA {CMP-OP} opB THEN pc := branch-target ELSE pc := pc+4 
                         io.aluCtrl.opA := OpASelect.opReg1Data
                         io.aluCtrl.opB := OpBSelect.opReg2Data
+                        // take the branch
                         when(io.aluCtrl.aluBranch){
                             io.pcCtrl.pcValSel := PCSelect.branchTarget
-                            io.pcCtrl.enablePC := True
+                            // if branch target of taken branch is misaligned, throw trap
+                            when(io.exceptions.misalignedBranchTarget){
+                                goto(stateTrap)
+                            }.otherwise{
+                                // branch target taken is ok, fetch next instruction
+                                io.pcCtrl.enablePC := True
+                                goto(stateFetch)
+                            }
+                        }.otherwise{
+                            goto(stateFetch)
                         }
-                        goto(stateFetch)
                     }
                     is(isLoad){
                         io.aluCtrl.opA := OpASelect.opReg1Data
@@ -386,6 +427,17 @@ class ControlUnit(dbg : Boolean) extends Component{
             whenIsActive{
                 // state is entered by exception, cause trap entry
                 io.trapEntry := True
+                switch(io.instrType){
+                    is(isCT_JAL, isCT_JALR, isBranch){
+                        io.csrCtrl.mcauseSelect := MCauseSelect.trapInstrAddrMisalign
+                    }
+                    is(isECall){
+                        io.csrCtrl.mcauseSelect := MCauseSelect.trapECallMachine
+                    }
+                    default{
+
+                    }
+                }
                 io.pcCtrl.pcValSel := PCSelect.trapEntryTarget
                 io.pcCtrl.enablePC := True
                 goto(stateFetch)
@@ -401,6 +453,7 @@ class ControlUnit(dbg : Boolean) extends Component{
         val stateInterrupt : State = new State{
             whenIsActive{
                 // state is entered by interrupt, cause trap entry
+                io.csrCtrl.mcauseSelect := MCauseSelect.trapMachineTimerIRQ
                 io.irqEntry := True
                 io.pcCtrl.pcValSel := PCSelect.trapEntryTarget
                 io.pcCtrl.enablePC := True
