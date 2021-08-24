@@ -21,6 +21,10 @@ case class PCControl() extends Bundle{
     val pcValSel = out(PCSelect())
 }
 
+case class FetchControl() extends Bundle{
+    val sample = out Bool
+}
+
 object OpASelect extends SpinalEnum{
     val opReg1Data, opPC, opZero = newElement()
 }
@@ -88,6 +92,8 @@ case class ControlBundle() extends Bundle{
     val instrFields = in(DecodedFields())
     // program counter
     val pcCtrl = out(PCControl())
+    // instruction fetch
+    val fetchCtrl = out(FetchControl())
     // alu
     val aluCtrl = ALUCtrl()
     // registerfile
@@ -117,6 +123,8 @@ class ControlUnit(dbg : Boolean) extends Component{
     // PC
     io.pcCtrl.enablePC := False
     io.pcCtrl.pcValSel := PCSelect.incrementPC
+    // FETCH
+    io.fetchCtrl.sample := False
     // ALU
     io.aluCtrl.opA := OpASelect.opReg1Data
     io.aluCtrl.opB := OpBSelect.opReg2Data
@@ -163,6 +171,7 @@ class ControlUnit(dbg : Boolean) extends Component{
                     io.csrCtrl.newFetch := True
                     io.pcCtrl.enablePC := True
                     io.pcCtrl.pcValSel := PCSelect.incrementPC
+                    io.fetchCtrl.sample := True
                     goto(stateDecode)
                 }.otherwise{
                     io.fetchSync := True
@@ -178,12 +187,9 @@ class ControlUnit(dbg : Boolean) extends Component{
                 when(io.validDecode){
                     goto(stateExecute)
                 }.otherwise{
-                    // when(io.instrType === isIllegal){
-
-                    // }.elsewhen(io.instrType === isUndef){
-
-                    // }
-                    goto(stateHalt)
+                    // if we just stall we lose liveness
+                    //goto(stateHalt)
+                    goto(stateTrap)
                 }
             }
         }
@@ -325,7 +331,7 @@ class ControlUnit(dbg : Boolean) extends Component{
                         goto(stateWriteBack)
                     }
                     is(isECall,isCSR,isCSRImm,isTrapReturn){
-                        when(io.instrFields.funct12 === F12_ECALL){
+                        when(io.instrFields.funct12 === F12_ECALL & io.instrFields.src1 === 0 & io.instrFields.funct3 === 0 & io.instrFields.dest === 0){
                             // enter traphandler
                             // load mcause and mtval accordingly for trap entry
                             io.trapEntry := True
@@ -430,6 +436,10 @@ class ControlUnit(dbg : Boolean) extends Component{
                 switch(io.instrType){
                     is(isCT_JAL, isCT_JALR, isBranch){
                         io.csrCtrl.mcauseSelect := MCauseSelect.trapInstrAddrMisalign
+                    }
+                    // difference between illegal and undefined?
+                    is(isIllegal,isUndef){
+                        io.csrCtrl.mcauseSelect := MCauseSelect.trapIllegalInstr
                     }
                     is(isECall){
                         io.csrCtrl.mcauseSelect := MCauseSelect.trapECallMachine

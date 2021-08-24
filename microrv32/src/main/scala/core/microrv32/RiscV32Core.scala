@@ -193,12 +193,7 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
   val instructionBuffer = Reg(Bits(32 bits)) init(0)
   // if there is a new instruciton at the instruction memory interface
   // buffer it for the decoder
-  /*
-  * This currently assumes that IMem.instructionReady is onlly asserted correctly by the bus 
-  * (i.e. fetch has been done and we wait for a response from the instruciton bus)
-  * This can cause issues and mess up any instruction exection in the ControlLogicUnit
-  */
-  when(io.memIF.IMem.instructionReady){
+  when(ctrlLogic.io.fetchCtrl.sample){
     instructionBuffer := io.memIF.IMem.instruction
   }
   val decoder = new DecodeUnit()
@@ -634,37 +629,9 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
       rvfi_trap := True
     }
 
-  /*
-    val rvfi_BranchTrap = Reg(Bool) init(False)
-    val rvfi_PcTrap = Reg(Bool) init(False)
-    when(io.dbgState === 1){
-      rvfi_BranchTrap := False
-      rvfi_PcTrap := False
-    }
-    when(decodeLogic.iType === InstructionType.isBranch & io.dbgState === 2){
-      when((decodeLogic.immediate.asUInt + rvfi_pc_rdata) % 4 =/= 0){
-        rvfi_BranchTrap := True
-      }
-      when(rvfi_pc_rdata % 4 =/= 0){
-        rvfi_PcTrap := True
-      }
-    }
-    when(io.dbgState === 3){
-      when(aluLogic.output_bool){
-        when(rvfi_BranchTrap){
-          rvfi_trap := True
-        }
-      }.otherwise{
-        when(rvfi_PcTrap){
-          rvfi_trap := True
-        }
-      }
-    }
-  */
-
     // PC
     when(io.dbgState === 1){
-      rvfi_pc_rdata := io.memIF.IMem.address
+      rvfi_pc_rdata := rvfi.pc_wdata
       rvfi.pc_wdata := io.memIF.IMem.address
     }otherwise{
       rvfi.pc_wdata := rvfi_pc_rdata
@@ -682,41 +649,19 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
       }.otherwise{
         rvfi_mem_rmask := io.memIF.DMem.wrStrobe
       }
-      // when(io.sb.SBsize === 4){
-      //   when(io.sb.SBwrite){
-      //     rvfi_mem_wmask := 15
-      //   }.otherwise{
-      //     rvfi_mem_rmask := 15
-      //   }
-      // }.otherwise{
-      //   when(io.sb.SBsize === 2){
-      //     when(io.sb.SBwrite){
-      //       rvfi_mem_wmask := 3
-      //     }.otherwise{
-      //       rvfi_mem_rmask := 3
-      //     }
-      //   }
-      //   when(io.sb.SBsize === 1){
-      //     when(io.sb.SBwrite){
-      //       rvfi_mem_wmask := 1
-      //     }.otherwise{
-      //       rvfi_mem_rmask := 1
-      //     }
-      //   }
-      // }
     }
     // Mem Writeback
-    // when(io.sb.SBready & !io.sb.SBwrite & io.dbgState === 4){
-    // when(io.memIF.DMem.dataReady){
     when(io.memIF.DMem.dataReady & io.dbgState === 4){
       rvfi_mem_rdata := io.memIF.DMem.readData
     }
-      
-
     // Regs
     when(io.dbgState === 1){
       rvfi_rd_addr := 0
       rvfi_rd_wdata := 0
+      rvfi_rs1_addr := 0
+      rvfi_rs2_addr := 0
+      rvfi_rs1_rdata := 0
+      rvfi_rs2_rdata := 0
     }
     when(io.dbgState === 3){
       rvfi_rs1_addr := regs.io.rs1
