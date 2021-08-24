@@ -1,4 +1,4 @@
-make[1]: Verzeichnis „/home/sallar/work/riscv-core2/core/sw/crc8“ wird betreten
+make[1]: Verzeichnis „/home/sallar/work/micrrv32-refactor/microrv32/sw/crc8“ wird betreten
 riscv32-unknown-elf-gcc bootstrap.S main.c uart.c -o main -march=rv32i -mabi=ilp32 -nostartfiles -Wl,--no-relax -T link.ld
 riscv32-unknown-elf-objdump -D main
 
@@ -46,7 +46,7 @@ Disassembly of section .text:
 8000008c:	00000513          	li	a0,0
 80000090:	020102b7          	lui	t0,0x2010
 80000094:	f1402873          	csrr	a6,mhartid
-80000098:	0102a023          	sw	a6,0(t0) # 2010000 <SYSCALL_ADDR>
+80000098:	0112a023          	sw	a7,0(t0) # 2010000 <SYSCALL_ADDR>
 
 8000009c <stack_begin>:
 	...
@@ -794,4 +794,4 @@ Disassembly of section .debug_str:
   8c:	4120                	lw	s0,64(a0)
   8e:	2e322053          	0x2e322053
   92:	          	snez	a0,zero
-make[1]: Verzeichnis „/home/sallar/work/riscv-core2/core/sw/crc8“ wird verlassen
+make[1]: Verzeichnis „/home/sallar/work/micrrv32-refactor/microrv32/sw/crc8“ wird verlassen

@@ -42,7 +42,7 @@ li   a7, 93
 li   a0, \exit_code
 li   t0, SYSCALL_ADDR
 csrr a6, mhartid
-sw   a6, 0(t0)
+sw   a7, 0(t0)
 .endm
 
 # .macro SYS_EXIT, exit_code
