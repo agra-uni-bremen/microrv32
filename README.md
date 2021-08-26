@@ -150,7 +150,7 @@ Global address | Local addresss | Description | Mode
 
 ## FPGA Statistics 
 
-The following Synthesis + Place & Route statistics are for the MicroRV32TopHX8K.scala @ commit ?? with the initial ROM: blink.hex (32 bits x 100 words). FPGA target: Lattice Semiconductor HX8K FPGA
+The following Synthesis + Place & Route statistics are for the MicroRV32TopHX8K.scala @ commit 439666f with the initial ROM: blink.hex (32 bits x 100 words). FPGA target: Lattice Semiconductor HX8K FPGA
 
 Description | Value
 ---|---

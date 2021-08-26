@@ -26,7 +26,7 @@ class MicroRV32TopHX8K(initHexfile:String) extends Component {
     val gpioLed = out Bits(8 bits)
     val cpuFetch = out Bool
     val cpuHalted = out Bool
-    val cpuDbgState = out Bits(3 bits)
+    val cpuDbgState = out Bits(4 bits)
     val dbgBus = out Bits(16 bits)
     // val dbgClk = out Bool
     val uart = master(new Uart())
