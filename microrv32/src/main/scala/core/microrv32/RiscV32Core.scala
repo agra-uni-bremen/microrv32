@@ -209,7 +209,7 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
   regs.io.rs2 := decoder.io.fields.src2.asUInt
   regs.io.wrEna := ctrlLogic.io.regCtrl.regFileWR
   regs.io.rd := decoder.io.fields.dest.asUInt
-  regs.io.rdData := rdDataMux// MUX : MuxOut-EX/WB, programcounter, decoder.io.immediate
+  regs.io.rdData := rdDataMux
 
   // 32-bit alu for riscv arithmetic operations
   val alu = new ArithmeticLogicUnit() 
@@ -227,9 +227,7 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
     OpBSelect.opImmediate -> decoder.io.immediate,
     OpBSelect.opZero -> B(0, 32 bits)
   )
-  ctrlLogic.io.aluCtrl.aluBranch := alu.io.output_bool 
-  // alu.io.opA := // MUX : rs1Data, programcounter
-  // alu.io.opB := // MUX : regs.io.rs2Data, decoder.io.immediate
+  ctrlLogic.io.aluCtrl.aluBranch := alu.io.output_bool
 
   // generate CSR logic only if class variable is set
   val CSRLogic = (CSR_EXT) generate new Area{

@@ -229,7 +229,6 @@ class ControlUnit(dbg : Boolean) extends Component{
                         goto(stateFetch)
                     }
                     is(isCT_JAL){
-                        // TODO: check for misalignment and jump to other state
                         // when(!io.exceptions.misalignedJumpTarget){
                             // reg[dest] = pc
                             io.aluCtrl.opA := OpASelect.opPC

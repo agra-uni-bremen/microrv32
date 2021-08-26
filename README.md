@@ -64,13 +64,19 @@ For the purpose of FPGA usage a toplevel configuration for the use on the Lattic
 
 The RV32 core is built in a classical RTL compatible structure of a datapath controlled by a finite state machine.
 
-![RV32 core block diagram](img/rv32i+csr.png)
+![RV32 core block diagram](img/rv32-block.png)
 
-For the finite state machine refer to the state diagram.
+The datapath controlled by the control unit is structurally described by the following diagram.
+
+![RV32 datapath diagram](img/rv32i-microarchitecture.png)
+
+The microarchitecture is not pipelined and supports functionality to pass [riscv-formal](), [riscv-tests]() and supports interrupts from a timer interrupt. The components can be found in `rv32core` directory inside the `src/main/scala/core/microrv32` directory. 
+
+For the finite state machine of the control unit refer to the state diagram.
 
 ![RV32 core state machine](img/core-fsm_annotated.png)
 
-Interrupts are checked before each new fetch and transition the program flow to the traphandler of the software. After return from the traphandler, the program execution continues at the last instruction.
+Interrupts are checked before each new fetch and transition the program flow to the traphandler of the software. After return from the traphandler, the program execution continues at the last instruction according to the RISC-V ISA Specification.
 
 ## Memory map of the SoC
 
@@ -144,16 +150,15 @@ Global address | Local addresss | Description | Mode
 
 ## FPGA Statistics 
 
-The following Synthesis + Place & Route statistics are for the MicroRV32TopHX8K.scala @ commit 09d0d2c with the initial ROM: blink.hex (32 bits x 100 words). FPGA target: Lattice Semiconductor HX8K FPGA
+The following Synthesis + Place & Route statistics are for the MicroRV32TopHX8K.scala @ commit ?? with the initial ROM: blink.hex (32 bits x 100 words). FPGA target: Lattice Semiconductor HX8K FPGA
 
 Description | Value
 ---|---
-Maximum frequency f_max | 30.51 MHz (at target 12 MHz)
-Logic Cells | 4298 / 7680 (55%)
+Maximum frequency f_max | 21.80 MHz (at target 12 MHz)
+Logic Cells | 3901 / 7680 (50%)
 BRAM | 9 / 32 (28%)
-IO Cells | 41 / 256 (16%)
-Synth. + PnR Time | 39.18s
-
+IO Cells | 42 / 256 (16%)
+Synth. + PnR Time | 50.27s
 
 ## Acknowledgements
 This work was supported in part by the German Federal Ministry of Education and Research (BMBF) within the project Scale4Edge under contract no.~16ME0127 and within the project VerSys under contract no.~01IW19001.
