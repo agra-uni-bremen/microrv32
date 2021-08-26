@@ -24,8 +24,8 @@ class RV32RegisterFile(addressWidth : Int, dataWidth : Int, wordCount : Int) ext
   // https://www.tutorialspoint.com/scala/scala_lists.htm for list handling
   regFile.init(List.fill(wordCount)(B(0,dataWidth bits)))
 
-  io.rs1Data := regFile.readAsync(io.rs1)
-  io.rs2Data := regFile.readAsync(io.rs2)
+  io.rs1Data := regFile.readSync(io.rs1)
+  io.rs2Data := regFile.readSync(io.rs2)
 
   // https://github.com/SpinalHDL/SpinalHDL/issues/291 states
   // using multiple condition for memory read requires either unconditional

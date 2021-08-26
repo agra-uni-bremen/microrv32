@@ -19,6 +19,8 @@ set_io --warn-no-port io_cpuHalted D1
 set_io --warn-no-port io_cpuDbgState[0] E2
 set_io --warn-no-port io_cpuDbgState[1] F2
 set_io --warn-no-port io_cpuDbgState[2] G2
+set_io --warn-no-port io_cpuDbgState[3] H2
+
 
 set_io --warn-no-port io_dbgBus[0] B16
 set_io --warn-no-port io_dbgBus[1] B15

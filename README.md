@@ -28,9 +28,9 @@ The toolchain has to be installed and used as the `rv32i` variant. To configure 
 ```
 
 ### RISC-V VP
-Using the [RISC-V Virtual Prototype (VP)](https://github.com/agra-uni-bremen/riscv-vp) has a seperate list of prerequisits which need to be fulfilled in order to run the VP. 
+Using the RISC-V Virtual Prototype (VP) has a seperate list of prerequisits which need to be fulfilled in order to run the VP. 
 The VP contains a platform implementation of the µRV32, called `microrv32-vp`, that can be used to develop software and prepare ISA and platform extensions.
-Refer to the RISC-V VP `README.md` for further information.
+Refer to the RISC-V VP `README.md` for further information.  
 
 
 ### SpinalHDL
@@ -64,13 +64,19 @@ For the purpose of FPGA usage a toplevel configuration for the use on the Lattic
 
 The RV32 core is built in a classical RTL compatible structure of a datapath controlled by a finite state machine.
 
-![RV32 core block diagram](img/rv32i+csr.png)
+![RV32 core block diagram](img/rv32-block.png)
 
-For the finite state machine refer to the state diagram.
+The datapath controlled by the control unit is structurally described by the following diagram.
+
+![RV32 datapath diagram](img/rv32i-microarchitecture.png)
+
+The microarchitecture is not pipelined and supports functionality to pass [riscv-formal](), [riscv-tests]() and supports interrupts from a timer interrupt. The components can be found in `rv32core` directory inside the `src/main/scala/core/microrv32` directory. 
+
+For the finite state machine of the control unit refer to the state diagram.
 
 ![RV32 core state machine](img/core-fsm_annotated.png)
 
-Interrupts are checked before each new fetch and transition the program flow to the traphandler of the software. After return from the traphandler, the program execution continues at the last instruction.
+Interrupts are checked before each new fetch and transition the program flow to the traphandler of the software. After return from the traphandler, the program execution continues at the last instruction according to the RISC-V ISA Specification.
 
 ## Memory map of the SoC
 
@@ -144,40 +150,15 @@ Global address | Local addresss | Description | Mode
 
 ## FPGA Statistics 
 
-The following Synthesis + Place & Route statistics are for the MicroRV32TopHX8K.scala @ commit 09d0d2c with the initial ROM: blink.hex (32 bits x 100 words). FPGA target: Lattice Semiconductor HX8K FPGA
+The following Synthesis + Place & Route statistics are for the MicroRV32TopHX8K.scala @ commit ?? with the initial ROM: blink.hex (32 bits x 100 words). FPGA target: Lattice Semiconductor HX8K FPGA
 
 Description | Value
 ---|---
-Maximum frequency f_max | 30.51 MHz (at target 12 MHz)
-Logic Cells | 4298 / 7680 (55%)
+Maximum frequency f_max | 21.80 MHz (at target 12 MHz)
+Logic Cells | 3901 / 7680 (50%)
 BRAM | 9 / 32 (28%)
-IO Cells | 41 / 256 (16%)
-Synth. + PnR Time | 39.18s
-
-## How To Cite
-The ideas, concepts and additional details on the MicroRV32 are further described in the following publication as  part of the [Destion '21](https://dl.acm.org/doi/proceedings/10.1145/3445034) proceedings:
-```
-@inproceedings{10.1145/3445034.3460508,
-   author = {Ahmadi-Pour, Sallar and Herdt, Vladimir and Drechsler, Rolf},
-   title = {MircoRV32: An Open Source RISC-V Cross-Level Platform for Education and Research},
-   year = {2021},
-   isbn = {9781450383165},
-   publisher = {Association for Computing Machinery},
-   address = {New York, NY, USA},
-   url = {https://doi.org/10.1145/3445034.3460508},
-   doi = {10.1145/3445034.3460508},
-   abstract = {In this paper we propose μRV32 (MicroRV32) an open source RISC-V platform for education and research. μRV32 integrates several peripherals alongside a 32 bit RISC-V core interconnected with a generic bus system. It supports bare-metal applications as well as the FreeRTOS operating system. Beside an RTL implementation in the modern SpinalHDL language (μRV32 RTL) we also provide a corresponding binary compatible Virtual Prototype (VP) that is implemented in standard compliant SystemC TLM (μRV32 VP). In combination the VP and RTL descriptions pave the way for advanced cross-level methodologies in the RISC-V context. Moreover, based on a readily available open source tool flow, μRV32 RTL can be exported into a Verilog description and simulated with the Verilator tool or synthesized onto an FPGA. The tool flow is very accessible and fully supported under Linux. As part of our experiments we provide a set of ready to use application benchmarks and report execution performance results of μRV32 at the RTL, VP and FPGA level together with a proof-of-concept FPGA synthesis statistic.},
-   booktitle = {Proceedings of the Workshop on Design Automation for CPS and IoT},
-   pages = {30–35},
-   numpages = {6},
-   keywords = {open source, FPGA, RTL, virtual prototype, RISC-V},
-   location = {Nashville, Tennessee},
-   series = {Destion '21}
-}
-```
+IO Cells | 42 / 256 (16%)
+Synth. + PnR Time | 50.27s
 
 ## Acknowledgements
 This work was supported in part by the German Federal Ministry of Education and Research (BMBF) within the project Scale4Edge under contract no.~16ME0127 and within the project VerSys under contract no.~01IW19001.
-
-## License
-The microrv32 code is licensed under the MIT (see `LICENSE`). Consult the license file and copyright headers for more information.
