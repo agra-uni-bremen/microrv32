@@ -1,3 +1,8 @@
+BRANCH INFORMATION
+===
+This branch contains an older version of the microrv32. The changes include a refactoring of the RV32Core. 
+The use of the platform on this core includes a faster core (about 10MHz faster) but it does not pass all riscv-formal tests. The missing features include the checks for misaligned branch and jumptargets. The use therefore is not recommended. This branch is for additional experimental use.
+
 µRV32 - MicroRV32
 ===
 ## Key features of our µRV32
