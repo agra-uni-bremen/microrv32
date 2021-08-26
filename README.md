@@ -47,7 +47,7 @@ The VP enables fast development and design exploration cycles for software devel
 
 The following description elaborates on the details of the RTL implementation. For further information on the VP visit the [Github repository of the VP](https://github.com/agra-uni-bremen/riscv-vp)
 
-The RV32 core was tested with the [official RISC-V unit tests](https://github.com/riscv/riscv-tests).
+The RV32 core was tested with the [official RISC-V unit tests](https://github.com/riscv/riscv-tests) and [RISC-V Formal Verification Framework](https://github.com/SymbioticEDA/riscv-formal).
 
 ![Toplevel block diagram](img/toplevel.png)
 
@@ -70,7 +70,7 @@ The datapath controlled by the control unit is structurally described by the fol
 
 ![RV32 datapath diagram](img/rv32i-microarchitecture.png)
 
-The microarchitecture is not pipelined and supports functionality to pass [riscv-formal](), [riscv-tests]() and supports interrupts from a timer interrupt. The components can be found in `rv32core` directory inside the `src/main/scala/core/microrv32` directory. 
+The microarchitecture is not pipelined and supports functionality to pass [riscv-formal](https://github.com/SymbioticEDA/riscv-formal), [riscv-tests](https://github.com/riscv/riscv-tests) and supports interrupts from a timer interrupt. The components can be found in `rv32core` directory inside the `src/main/scala/core/microrv32` directory. 
 
 For the finite state machine of the control unit refer to the state diagram.
 
