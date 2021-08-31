@@ -1,9 +1,0 @@
-    marker @ 4620 ns
-pc @ $888, $88C
-instruction = ret / jalr
-dump: 
-
- 884:	02010113          	addi	sp,sp,32
- 888:	00008067          	ret
-
-ret doesnt jump back to pc = 18 but 0. something with the immdiate seems to be off? check regfile, check stack, and callstack stuff
