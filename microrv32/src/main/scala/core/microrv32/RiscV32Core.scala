@@ -74,7 +74,36 @@ case class MemoryIF() extends Bundle{
   val DMem = DMemIF()
 }
 
-case class CoreIO() extends Bundle{
+case class RVFI() extends Bundle{
+  val order = out UInt(64 bits)
+  val insn = out Bits(32 bits)
+  val trap = out Bool 
+  val intr = out Bits(1 bits)
+  val mode = out Bits(2 bits)
+  val ixl = out Bits(2 bits)
+  
+  val rs1_addr = out UInt(5 bits)
+  val rs2_addr = out UInt(5 bits)
+  val rs1_rdata = out Bits(32 bits)
+  val rs2_rdata = out Bits(32 bits)
+  
+  val rd_addr = out UInt(5 bits)
+  val rd_wdata = out Bits(32 bits)
+  
+  val pc_rdata = out Bits(32 bits)
+  val pc_wdata = out Bits(32 bits)
+  
+  val mem_addr = out Bits(32 bits)
+  val mem_rmask = out Bits(4 bits)
+  val mem_wmask = out Bits(4 bits)
+  val mem_rdata = out Bits(32 bits)
+  val mem_wdata = out Bits(32 bits)
+
+  val valid = out Bits(1 bits)
+  val halt = out Bool
+}
+
+case class CoreIO(formal : Boolean = false) extends Bundle{
   // memory bus access
   val memIF = MemoryIF()
   // cpu halted through ecall
@@ -87,37 +116,8 @@ case class CoreIO() extends Bundle{
   val dbgState = out Bits(4 bits)
   // interrupt timer
   val irqTimer = in Bool
+  val rvfi = if(formal) RVFI() else null
 }
-
-// case class RVFI(formal : Boolean = false) extends Bundle{
-//   if(formal){
-//     val valid = out Bits(1 bits)
-//     val order = out UInt(64 bits)
-//     val insn = out Bits(32 bits)
-//     val trap = out Bool 
-//     val halt = out Bool
-//     val intr = out Bits(1 bits)
-//     val mode = out Bits(2 bits)
-//     val ixl = out Bits(2 bits)
-
-//     val rs1_addr = out UInt(5 bits)
-//     val rs2_addr = out UInt(5 bits)
-//     val rs1_rdata = out Bits(32 bits)
-//     val rs2_rdata = out Bits(32 bits)
-
-//     val rd_addr = out UInt(5 bits)
-//     val rd_wdata = out Bits(32 bits)
-
-//     val pc_rdata = out UInt(32 bits)
-//     val pc_wdata = out UInt(32 bits)
-
-//     val mem_addr = out UInt(32 bits)
-//     val mem_rmask = out UInt(4 bits)
-//     val mem_wmask = out UInt(4 bits)
-//     val mem_rdata = out Bits(32 bits)
-//     val mem_wdata = out Bits(32 bits)
-//   }
-// }
 
 /*
  * RV32I_Zicsr Implementation 
@@ -128,41 +128,7 @@ case class CoreIO() extends Bundle{
  */
 class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Component{
   // IO Definition
-  val io = new CoreIO()
-  // val rvfi = new RVFI()
-
-  // if(formal){
-    // val rvfi = new RVFI()
-  val rvfi = new Bundle{
-    val valid = out Bits(1 bits)
-    val order = out UInt(64 bits)
-    val insn = out Bits(32 bits)
-    val trap = out Bool 
-    val halt = out Bool
-    val intr = out Bits(1 bits)
-    val mode = out Bits(2 bits)
-    val ixl = out Bits(2 bits)
-
-    val rs1_addr = out UInt(5 bits)
-    val rs2_addr = out UInt(5 bits)
-    val rs1_rdata = out Bits(32 bits)
-    val rs2_rdata = out Bits(32 bits)
-
-    val rd_addr = out UInt(5 bits)
-    val rd_wdata = out Bits(32 bits)
-
-    val pc_rdata = out Bits(32 bits)
-    val pc_wdata = out Bits(32 bits)
-
-    val mem_addr = out Bits(32 bits)
-    val mem_rmask = out Bits(4 bits)
-    val mem_wmask = out Bits(4 bits)
-    val mem_rdata = out Bits(32 bits)
-    val mem_wdata = out Bits(32 bits)
-  }
-  // }else{
-  //   val rvfi = null
-  // }
+  val io = new CoreIO(formal)
   
   private final val DBG_EXT : Boolean = true
   private final val CSR_EXT : Boolean = true
@@ -520,7 +486,6 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
   ctrlLogic.io.exceptions.misalignedJumpLinkTarget := jalrMisalign
   ctrlLogic.io.exceptions.misalignedBranchTarget := branchMisalign
 
-
   // Load data sign extension for signed loads
   val extMemData = Bits(32 bits)
   switch(decoder.io.instType){
@@ -582,15 +547,7 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
     val rvfi_mem_wdata = Reg(Bits(32 bits)) init(0)
 
     val validOnce = Reg(Bool) init(True)
-
-    // order
-    when(io.dbgState === 1 & !validOnce){
-        rvfi.order := rvfi_order + 1
-        rvfi_order := rvfi_order + 1
-    }.otherwise{
-      rvfi.order := rvfi_order
-    }
-
+    
     // valid + insn
     when(io.dbgState === 1){
       rvfi_mem_wdata := 0
@@ -598,12 +555,11 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
       rvfi_mem_rmask := 0
       rvfi_mem_wmask := 0
       when(!validOnce){
-        rvfi.valid := 1
-        rvfi.order := rvfi_order + 1
-        rvfi_order := rvfi_order + 1
+        io.rvfi.valid := 1
         validOnce := True
+        rvfi_order := rvfi_order + 1
       }.otherwise{
-        rvfi.valid := 0
+        io.rvfi.valid := 0
       }
       when(io.memIF.IMem.instructionReady){
         rvfi_insn := io.memIF.IMem.instruction
@@ -612,12 +568,11 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
       when(io.dbgState === 2){
         validOnce := False
       }
-      rvfi.order := rvfi_order
-      rvfi.valid := 0
+      io.rvfi.valid := 0
     }
 
     // Trap
-    when(rvfi.valid === 1){
+    when(io.rvfi.valid === 1){
       rvfi_trap := False
     }
     when(io.dbgState === 6){
@@ -629,10 +584,10 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
 
     // PC
     when(io.dbgState === 1){
-      rvfi_pc_rdata := rvfi.pc_wdata
-      rvfi.pc_wdata := io.memIF.IMem.address
+      rvfi_pc_rdata := io.rvfi.pc_wdata
+      io.rvfi.pc_wdata := io.memIF.IMem.address
     }otherwise{
-      rvfi.pc_wdata := rvfi_pc_rdata
+      io.rvfi.pc_wdata := rvfi_pc_rdata
     }
 
     // Mem
@@ -677,28 +632,29 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
     }
 
     // RVFI Outputs
-    rvfi.insn := rvfi_insn
-    rvfi.halt := io.halted
-    rvfi.trap := rvfi_trap
-    rvfi.intr := rvfi_intr
-    rvfi.mode := rvfi_mode
-    rvfi.ixl := rvfi_ixl
+    io.rvfi.insn := rvfi_insn
+    io.rvfi.halt := io.halted
+    io.rvfi.trap := rvfi_trap
+    io.rvfi.intr := rvfi_intr
+    io.rvfi.mode := rvfi_mode
+    io.rvfi.ixl := rvfi_ixl
+    io.rvfi.order := rvfi_order
 
-    rvfi.rs1_addr := rvfi_rs1_addr
-    rvfi.rs2_addr := rvfi_rs2_addr
-    rvfi.rs1_rdata := rvfi_rs1_rdata
-    rvfi.rs2_rdata := rvfi_rs2_rdata
+    io.rvfi.rs1_addr := rvfi_rs1_addr
+    io.rvfi.rs2_addr := rvfi_rs2_addr
+    io.rvfi.rs1_rdata := rvfi_rs1_rdata
+    io.rvfi.rs2_rdata := rvfi_rs2_rdata
 
-    rvfi.rd_addr := rvfi_rd_addr
-    rvfi.rd_wdata := rvfi_rd_wdata
+    io.rvfi.rd_addr := rvfi_rd_addr
+    io.rvfi.rd_wdata := rvfi_rd_wdata
 
-    rvfi.pc_rdata := rvfi_pc_rdata
+    io.rvfi.pc_rdata := rvfi_pc_rdata
 
-    rvfi.mem_addr := rvfi_mem_addr
-    rvfi.mem_rmask := rvfi_mem_rmask
-    rvfi.mem_wmask := rvfi_mem_wmask
-    rvfi.mem_rdata := rvfi_mem_rdata
-    rvfi.mem_wdata := rvfi_mem_wdata
+    io.rvfi.mem_addr := rvfi_mem_addr
+    io.rvfi.mem_rmask := rvfi_mem_rmask
+    io.rvfi.mem_wmask := rvfi_mem_wmask
+    io.rvfi.mem_rdata := rvfi_mem_rdata
+    io.rvfi.mem_wdata := rvfi_mem_wdata
   }
 }
 
