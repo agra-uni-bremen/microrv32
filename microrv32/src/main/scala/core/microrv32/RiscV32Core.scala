@@ -464,7 +464,6 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
   incrPC := programCounter + 4
   // TODO: maybe intoSInt instead asSInt here
   jalTarget := programCounter - 4 + decoder.io.immediate.asUInt // -4 because after fetch we increased PC
-  //jalTmpTarget := jalTarget.asUInt
   jalrTarget := ((decoder.io.immediate.asUInt + regs.io.rs1Data.asUInt).asBits & ~B(1, 32 bits)).asUInt
   branchTarget := programCounter + decoder.io.immediate.asUInt - 4 // -4 because after fetch we increased PC
   trapTarget := U(CSRLogic.mtvec(31 downto 2) << 2, 32 bits)
@@ -547,7 +546,7 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
     val rvfi_mem_wdata = Reg(Bits(32 bits)) init(0)
 
     val validOnce = Reg(Bool) init(True)
-    
+
     // valid + insn
     when(io.dbgState === 1){
       rvfi_mem_wdata := 0
