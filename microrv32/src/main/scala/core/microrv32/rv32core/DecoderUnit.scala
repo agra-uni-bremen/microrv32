@@ -8,6 +8,7 @@ import core.microrv32.CSRAccessType._
 import core.microrv32.RVOpcode._
 import core.microrv32.CSROpcode._
 import core.microrv32.CSRAccessType
+import core.microrv32.MULDIVOpcode._
 //import core.microrv32.rv32core.ExtensionUnit
 
 case class DecodedFields() extends Bundle{
@@ -39,7 +40,7 @@ case class DecodeBundle() extends Bundle{
     val csrType = out(CSRAccessType())
 }
 
-class DecodeUnit() extends Component{
+class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
     val io = new DecodeBundle()
 
     val extender = new ExtensionUnit()
@@ -167,6 +168,16 @@ class DecodeUnit() extends Component{
                     }
               }
             }
+        }
+        if(cfg.generateMultiply){
+        is(OP_MULDIV){
+            when(func7 === F7_MULDIV){
+                decoded := True
+                switch(func3){
+                    is()
+                }
+            }
+        }
         }
         is(OP_ZEROS){
             decoded := False

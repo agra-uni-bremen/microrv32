@@ -24,9 +24,13 @@ case class RV32CoreConfig(){
 
 // encode instruction in enum to abstract from bitvectors
 object InstructionType extends SpinalEnum{
+  // RV32I
   val isUndef, isRegReg, isRegImm, isImm, isBranch, isLoad, isStore, 
   isCT_JAL, isCT_JALR, isLUI, isAUIPC, isECall, isFence, isIllegal,
-  isCSR, isCSRImm, isTrapReturn = newElement()
+  // CSR
+  isCSR, isCSRImm, isTrapReturn, 
+  // MUL DIV REM
+  isMulDiv = newElement()
 }
 
 case class IMemIF() extends Bundle{

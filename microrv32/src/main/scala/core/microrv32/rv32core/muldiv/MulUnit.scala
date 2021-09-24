@@ -15,7 +15,7 @@ class MulUnit extends Component {
     val product = out Bits(64 bits)
     val valid = in Bool
     val ready = out Bool
-    val operation = in(MulOperation())
+    //val operation = in(MulOperation())
   }
   // control unit
   val ctrl = new MulUnitControl()
@@ -42,19 +42,6 @@ class MulUnit extends Component {
   )
 
   when(ctrl.io.loadValues){
-    
-    // mcand := io.operation.mux(
-    //   MulOperation.mul -> io.multiplicand.asUInt, // #signed# * signed
-    //   MulOperation.mulh -> io.multiplicand.asUInt, // #signed# * signed
-    //   MulOperation.mulhsu -> io.multiplicand.asUInt, // #signed# * unsigned
-    //   MulOperation.mulhu -> io.multiplicand.asUInt // unsigned * unsigned
-    // )
-    // mcandTc := io.operation.mux(
-    //   MulOperation.mul -> io.multiplicand.asUInt.twoComplement(True)(31 downto 0).asUInt,
-    //   MulOperation.mulh -> io.multiplicand.asUInt.twoComplement(True)(31 downto 0).asUInt,
-    //   MulOperation.mulhsu -> io.multiplicand.asUInt.twoComplement(True)(31 downto 0).asUInt,
-    //   MulOperation.mulhu -> io.multiplicand.asUInt.twoComplement(True)(31 downto 0).asUInt
-    // )
     mcand := io.multiplicand.asUInt
     mcandTc := io.multiplicand.asUInt.twoComplement(True)(31 downto 0).asUInt
     prod := B(B(0, 32 bits) ## io.multiplier.asBits, 64 bits)
