@@ -52,7 +52,7 @@ object MicroRV32TopSim {
         top.cpu.cpu.programCounter.simPublic()
         top.cpu.cpu.CSRLogic.newFetch.simPublic()
         // top.cpu.io.halted.simPublic()
-        // top.ram.memRam.simPublic()
+        top.ram.memRam.simPublic()
         // top.clockDomain.reset.simPublic()
         // top.uartPeriph.io.uart.rxd.simPublic()
         top
@@ -102,9 +102,9 @@ object MicroRV32TopSim {
         // reading ram is fairly new addition to spinalhdl and still needs some debugging
         // dut.clockDomain.waitRisingEdge()
         var ramC = dut.ram
-        dut.clockDomain.waitRisingEdge()
-        // println("memory before 2nd reset at 0x80000000")
-        // readRam(ramC,0,158).toList.foreach{ printf("%8x ",_)}
+        // dut.clockDomain.waitRisingEdge()
+        // println("memory before 2nd reset at 0x80002000")
+        // readRam(ramC,0x00001ffc,0x00002000+8).toList.foreach{ printf("%8x ",_)}
         // print("\n")
 
         // uart rxd
@@ -181,6 +181,10 @@ object MicroRV32TopSim {
           // println(readRam(ramC,0,5).toList)
           printf("dut halted: %b\n", dutRunning)
           printf("simulation steps reached: %d\n",simSteps)
+          // readRam(ramC,0x4000/4,0x4b04/4).toList.foreach{ 
+          //   printf("%8x\n",_)
+          // }
+
         }
     }
     // log the rv32ui-p test results

@@ -38,7 +38,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
   // slowClk := clkDiv.io.outClk
   // io.dbgClk := clkDiv.io.outClk
   //val cpu = new RV32Core()
-  val cpu = new SBRV32Core()
+  val cpu = new SBRV32Core(RV32CoreConfig())
   /*
    * NOTE: Make word count (second parameter of Memory) passable through top class and as makefile/sbt parameter
    * REMINDER: The amount of words per hexfile is four (4) times less than that of the 
@@ -51,8 +51,10 @@ class MicroRV32Top(initHexfile:String) extends Component {
    * This was more trivial when the wordcount of the 8bit wide memory was the same as the value passed to elf2bin.py
    * With that the second parameter of Memory is 0x1200 in hex or 4608 in decimal
    */
-  val ram = new Memory(Bits(32 bits),8704,initHexfile) // riscv-ui-p-tests
-  // val ram = new Memory(Bits(32 bits),4104,initHexfile) // basic-led-c, basic-timerirq, crc8, benchmarks (fibo, gcd) but not freeRTOS benchmarks
+  // val ram = new Memory(Bits(32 bits),8704,initHexfile) // riscv-ui-p-tests
+  // val ram = new Memory(Bits(32 bits),1048576,initHexfile) // riscv-arch test (0x8000)
+  // val ram = new Memory(Bits(32 bits),,initHexfile) // riscv-ui-p-tests
+  val ram = new Memory(Bits(32 bits),4104,initHexfile) // basic-led-c, basic-timerirq, crc8, benchmarks (fibo, gcd) but not freeRTOS benchmarks
   // val ram = new Memory(Bits(32 bits),100,initHexfile) // basic-led-blink
   // val ram = new Memory(Bits(32 bits),393216,initHexfile) // freertos (simple-tasks, simple-queues, etc.) including benchmarks
    

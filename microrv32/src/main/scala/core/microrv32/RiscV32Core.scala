@@ -7,6 +7,21 @@ import core.microrv32.rv32core._
 import core.microrv32.RVCSR._
 //import core.microrv32._
 
+case class RV32CoreConfig(){
+  // initial value of the programcounter
+  var startVector = 0x80000000l
+  // generate interface for riscv-formal
+  var formalInterface = false
+  // MUL extension 
+  var generateMultiply = false
+  // seperate division flag for MUL extension
+  var generateDivide = false
+  // CSR extension + registers (without it no support for some functions like interrupts)
+  var csrExtension = true
+  // debug, fsm state output (used for testing, verification and debugging purposes)
+  var debug = true
+}
+
 // encode instruction in enum to abstract from bitvectors
 object InstructionType extends SpinalEnum{
   val isUndef, isRegReg, isRegImm, isImm, isBranch, isLoad, isStore, 
@@ -126,20 +141,17 @@ case class CoreIO(formal : Boolean = false) extends Bundle{
  * Outputting fetch synchronization signal and halting state
  * Offering debug state output of fsm
  */
-class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Component{
+class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   // IO Definition
-  val io = new CoreIO(formal)
-  
-  private final val DBG_EXT : Boolean = true
-  private final val CSR_EXT : Boolean = true
+  val io = new CoreIO(cfg.formalInterface)
 
-  val programCounter = Reg(UInt(32 bits)) init(U(startVector, 32 bits))
+  val programCounter = Reg(UInt(32 bits)) init(U(cfg.startVector, 32 bits))
   val pcValMux = UInt(32 bits)
   val rdDataMux = Bits(32 bits)
   val csrValMux = Bits(32 bits)
   val strobeMux = Bits(4 bits)
 
-  val ctrlLogic = new ControlUnit(dbg = DBG_EXT)
+  val ctrlLogic = new ControlUnit(dbg = cfg.debug)
   val irqPending = Bool
   io.fetchSync := ctrlLogic.io.fetchSync
   io.halted := ctrlLogic.io.halted
@@ -196,7 +208,7 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
   ctrlLogic.io.aluCtrl.aluBranch := alu.io.output_bool
 
   // generate CSR logic only if class variable is set
-  val CSRLogic = (CSR_EXT) generate new Area{
+  val CSRLogic = (cfg.csrExtension) generate new Area{
     //import controlFSM._
     import RVCSR._
     import CSRAccessType._
@@ -391,7 +403,7 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
     // increment mcycle every clock cycle
     mcycle := (mcycle.asUInt + 1).asBits
   }
-  if(CSR_EXT){
+  if(cfg.csrExtension){
     CSRLogic.addr := decoder.io.fields.csr.asUInt
     // CSRLogic.wval := // MUX : MuxCSRInstruction, rs1Data, U(CSRUImmediate, 32 bits)
     CSRLogic.accessType := decoder.io.csrType
@@ -519,7 +531,7 @@ class RiscV32Core(startVector : BigInt, formal : Boolean = false) extends Compon
     DestDataSelect.csrReadData -> CSRLogic.rval
   )
 
-  if(formal){
+  if(cfg.formalInterface){
     // RVF
     val rvfi_order = Reg(UInt(64 bits)) init(0)
     val rvfi_insn = Reg(Bits(32 bits)) init(0)
@@ -663,7 +675,7 @@ object RiscV32CoreTop {
     SpinalConfig(
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
       targetDirectory = "rtl"
-      ).generateVerilog(new RiscV32Core(0x80000000l))
+      ).generateVerilog(new RiscV32Core(RV32CoreConfig()))
       .printPruned()
   }
 }
@@ -674,7 +686,7 @@ object RVFICore {
     SpinalConfig(
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
       targetDirectory = "rtl/rvfi"
-      ).generateVerilog(new RiscV32Core(0x80000000l, true))
+      ).generateVerilog(new RiscV32Core(RV32CoreConfig()))
       .printPruned()
   }
 }

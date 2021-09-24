@@ -24,10 +24,10 @@ object TransactionSource extends SpinalEnum{
     val none, error, imem, dmem = newElement()
 }
 
-class SBRV32Core(startVector : BigInt = 0x80000000l) extends Component{
+class SBRV32Core(val cfg : RV32CoreConfig) extends Component{
     val io = new SBCoreIO()
 
-    val cpu = new RiscV32Core(startVector)
+    val cpu = new RiscV32Core(cfg)
 
     io.halted := cpu.io.halted
     io.fetchSync := cpu.io.fetchSync
