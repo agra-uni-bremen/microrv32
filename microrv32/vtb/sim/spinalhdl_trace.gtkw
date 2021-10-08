@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Thu Aug 19 11:37:47 2021
+[*] Mon Oct  4 14:43:25 2021
 [*]
 [dumpfile] "/home/sallar/work/micrrv32-refactor/microrv32/simWorkspace/MicroRV32Top/test.vcd"
-[dumpfile_mtime] "Wed Aug 18 13:55:51 2021"
-[dumpfile_size] 78533499
+[dumpfile_mtime] "Mon Oct  4 14:38:09 2021"
+[dumpfile_size] 590679
 [savefile] "/home/sallar/work/micrrv32-refactor/microrv32/vtb/sim/spinalhdl_trace.gtkw"
-[timestart] 0
+[timestart] 1950
 [size] 1920 1027
 [pos] -1 -1
-*-21.000000 7080000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-11.000000 3170 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.MicroRV32Top.
 [treeopen] TOP.MicroRV32Top.cpu.
@@ -19,7 +19,7 @@
 [sst_width] 253
 [signals_width] 478
 [sst_expanded] 1
-[sst_vpaned_height] 120
+[sst_vpaned_height] 337
 @c00200
 -top
 @28
@@ -119,7 +119,7 @@ TOP.MicroRV32Top.shutdown_periph_io_sb_SBrdata[31:0]
 TOP.MicroRV32Top.shutdown_periph_io_sb_SBready
 @1401200
 -shutdown
-@c00201
+@c00200
 -uart
 @22
 TOP.MicroRV32Top.uartPeriph_io_sb_SBrdata[31:0]
@@ -128,7 +128,7 @@ TOP.MicroRV32Top.uartPeriph_io_sb_SBready
 TOP.MicroRV32Top.uartPeriph_io_uart_txd
 @820
 TOP.MicroRV32Top.uartPeriph.uartCtrl_1.io_write_payload[7:0]
-@1401201
+@1401200
 -uart
 @1000200
 -mrvtop
@@ -262,13 +262,12 @@ TOP.MicroRV32Top.cpu.cpu.ctrlLogic_io_memCtrl_fetchEna
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic_io_memCtrl_readWriteData
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic_io_pcCtrl_enablePC
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic_io_pcCtrl_pcValSel[2:0]
-TOP.MicroRV32Top.cpu.cpu.ctrlLogic_io_regCtrl_regDestSel[1:0]
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic_io_regCtrl_regFileWR
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic_io_trapEntry
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic_io_trapExit
 @1401200
 -CTRL-FSM
-@c00200
+@c00201
 -DECODE
 @28
 TOP.MicroRV32Top.cpu.cpu.decoder_io_csrType[2:0]
@@ -290,7 +289,11 @@ TOP.MicroRV32Top.cpu.cpu.decoder_io_fields_src1[4:0]
 TOP.MicroRV32Top.cpu.cpu.decoder_io_fields_src2[4:0]
 TOP.MicroRV32Top.cpu.cpu.decoder_io_immediate[31:0]
 TOP.MicroRV32Top.cpu.cpu.decoder_io_instType[4:0]
-@1401200
+@28
+TOP.MicroRV32Top.cpu.cpu.decoder.io_fields_opcode[6:0]
+@820
+TOP.MicroRV32Top.cpu.cpu.decoder.io_instType_string[95:0]
+@1401201
 -DECODE
 @c00200
 -DataPath
@@ -548,7 +551,9 @@ TOP.MicroRV32Top.cpu.cpu.regs.regFile(13)[31:0]
 TOP.MicroRV32Top.cpu.cpu.regs.regFile(14)[31:0]
 TOP.MicroRV32Top.cpu.cpu.regs.regFile(15)[31:0]
 TOP.MicroRV32Top.cpu.cpu.regs.regFile(16)[31:0]
+@24
 TOP.MicroRV32Top.cpu.cpu.regs.regFile(17)[31:0]
+@22
 TOP.MicroRV32Top.cpu.cpu.regs.regFile(18)[31:0]
 TOP.MicroRV32Top.cpu.cpu.regs.regFile(19)[31:0]
 TOP.MicroRV32Top.cpu.cpu.regs.regFile(20)[31:0]
@@ -830,10 +835,15 @@ TOP.MicroRV32Top.cpu.cpu.ctrlLogic.io_irqPending
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic.io_csrCtrl_illegalAccess
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic.io_csrCtrl_writeSelect[0]
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic.io_pcCtrl_pcValSel[2:0]
-TOP.MicroRV32Top.cpu.cpu.ctrlLogic.io_regCtrl_regDestSel[1:0]
 @1401200
 -FSM
-@800200
+@c00200
+-MulDivUnit
+-MUL
+@1401200
+-MUL
+-MulDivUnit
+@c00200
 -SB
 @22
 TOP.MicroRV32Top.cpu.io_sb_SBaddress[31:0]
@@ -848,7 +858,7 @@ TOP.MicroRV32Top.cpu.io_sb_SBvalid
 TOP.MicroRV32Top.cpu.io_sb_SBwdata[31:0]
 @28
 TOP.MicroRV32Top.cpu.io_sb_SBwrite
-@1000200
+@1401200
 -SB
 @22
 TOP.MicroRV32Top.cpu.cpu.programCounter[31:0]
