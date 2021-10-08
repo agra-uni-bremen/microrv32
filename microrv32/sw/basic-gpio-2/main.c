@@ -5,9 +5,6 @@
 #include "util.h"
 //#include "gpio.h"
 void wait(uint32_t nOps) {
-	/*
-	 * TODO correlate nOps to clocks/time waited 
-	 */
 	for(uint32_t i = 0; i < nOps; i++) {
 		asm("nop"); 
 	}
