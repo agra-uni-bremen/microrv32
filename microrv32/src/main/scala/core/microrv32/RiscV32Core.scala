@@ -4,6 +4,7 @@ import spinal.core._
 import spinal.lib.master
 import scala.annotation.switch
 import core.microrv32.rv32core._
+import core.microrv32.rv32core.muldiv._
 import core.microrv32.RVCSR._
 //import core.microrv32._
 
@@ -13,9 +14,11 @@ case class RV32CoreConfig(){
   // generate interface for riscv-formal
   var formalInterface = false
   // MUL extension 
-  var generateMultiply = false
+  var generateMultiply = true
   // seperate division flag for MUL extension
   var generateDivide = false
+  //
+  var hasMULDIV = generateMultiply | generateDivide
   // CSR extension + registers (without it no support for some functions like interrupts)
   var csrExtension = true
   // debug, fsm state output (used for testing, verification and debugging purposes)
@@ -155,7 +158,7 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   val csrValMux = Bits(32 bits)
   val strobeMux = Bits(4 bits)
 
-  val ctrlLogic = new ControlUnit(dbg = cfg.debug)
+  val ctrlLogic = new ControlUnit(cfg)
   val irqPending = Bool
   io.fetchSync := ctrlLogic.io.fetchSync
   io.halted := ctrlLogic.io.halted
@@ -178,7 +181,7 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   when(ctrlLogic.io.fetchCtrl.sample){
     instructionBuffer := io.memIF.IMem.instruction
   }
-  val decoder = new DecodeUnit()
+  val decoder = new DecodeUnit(cfg)
   decoder.io.instruction := instructionBuffer
   ctrlLogic.io.validDecode := decoder.io.decodeValid
   ctrlLogic.io.instrType := decoder.io.instType
@@ -210,6 +213,27 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     OpBSelect.opZero -> B(0, 32 bits)
   )
   ctrlLogic.io.aluCtrl.aluBranch := alu.io.output_bool
+  
+  val MULDIV_EXTENSION : Boolean = cfg.generateMultiply | cfg.generateDivide 
+  val muldiv = if(MULDIV_EXTENSION) new MulDivUnit(cfg) else null
+  val muldivResult = Bits(32 bits)
+  val muldivReady = Bool
+  val muldivBusy = Bool
+  if(MULDIV_EXTENSION){
+    muldiv.io.rs1Data := regs.io.rs1Data
+    muldiv.io.rs2Data := regs.io.rs2Data
+    muldivResult := muldiv.io.destinationData
+    muldiv.io.operation := decoder.io.fields.funct3
+    muldiv.io.valid := ctrlLogic.io.muldivCtrl.valid
+    muldivReady := muldiv.io.ready
+    muldivBusy := muldiv.io.busy
+    ctrlLogic.io.muldivCtrl.ready := muldiv.io.ready
+    ctrlLogic.io.muldivCtrl.busy := muldiv.io.busy
+  } else {
+    muldivResult := 0
+    muldivReady := False
+    muldivBusy := False
+  }
 
   // generate CSR logic only if class variable is set
   val CSRLogic = (cfg.csrExtension) generate new Area{
@@ -532,7 +556,8 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     DestDataSelect.aluRes -> alu.io.output,
     DestDataSelect.aluBool -> B(alu.io.output_bool,32 bits),
     DestDataSelect.memReadData -> extMemData,
-    DestDataSelect.csrReadData -> CSRLogic.rval
+    DestDataSelect.csrReadData -> CSRLogic.rval,
+    DestDataSelect.muldivData -> muldivResult
   )
 
   if(cfg.formalInterface){

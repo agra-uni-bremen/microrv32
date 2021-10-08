@@ -9,7 +9,7 @@ import core.microrv32.RVOpcode._
 import core.microrv32.CSROpcode._
 import core.microrv32.CSRAccessType
 import core.microrv32.MULDIVOpcode._
-//import core.microrv32.rv32core.ExtensionUnit
+import core.microrv32.RV32CoreConfig
 
 case class DecodedFields() extends Bundle{
     val opcode = out Bits(7 bits)
@@ -94,8 +94,17 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
     // FIXME test if making two switch statements, one for iType and one for immediate, reduces generated verilog?
     switch(opcode){
         is(OP_REGREG){
-            decoded := True
-            iType := InstructionType.isRegReg
+            when(funct7 === F7_Z | funct7 === F7_O){
+                decoded := True
+                iType := InstructionType.isRegReg
+            }
+            if(cfg.hasMULDIV){
+                when(funct7 === F7_MULDIV){
+                    decoded := True
+                    iType := InstructionType.isRegReg
+                }
+            }
+            
         }
         is(OP_REGIMM){
             decoded := True
@@ -169,13 +178,12 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
               }
             }
         }
+        // M - extension, MUL, DIV, REM instructions
         if(cfg.generateMultiply){
         is(OP_MULDIV){
-            when(func7 === F7_MULDIV){
+            when(funct7 === F7_MULDIV){
                 decoded := True
-                switch(func3){
-                    is()
-                }
+                iType := InstructionType.isMulDiv
             }
         }
         }

@@ -80,8 +80,12 @@ sw_crc:
 	make hex -C sw/crc8/
 
 sw_gpio2:
-	make dump-code -C sw/gpio-2/ > sw/gpio-2/dump.txt
-	make hex -C sw/gpio-2/
+	make dump-code -C sw/basic-gpio-2/ > sw/basic-gpio-2/dump.txt
+	make hex -C sw/basic-gpio-2/
+
+sw_gpiouart:
+	make dump-code -C sw/gpio-uart-1/ > sw/gpio-uart-1/dump.txt
+	make hex -C sw/gpio-uart-1/
 
 show_sim_linux:
 	gtkwave vtb/sim/spinalhdl_trace.gtkw &

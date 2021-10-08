@@ -3,10 +3,6 @@ package core.microrv32.rv32core.muldiv
 import spinal.core._
 import spinal.lib._
 
-object MulOperation extends SpinalEnum{
-  val mul, mulh, mulhsu, mulhu = newElement()
-}
-
 //Hardware definition
 class MulUnit extends Component {
   val io = new Bundle {
@@ -15,12 +11,13 @@ class MulUnit extends Component {
     val product = out Bits(64 bits)
     val valid = in Bool
     val ready = out Bool
-    //val operation = in(MulOperation())
+    val busy = out Bool
   }
   // control unit
   val ctrl = new MulUnitControl()
   ctrl.io.valid := io.valid
   io.ready := ctrl.io.ready
+  io.busy := ctrl.io.busy
   // regs
   // val op = Reg(MulOperation()) init(MulOperation.mul)
   val mcand = Reg(UInt(32 bits)) init(0)

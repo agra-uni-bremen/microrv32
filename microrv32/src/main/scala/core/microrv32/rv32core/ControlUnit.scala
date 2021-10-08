@@ -3,17 +3,16 @@ package core.microrv32.rv32core
 import spinal.core._
 import spinal.lib.fsm._
 import core.microrv32.InstructionType
-// import core.microrv32.InstructionType._
 import core.microrv32.CSRAccessType
 import core.microrv32.CSRAccessType._
 import core.microrv32.RVOpcode._
 import core.microrv32.CSROpcode._
-// import core.microrv32.rv32core.DecodeUnit
-//import core.microrv32.rv32core.DecodeUnit._
+import core.microrv32.RV32CoreConfig
+import core.microrv32.MULDIVOpcode._
 
 object PCSelect extends SpinalEnum{
-  val incrementPC, jalTarget, jalrTarget, branchTarget, 
-  trapEntryTarget, trapExitTarget = newElement()
+    val incrementPC, jalTarget, jalrTarget, branchTarget, 
+    trapEntryTarget, trapExitTarget = newElement()
 }
 
 case class PCControl() extends Bundle{
@@ -39,8 +38,18 @@ case class ALUCtrl() extends Bundle{
     val aluBranch = in Bool
 }
 
+case class MulDivCtrl() extends Bundle{
+    val valid = out Bool
+    val ready = in Bool
+    val busy = in Bool
+}
+
 object DestDataSelect extends SpinalEnum{
-    val aluRes, aluBool, memReadData, csrReadData = newElement()
+    val aluRes, aluBool, memReadData, 
+    // csr
+    csrReadData, 
+    // mul div rem
+    muldivData = newElement()
 }
 
 case class RegFileControl() extends Bundle{
@@ -85,7 +94,7 @@ case class ExceptionControl() extends Bundle{
     val misalignedBranchTarget = in Bool
 }
 
-case class ControlBundle() extends Bundle{
+case class ControlBundle(cfg : RV32CoreConfig) extends Bundle{
     // decoder
     val validDecode = in Bool
     val instrType = in(InstructionType())
@@ -96,6 +105,11 @@ case class ControlBundle() extends Bundle{
     val fetchCtrl = out(FetchControl())
     // alu
     val aluCtrl = ALUCtrl()
+    // if(cfg.generateMultiply | cfg.generateMultiply){
+    //     // muldiv
+    //     val muldivCtrl = MulDivCtrl()
+    // }
+    val muldivCtrl = if( cfg.generateMultiply | cfg.generateMultiply) MulDivCtrl() else null
     // registerfile
     val regCtrl = out(RegFileControl())
     // csr
@@ -116,8 +130,10 @@ case class ControlBundle() extends Bundle{
     val dbgState = out Bits(4 bits)
 }
 
-class ControlUnit(dbg : Boolean) extends Component{
-    val io = new ControlBundle()
+class ControlUnit(cfg : RV32CoreConfig) extends Component{
+    val MULDIV : Boolean = cfg.generateMultiply | cfg.generateMultiply
+
+    val io = new ControlBundle(cfg)
     
     // default values
     // PC
@@ -148,6 +164,9 @@ class ControlUnit(dbg : Boolean) extends Component{
     // IO
     io.halted := False
     io.fetchSync := False
+    if(MULDIV){
+        io.muldivCtrl.valid := False
+    }
     
     val fsm = new StateMachine{
         import InstructionType._
@@ -157,13 +176,6 @@ class ControlUnit(dbg : Boolean) extends Component{
             }
         }
         val stateFetch : State = new State{
-            // onEntry{
-            //     when(io.irqPending){
-            //         // dont fetch
-            //     }.otherwise{
-            //         //io.memCtrl.fetchEna := True
-            //     }
-            // }
             whenIsActive{
                 when(io.irqPending){
                     goto(stateInterrupt)
@@ -202,7 +214,23 @@ class ControlUnit(dbg : Boolean) extends Component{
                         io.aluCtrl.opB := OpBSelect.opReg2Data
                         io.regCtrl.regFileWR := True
                         io.regCtrl.regDestSel := DestDataSelect.aluRes
-                        goto(stateFetch)
+                        if(MULDIV){
+                            when(io.instrFields.funct7 === F7_MULDIV){
+                                io.regCtrl.regFileWR := False
+                                io.regCtrl.regDestSel := DestDataSelect.muldivData
+                                io.aluCtrl.opA := OpASelect.opReg1Data
+                                io.aluCtrl.opB := OpBSelect.opReg2Data
+                                io.muldivCtrl.valid := True
+                                goto(stateWriteBack)
+                            }
+                        }else{
+                            when(io.instrFields.funct7 === F7_Z | io.instrFields.funct7 === F7_O){
+                                goto(stateFetch)
+                            }.otherwise{
+                                io.regCtrl.regFileWR := False
+                                goto(stateTrap)
+                            }
+                        }
                     }
                     is(isRegImm){
                         // reg[dest] = reg[rs1] {OP} IMM
@@ -366,6 +394,15 @@ class ControlUnit(dbg : Boolean) extends Component{
                     is(isFence){
                         goto(stateFetch)
                     }
+                    if(MULDIV){
+                        is(isMulDiv){
+                            io.aluCtrl.opA := OpASelect.opReg1Data
+                            io.aluCtrl.opB := OpBSelect.opReg2Data
+                            io.muldivCtrl.valid := True
+                            goto(stateWriteBack)
+                            // goto(stateMulDivExec)
+                        }
+                    }
                     is(isIllegal){
                         goto(stateTrap)
                     }
@@ -375,6 +412,32 @@ class ControlUnit(dbg : Boolean) extends Component{
                 }
             }
         }
+        // if(MULDIV){
+        // val stateMulDivExec : State = new State{
+        //     whenIsActive{
+        //         when(io.muldivCtrl.ready){
+        //             io.regCtrl.regFileWR := True
+        //             io.regCtrl.regDestSel := DestDataSelect.muldivData
+        //             goto(stateFetch)
+        //         }
+        //     }
+        // }
+        // }
+        // val stateMulDivExec : State = new State{
+        //     whenIsActive{
+        //         if(MULDIV){
+        //             when(io.muldivCtrl.ready){
+        //                 io.regCtrl.regFileWR := True
+        //                 io.regCtrl.regDestSel := DestDataSelect.muldivData
+        //                 goto(stateFetch)
+        //             }
+        //         } else {
+        //             // if we get into this state without M-extension, we halt execution -- instruction not supported if not configured!
+        //             goto(stateHalt)
+        //         }
+                
+        //     }
+        // }
         val stateWriteBack : State = new State{
             whenIsActive{
                 switch(io.instrType){
@@ -414,6 +477,13 @@ class ControlUnit(dbg : Boolean) extends Component{
                             }
                         }
                     }
+                    if(MULDIV){
+                    is(isMulDiv){
+                        io.aluCtrl.opA := OpASelect.opReg1Data
+                        io.aluCtrl.opB := OpBSelect.opReg2Data
+                        io.memCtrl.dataEna := False
+                    }
+                    }
                 }
                 when(io.memCtrl.dataRdy & !io.halt){
                     switch(io.instrType){
@@ -423,7 +493,15 @@ class ControlUnit(dbg : Boolean) extends Component{
                         }
                     }
                     goto(stateFetch)
-                }.elsewhen(io.halt){
+                }
+                if(MULDIV){
+                when(io.muldivCtrl.ready & !io.halt){
+                    io.regCtrl.regFileWR := True
+                    io.regCtrl.regDestSel := DestDataSelect.muldivData
+                    goto(stateFetch)
+                }
+                }
+                when(io.halt){
                     goto(stateHalt)
                 }
             }
@@ -435,6 +513,11 @@ class ControlUnit(dbg : Boolean) extends Component{
                 switch(io.instrType){
                     is(isCT_JAL, isCT_JALR, isBranch){
                         io.csrCtrl.mcauseSelect := MCauseSelect.trapInstrAddrMisalign
+                    }
+                    is(isRegReg){
+                        when(!(io.instrFields.funct7 === F7_Z | io.instrFields.funct7 === F7_O)){
+                            io.csrCtrl.mcauseSelect := MCauseSelect.trapIllegalInstr
+                        }
                     }
                     // difference between illegal and undefined?
                     is(isIllegal,isUndef){
@@ -477,28 +560,31 @@ class ControlUnit(dbg : Boolean) extends Component{
     }
 
     // debug logic for testing and debugging purposes on the fpga board
-    // TODO: extend for irq state
-    val dbgLogic = (dbg) generate new Area{
-        // import ControlUnit.fsm._
+    val dbgLogic = (cfg.debug) generate new Area{
         io.dbgState := B"0000"
         when(fsm.isActive(fsm.stateInit)){
-        io.dbgState := B"0000"
+            io.dbgState := B"0000"
         }.elsewhen(fsm.isActive(fsm.stateFetch)){
-          io.dbgState := B"0001"
+            io.dbgState := B"0001"
         }.elsewhen(fsm.isActive(fsm.stateDecode)){
-          io.dbgState := B"0010"
+            io.dbgState := B"0010"
         }.elsewhen(fsm.isActive(fsm.stateExecute)){
-          io.dbgState := B"0011"
+            io.dbgState := B"0011"
         }.elsewhen(fsm.isActive(fsm.stateWriteBack)){
-          io.dbgState := B"0100"
+            io.dbgState := B"0100"
         }.elsewhen(fsm.isActive(fsm.stateCSR)){
-          io.dbgState := B"0101"
+            io.dbgState := B"0101"
         }.elsewhen(fsm.isActive(fsm.stateTrap)){
-          io.dbgState := B"0110"
+            io.dbgState := B"0110"
         }.elsewhen(fsm.isActive(fsm.stateHalt)){
-          io.dbgState := B"0111"
+            io.dbgState := B"0111"
         }.elsewhen(fsm.isActive(fsm.stateInterrupt)){
-          io.dbgState := B"1001"
+            io.dbgState := B"1001"
+        }
+        if(MULDIV){
+            // when(fsm.isActive(fsm.stateMulDivExec)){
+            //     io.dbgState := B"1010"
+            // }
         }
   }
 }

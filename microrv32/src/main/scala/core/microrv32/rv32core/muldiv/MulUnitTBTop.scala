@@ -16,7 +16,7 @@ class MulUnitTBTop extends Component{
     val product = out SInt(64 bits)
     val valid = in Bool
     val ready = out Bool
-    val operation = in(MulOperation())
+    // val operation = in(MulOperation())
   }
   val mulUnit = new MulUnit()
   mulUnit.io.multiplicand := io.multiplicand.asBits
@@ -24,5 +24,4 @@ class MulUnitTBTop extends Component{
   io.product := mulUnit.io.product.asSInt
   mulUnit.io.valid := io.valid
   io.ready := mulUnit.io.ready
-  mulUnit.io.operation := io.operation
 }

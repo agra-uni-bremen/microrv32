@@ -18,20 +18,24 @@ class MulUnitControl extends Component {
     val mcandSummand = out(SummandVal())
     val valid = in Bool
     val ready = out Bool
+    val busy = out Bool
   }
 
   val controlFSM = new StateMachine{
     val mulCounter = Counter(0 to 31)
+    val busyFlag = Reg(Bool) init(False)
     // output defaults
     io.writeAddition := False
     io.shiftProduct := False
     io.loadValues := False
     io.ready := False
     io.mcandSummand := SummandVal.normal
+    io.busy := busyFlag
     // states
     val stateIdle : State = new State with EntryPoint{
         whenIsActive{
             when(io.valid){
+                busyFlag := True
                 goto(stateInitialize)
             }
         }
@@ -39,6 +43,7 @@ class MulUnitControl extends Component {
     val stateInitialize : State = new State{
         whenIsActive{
             mulCounter.clear()
+            io.busy := True
             io.loadValues := True
             goto(stateAdd)
         }
@@ -73,6 +78,7 @@ class MulUnitControl extends Component {
     val stateDone : State = new State{
         whenIsActive{
             io.ready := True
+            busyFlag := False
             goto(stateIdle)
         }
     }
