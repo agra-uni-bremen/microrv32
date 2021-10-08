@@ -1,0 +1,7 @@
+read_verilog rtl/MicroRV32TopHX8K.v
+hierarchy -top MicroRV32TopHX8K
+fsm_info
+synth_ice40
+show
+write_blif synth/top.blif
+write_json synth/top.json
