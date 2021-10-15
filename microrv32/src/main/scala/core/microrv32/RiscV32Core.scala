@@ -23,6 +23,8 @@ case class RV32CoreConfig(){
   var csrExtension = true
   // debug, fsm state output (used for testing, verification and debugging purposes)
   var debug = true
+  // bit width
+  var XLEN = 32
 }
 
 // encode instruction in enum to abstract from bitvectors

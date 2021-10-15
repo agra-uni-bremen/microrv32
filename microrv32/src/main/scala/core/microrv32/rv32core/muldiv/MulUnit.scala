@@ -3,6 +3,10 @@ package core.microrv32.rv32core.muldiv
 import spinal.core._
 import spinal.lib._
 
+object MulOperation extends SpinalEnum {
+  val mul, mulh, mulhsu, mulhu = newElement()
+}
+
 //Hardware definition
 class MulUnit extends Component {
   val io = new Bundle {
@@ -11,51 +15,75 @@ class MulUnit extends Component {
     val product = out Bits(64 bits)
     val valid = in Bool
     val ready = out Bool
-    val busy = out Bool
+    val operation = in(MulOperation())
   }
   // control unit
   val ctrl = new MulUnitControl()
   ctrl.io.valid := io.valid
   io.ready := ctrl.io.ready
-  io.busy := ctrl.io.busy
+
   // regs
-  // val op = Reg(MulOperation()) init(MulOperation.mul)
+  val op = Reg(MulOperation()) init(MulOperation.mul)
   val mcand = Reg(UInt(32 bits)) init(0)
-  val mcandTc = Reg(UInt(32 bits)) init(0)
   val prod = Reg(Bits(64 bits)) init(0)
-  val oldLSB = Reg(Bits(1 bits)) init(0)
+
   // wires
   val partialProduct = Bits(32 bits)
   val mpLSB = prod(0 downto 0)
-  val mcandSign = io.multiplicand(31)
-  val mplierSign = io.multiplier(31) 
+  val mcandSign = io.multiplicand(31 downto 31)
+  val mplierSign = io.multiplier(31 downto 31)
   
-  ctrl.io.multiplierLSB := mpLSB ## oldLSB
+  ctrl.io.multiplierLSB := mpLSB
+  
+  val multiply = new Area {
+    // only 31 bit for signed, sign itself is handled later
+    val iMcand = (mcandSign === 1) ? (~io.multiplicand.asUInt+1).asBits(30 downto 0) | io.multiplicand(30 downto 0)
+    val iMplier = (mplierSign === 1) ? (~io.multiplier.asUInt+1).asBits(30 downto 0) | io.multiplier(30 downto 0)
+    val muxedMcand = io.operation.mux(
+        MulOperation.mul -> B(0, 1 bits) ## iMcand,
+        MulOperation.mulh -> B(0, 1 bits) ## iMcand,
+        MulOperation.mulhsu -> B(0, 1 bits) ## iMcand,
+        MulOperation.mulhu -> io.multiplicand
+    )
+    val muxedMplier = io.operation.mux(
+        MulOperation.mul -> B(0, 1 bits) ## iMplier,
+        MulOperation.mulh -> B(0, 1 bits) ## iMplier,
+        MulOperation.mulhsu -> io.multiplier,
+        MulOperation.mulhu -> io.multiplier
+    )
+    val summand = ctrl.io.addMultiplicand.mux(
+      True -> mcand,
+      False -> U(0, 32 bits)
+    )
+    partialProduct := (prod(63 downto 32).asUInt + summand ).asBits
 
-  // if (LSB ## oldLSB)==10 => sub, if(LSB ## oldLSB)==01 => add, else no addition happens
-  partialProduct := ctrl.io.mcandSummand.mux(
-    SummandVal.normal -> (prod(63 downto 32).asUInt + mcand ).asBits,
-    SummandVal.tcompl -> (prod(63 downto 32).asUInt + mcandTc ).asBits
+    when(ctrl.io.loadValues){
+      mcand := muxedMcand.asUInt
+      prod := B(B(0, 32 bits) ## muxedMplier.asBits, 64 bits)
+      op := io.operation
+    }.elsewhen(ctrl.io.calculate){
+      prod := (partialProduct ## prod(31 downto 0)) |>> 1
+    }
+  }
+
+  val signHandling = new Area {
+    val prodSign = Reg(Bits(1 bits)) init(0)
+    val isSignedOperation = io.operation === MulOperation.mul | io.operation === MulOperation.mulh | io.operation === MulOperation.mulhsu
+    val mulSign = mcandSign ^ mplierSign
+    when(ctrl.io.loadValues & isSignedOperation){
+      prodSign := io.operation.mux[Bits](
+        MulOperation.mul -> mulSign,
+        MulOperation.mulh -> mulSign,
+        MulOperation.mulhsu -> mcandSign,
+        MulOperation.mulhu -> 0
+      )
+    }
+  }
+  val result = op.mux[Bits](
+    MulOperation.mul -> ((signHandling.prodSign === 1) ? (~prod.asUInt+1).asBits | prod),
+    MulOperation.mulh -> ((signHandling.prodSign === 1) ? (~prod.asUInt+1).asBits | prod),
+    MulOperation.mulhsu -> ((signHandling.prodSign === 1) ? (~prod.asUInt+1).asBits | prod),
+    MulOperation.mulhu -> prod
   )
-
-  when(ctrl.io.loadValues){
-    mcand := io.multiplicand.asUInt
-    mcandTc := io.multiplicand.asUInt.twoComplement(True)(31 downto 0).asUInt
-    prod := B(B(0, 32 bits) ## io.multiplier.asBits, 64 bits)
-    oldLSB := 0
-  }.elsewhen(ctrl.io.writeAddition){
-    prod := partialProduct(31 downto 0) ## prod(31 downto 0)
-  }.elsewhen(ctrl.io.shiftProduct){
-    oldLSB := mpLSB
-    prod := prod(63) ## prod(63 downto 1)
-  }
-
-  io.product := io.ready ? prod | 0
-}
-
-//Generate the MulUnit's Verilog
-object MulUnitVerilog {
-  def main(args: Array[String]) {
-    SpinalVerilog(new MulUnit)
-  }
+  io.product := io.ready ? result | 0
 }

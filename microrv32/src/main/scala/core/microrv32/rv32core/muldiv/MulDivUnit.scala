@@ -30,7 +30,7 @@ class MulDivUnit(cfg : RV32CoreConfig) extends Component {
         )
         mulUnit.io.valid := io.valid
         io.ready := mulUnit.io.ready
-        io.busy := mulUnit.io.busy
+        
     }
     // if(cfg.generateDivide) {
 

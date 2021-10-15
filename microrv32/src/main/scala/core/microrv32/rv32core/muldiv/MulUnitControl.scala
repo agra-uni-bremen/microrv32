@@ -4,18 +4,13 @@ import spinal.core._
 import spinal.lib._
 import spinal.lib.fsm._
 
-object SummandVal extends SpinalEnum{
-    val normal, tcompl = newElement()
-}
-
 //Hardware definition
 class MulUnitControl extends Component {
   val io = new Bundle {
-    val multiplierLSB = in Bits(2 bits)
-    val writeAddition = out Bool
-    val shiftProduct = out Bool
+    val multiplierLSB = in Bits(1 bits)
+    val addMultiplicand = out Bool
     val loadValues = out Bool
-    val mcandSummand = out(SummandVal())
+    val calculate = out Bool
     val valid = in Bool
     val ready = out Bool
     val busy = out Bool
@@ -25,11 +20,10 @@ class MulUnitControl extends Component {
     val mulCounter = Counter(0 to 31)
     val busyFlag = Reg(Bool) init(False)
     // output defaults
-    io.writeAddition := False
-    io.shiftProduct := False
+    io.addMultiplicand := False
+    io.calculate := False
     io.loadValues := False
     io.ready := False
-    io.mcandSummand := SummandVal.normal
     io.busy := busyFlag
     // states
     val stateIdle : State = new State with EntryPoint{
@@ -43,42 +37,26 @@ class MulUnitControl extends Component {
     val stateInitialize : State = new State{
         whenIsActive{
             mulCounter.clear()
-            io.busy := True
             io.loadValues := True
-            goto(stateAdd)
+            goto(stateMul)
         }
     }
-    val stateAdd : State = new State{
+    val stateMul : State = new State{
         whenIsActive{
-            when(io.multiplierLSB === B"10" | io.multiplierLSB === B"01"){
-                io.writeAddition := True
-            }
-            switch(io.multiplierLSB){
-                is(B"10"){
-                    io.mcandSummand := SummandVal.tcompl
-                }
-                default{
-                    io.mcandSummand := SummandVal.normal
-                }
-            }
-            goto(stateShift)
-        }
-    }
-    val stateShift : State = new State{
-        whenIsActive{
-            io.shiftProduct := True
             mulCounter.increment()
+            io.calculate := True
+            when(io.multiplierLSB === M"1"){
+                io.addMultiplicand := True
+            }
             when(mulCounter.willOverflow){
+                busyFlag := False
                 goto(stateDone)
-            }.otherwise{
-                goto(stateAdd)
             }
         }
     }
     val stateDone : State = new State{
         whenIsActive{
             io.ready := True
-            busyFlag := False
             goto(stateIdle)
         }
     }
