@@ -72,7 +72,7 @@ object MulUnitSim {
 
       // random test cases
       // printf("test# \t\t a * b\t\t\t=>\texpected: a*b \t\t\tretrieved: io.result\n")
-      var N = 50 // number of random test cases for each test
+      var N = 1 // number of random test cases for each test
       printf("Starting random test (unconstrained) with N = %d @SimTime= %d\n", N, simTime())
       
       println("START: MUL, MULH Test (Signed * Signed)")
@@ -93,7 +93,7 @@ object MulUnitSim {
       for(idx <- 0 to N){
         a = RndNextSInt32().toLong
         b = RndNextUInt32().toLong
-        applyMulTestCase(a,b)
+        applyMulSUTestCase(a,b)
         waitUntil(dut.io.ready.toBoolean)
         assert(
           assertion = (a*b == dut.io.product.toLong),
@@ -116,6 +116,17 @@ object MulUnitSim {
         dut.clockDomain.waitRisingEdge()
       }
       println("PASS: MULHU Test (Unsigned * Unsigned)")
+
+      println("Debug testcases")
+      a = 0x80000000l
+      b = 0xffff8000l
+      applyMulSUTestCase(a,b)
+      waitUntil(dut.io.ready.toBoolean)
+      assert(
+        assertion = (a*b == dut.io.product.toLong),
+        message = "FAIL: a*b = " + a.toString + " * " + b.toString + " didnt result in " + (a*b).toString + " but " + dut.io.product.toLong.toString
+      )
+      dut.clockDomain.waitRisingEdge()
 
       printf("Ending @SimTime= %d\n", N, simTime())
       simSuccess()

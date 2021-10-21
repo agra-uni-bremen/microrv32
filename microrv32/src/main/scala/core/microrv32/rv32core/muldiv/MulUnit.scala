@@ -24,11 +24,11 @@ class MulUnit extends Component {
 
   // regs
   val op = Reg(MulOperation()) init(MulOperation.mul)
-  val mcand = Reg(UInt(32 bits)) init(0)
-  val prod = Reg(Bits(64 bits)) init(0)
+  val mcand = Reg(UInt(33 bits)) init(0)
+  val prod = Reg(Bits(65 bits)) init(0)
 
   // wires
-  val partialProduct = Bits(32 bits)
+  val partialProduct = Bits(33 bits)
   val mpLSB = prod(0 downto 0)
   val mcandSign = io.multiplicand(31 downto 31)
   val mplierSign = io.multiplier(31 downto 31)
@@ -37,13 +37,14 @@ class MulUnit extends Component {
   
   val multiply = new Area {
     // only 31 bit for signed, sign itself is handled later
-    val iMcand = (mcandSign === 1) ? (~io.multiplicand.asUInt+1).asBits(30 downto 0) | io.multiplicand(30 downto 0)
+    val iMcand = (mcandSign === 1) ? (~io.multiplicand.asUInt+1).asBits(31 downto 0) | io.multiplicand(31 downto 0)
     val iMplier = (mplierSign === 1) ? (~io.multiplier.asUInt+1).asBits(30 downto 0) | io.multiplier(30 downto 0)
     val muxedMcand = io.operation.mux(
         MulOperation.mul -> B(0, 1 bits) ## iMcand,
         MulOperation.mulh -> B(0, 1 bits) ## iMcand,
+        // MulOperation.mulhsu -> B(0, 1 bits) ## iMcand,
         MulOperation.mulhsu -> B(0, 1 bits) ## iMcand,
-        MulOperation.mulhu -> io.multiplicand
+        MulOperation.mulhu -> io.multiplicand.resized
     )
     val muxedMplier = io.operation.mux(
         MulOperation.mul -> B(0, 1 bits) ## iMplier,
@@ -53,16 +54,21 @@ class MulUnit extends Component {
     )
     val summand = ctrl.io.addMultiplicand.mux(
       True -> mcand,
-      False -> U(0, 32 bits)
+      False -> U(0, 33 bits)
     )
-    partialProduct := (prod(63 downto 32).asUInt + summand ).asBits
+    partialProduct := (prod(63 downto 32).asUInt + summand ).asBits.resized
 
     when(ctrl.io.loadValues){
       mcand := muxedMcand.asUInt
-      prod := B(B(0, 32 bits) ## muxedMplier.asBits, 64 bits)
+      prod := B(B(0, 33 bits) ## muxedMplier.asBits, 65 bits)
       op := io.operation
     }.elsewhen(ctrl.io.calculate){
-      prod := (partialProduct ## prod(31 downto 0)) |>> 1
+      // prod := (partialProduct ## prod(31 downto 0)) |>> 1
+      prod := ((partialProduct ## prod(31 downto 0)) >> 1).resized
+      // prod := op.mux(
+      //   MulOperation.mulhsu -> ((partialProduct ## prod(31 downto 0)) |>> 1).resized,
+      //   default -> ((partialProduct ## prod(31 downto 0)) >> 1).resized
+      // )
     }
   }
 
@@ -85,5 +91,5 @@ class MulUnit extends Component {
     MulOperation.mulhsu -> ((signHandling.prodSign === 1) ? (~prod.asUInt+1).asBits | prod),
     MulOperation.mulhu -> prod
   )
-  io.product := io.ready ? result | 0
+  io.product := io.ready ? result(63 downto 0) | 0
 }

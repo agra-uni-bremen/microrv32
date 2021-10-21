@@ -3,12 +3,6 @@ package core.microrv32.rv32core.muldiv
 import spinal.core._
 import spinal.lib._
 
-//Generate the MulUnitTBTop's Verilog
-object MulUnitTBTopVerilog {
-  def main(args: Array[String]) {
-    SpinalVerilog(new MulUnitTBTop)
-  }
-}
 class MulUnitTBTop extends Component{
   val io = new Bundle {
     val multiplicand = in SInt(32 bits)
