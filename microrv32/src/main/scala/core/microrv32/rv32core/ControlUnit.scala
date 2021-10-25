@@ -443,8 +443,8 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                 switch(io.instrType){
                     io.aluCtrl.opA := OpASelect.opReg1Data
                     io.aluCtrl.opB := OpBSelect.opImmediate
-                    io.memCtrl.dataEna := True
                     is(isLoad){
+                        io.memCtrl.dataEna := True
                         switch(io.instrFields.funct3){
                             is(F3_LB, F3_LBU){ 
                                 io.memCtrl.strobeSelect := MemoryStrobeSelect.byte
@@ -462,6 +462,7 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                     }
                     is(isStore){
                         io.memCtrl.readWriteData := True
+                        io.memCtrl.dataEna := True
                         switch(io.instrFields.funct3){
                             is(F3_SB){ 
                                 io.memCtrl.strobeSelect := MemoryStrobeSelect.byte
