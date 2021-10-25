@@ -18,26 +18,8 @@ class MulDivUnit(cfg : RV32CoreConfig) extends Component {
     }
     if(cfg.generateMultiply) {
         val mulUnit = new MulUnit()
-        // val mulOperation = MulOperation()
-        // switch(io.operation){
-        //     is(F3_MUL){
-        //         mulOperation := MulOperation.mul
-        //     }
-        //     is(F3_MULH){
-        //         mulOperation := MulOperation.mul
-        //     }
-        //     is(F3_MULHSU){
-        //         mulOperation := MulOperation.mulhsu
-        //     }
-        //     is(F3_MULHU){
-        //         mulOperation := MulOperation.mulhu
-        //     }
-        //     default{
-        //         mulOperation := MulOperation.mul
-        //     }
-        // }
-        mulUnit.io.multiplier := io.rs1Data
-        mulUnit.io.multiplicand := io.rs2Data
+        mulUnit.io.multiplicand := io.rs1Data
+        mulUnit.io.multiplier := io.rs2Data
         // change later, gotta multiplex/demux result based on operations
         io.destinationData := io.operation.mux(
             F3_MUL -> mulUnit.io.product(31 downto 0),
@@ -53,7 +35,6 @@ class MulDivUnit(cfg : RV32CoreConfig) extends Component {
             F3_MULHU -> MulOperation.mulhu(),
             default -> MulOperation.mul()
         )
-        // mulUnit.io.operation := mulOperation
         mulUnit.io.valid := io.valid
         io.ready := mulUnit.io.ready   
     }
