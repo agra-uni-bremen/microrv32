@@ -26,7 +26,7 @@ import scala.collection.mutable.ArrayBuffer
 object MicroRV32TopSim {
   def main(args: Array[String]) {
     // set to true if you want to log riscv-tests simulation results into ./log/rv32ui-p-tests.log
-    var logFileEnabled = false
+    var logFileEnabled = true
 
     var reachedEnd = false
     var failPC : BigInt = 0

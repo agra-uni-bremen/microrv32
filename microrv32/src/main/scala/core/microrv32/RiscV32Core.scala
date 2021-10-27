@@ -12,9 +12,9 @@ case class RV32CoreConfig(){
   // initial value of the programcounter
   var startVector = 0x80000000l
   // generate interface for riscv-formal
-  var formalInterface = false
+  var formalInterface = true
   // MUL extension 
-  var generateMultiply = true
+  var generateMultiply = false
   // seperate division flag for MUL extension
   var generateDivide = false
   //
@@ -24,7 +24,12 @@ case class RV32CoreConfig(){
   // debug, fsm state output (used for testing, verification and debugging purposes)
   var debug = true
   // bit width
+  // TODO: adapt core + registerfile + etc. to XLEN
   var XLEN = 32
+  assert(
+    assertion = (XLEN == 32),
+    message = "Only RV32 support for now"
+  )
 }
 
 // encode instruction in enum to abstract from bitvectors
@@ -36,6 +41,7 @@ object InstructionType extends SpinalEnum{
   isCSR, isCSRImm, isTrapReturn, 
   // MUL DIV REM
   isMulDiv = newElement()
+  // TODO: refactor for configurable enums or gamble on synthesis to throw out unused enum for encoding?
 }
 
 case class IMemIF() extends Bundle{
@@ -140,7 +146,7 @@ case class CoreIO(formal : Boolean = false) extends Bundle{
   val dbgState = out Bits(4 bits)
   // interrupt timer
   val irqTimer = in Bool
-  val rvfi = if(formal) RVFI() else null
+  // val rvfi = if(formal) RVFI() else null
 }
 
 /*
@@ -153,6 +159,8 @@ case class CoreIO(formal : Boolean = false) extends Bundle{
 class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   // IO Definition
   val io = new CoreIO(cfg.formalInterface)
+
+  val rvfi = if(cfg.formalInterface) RVFI() else null
 
   val programCounter = Reg(UInt(32 bits)) init(U(cfg.startVector, 32 bits))
   val pcValMux = UInt(32 bits)
@@ -597,11 +605,11 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
       rvfi_mem_rmask := 0
       rvfi_mem_wmask := 0
       when(!validOnce){
-        io.rvfi.valid := 1
+        rvfi.valid := 1
         validOnce := True
         rvfi_order := rvfi_order + 1
       }.otherwise{
-        io.rvfi.valid := 0
+        rvfi.valid := 0
       }
       when(io.memIF.IMem.instructionReady){
         rvfi_insn := io.memIF.IMem.instruction
@@ -610,11 +618,11 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
       when(io.dbgState === 2){
         validOnce := False
       }
-      io.rvfi.valid := 0
+      rvfi.valid := 0
     }
 
     // Trap
-    when(io.rvfi.valid === 1){
+    when(rvfi.valid === 1){
       rvfi_trap := False
     }
     when(io.dbgState === 6){
@@ -626,10 +634,10 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
 
     // PC
     when(io.dbgState === 1){
-      rvfi_pc_rdata := io.rvfi.pc_wdata
-      io.rvfi.pc_wdata := io.memIF.IMem.address
+      rvfi_pc_rdata := rvfi.pc_wdata
+      rvfi.pc_wdata := io.memIF.IMem.address
     }otherwise{
-      io.rvfi.pc_wdata := rvfi_pc_rdata
+      rvfi.pc_wdata := rvfi_pc_rdata
     }
 
     // Mem
@@ -674,29 +682,29 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     }
 
     // RVFI Outputs
-    io.rvfi.insn := rvfi_insn
-    io.rvfi.halt := io.halted
-    io.rvfi.trap := rvfi_trap
-    io.rvfi.intr := rvfi_intr
-    io.rvfi.mode := rvfi_mode
-    io.rvfi.ixl := rvfi_ixl
-    io.rvfi.order := rvfi_order
+    rvfi.insn := rvfi_insn
+    rvfi.halt := io.halted
+    rvfi.trap := rvfi_trap
+    rvfi.intr := rvfi_intr
+    rvfi.mode := rvfi_mode
+    rvfi.ixl := rvfi_ixl
+    rvfi.order := rvfi_order
 
-    io.rvfi.rs1_addr := rvfi_rs1_addr
-    io.rvfi.rs2_addr := rvfi_rs2_addr
-    io.rvfi.rs1_rdata := rvfi_rs1_rdata
-    io.rvfi.rs2_rdata := rvfi_rs2_rdata
+    rvfi.rs1_addr := rvfi_rs1_addr
+    rvfi.rs2_addr := rvfi_rs2_addr
+    rvfi.rs1_rdata := rvfi_rs1_rdata
+    rvfi.rs2_rdata := rvfi_rs2_rdata
 
-    io.rvfi.rd_addr := rvfi_rd_addr
-    io.rvfi.rd_wdata := rvfi_rd_wdata
+    rvfi.rd_addr := rvfi_rd_addr
+    rvfi.rd_wdata := rvfi_rd_wdata
 
-    io.rvfi.pc_rdata := rvfi_pc_rdata
+    rvfi.pc_rdata := rvfi_pc_rdata
 
-    io.rvfi.mem_addr := rvfi_mem_addr
-    io.rvfi.mem_rmask := rvfi_mem_rmask
-    io.rvfi.mem_wmask := rvfi_mem_wmask
-    io.rvfi.mem_rdata := rvfi_mem_rdata
-    io.rvfi.mem_wdata := rvfi_mem_wdata
+    rvfi.mem_addr := rvfi_mem_addr
+    rvfi.mem_rmask := rvfi_mem_rmask
+    rvfi.mem_wmask := rvfi_mem_wmask
+    rvfi.mem_rdata := rvfi_mem_rdata
+    rvfi.mem_wdata := rvfi_mem_wdata
   }
 }
 
