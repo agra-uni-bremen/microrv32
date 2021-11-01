@@ -14,11 +14,16 @@ case class RV32CoreConfig(){
   // generate interface for riscv-formal
   var formalInterface = true
   // MUL extension 
-  var generateMultiply = false
+  var generateMultiply = true
   // seperate division flag for MUL extension
   var generateDivide = false
   //
   var hasMULDIV = generateMultiply | generateDivide
+  // check for Zmmul and that divide cannot be built alone
+  assert(
+    assertion = (generateMultiply | (generateDivide & generateMultiply)),
+    message = "Cannot build DIV alone. Zmmul allows for multiplication subset alone (MUL, MULH, MULHU, MULHSU), generateMultiply & !generateDivision."
+  )
   // CSR extension + registers (without it no support for some functions like interrupts)
   var csrExtension = true
   // debug, fsm state output (used for testing, verification and debugging purposes)
