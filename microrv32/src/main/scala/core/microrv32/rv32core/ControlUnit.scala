@@ -222,6 +222,11 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                                 io.aluCtrl.opB := OpBSelect.opReg2Data
                                 io.muldivCtrl.valid := True
                                 goto(stateWriteBack)
+                            }.elsewhen(io.instrFields.funct7 === F7_Z | io.instrFields.funct7 === F7_O){
+                                goto(stateFetch)
+                            }.otherwise{
+                                io.regCtrl.regFileWR := False
+                                goto(stateTrap)
                             }
                         }else{
                             when(io.instrFields.funct7 === F7_Z | io.instrFields.funct7 === F7_O){
