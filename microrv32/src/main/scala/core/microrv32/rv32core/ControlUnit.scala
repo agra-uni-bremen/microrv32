@@ -105,10 +105,7 @@ case class ControlBundle(cfg : RV32CoreConfig) extends Bundle{
     val fetchCtrl = out(FetchControl())
     // alu
     val aluCtrl = ALUCtrl()
-    // if(cfg.generateMultiply | cfg.generateMultiply){
-    //     // muldiv
-    //     val muldivCtrl = MulDivCtrl()
-    // }
+    // muldiv
     val muldivCtrl = if( cfg.generateMultiply | cfg.generateMultiply) MulDivCtrl() else null
     // registerfile
     val regCtrl = out(RegFileControl())
@@ -131,8 +128,6 @@ case class ControlBundle(cfg : RV32CoreConfig) extends Bundle{
 }
 
 class ControlUnit(cfg : RV32CoreConfig) extends Component{
-    val MULDIV : Boolean = cfg.generateMultiply | cfg.generateMultiply
-
     val io = new ControlBundle(cfg)
     
     // default values
@@ -164,7 +159,7 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
     // IO
     io.halted := False
     io.fetchSync := False
-    if(MULDIV){
+    if(cfg.hasMULDIV){
         io.muldivCtrl.valid := False
     }
     
@@ -214,7 +209,7 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                         io.aluCtrl.opB := OpBSelect.opReg2Data
                         io.regCtrl.regFileWR := True
                         io.regCtrl.regDestSel := DestDataSelect.aluRes
-                        if(MULDIV){
+                        if(cfg.hasMULDIV){
                             when(io.instrFields.funct7 === F7_MULDIV){
                                 io.regCtrl.regFileWR := False
                                 io.regCtrl.regDestSel := DestDataSelect.muldivData
@@ -399,7 +394,7 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                     is(isFence){
                         goto(stateFetch)
                     }
-                    if(MULDIV){
+                    if(cfg.hasMULDIV){
                         is(isMulDiv){
                             io.aluCtrl.opA := OpASelect.opReg1Data
                             io.aluCtrl.opB := OpBSelect.opReg2Data
@@ -417,32 +412,6 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                 }
             }
         }
-        // if(MULDIV){
-        // val stateMulDivExec : State = new State{
-        //     whenIsActive{
-        //         when(io.muldivCtrl.ready){
-        //             io.regCtrl.regFileWR := True
-        //             io.regCtrl.regDestSel := DestDataSelect.muldivData
-        //             goto(stateFetch)
-        //         }
-        //     }
-        // }
-        // }
-        // val stateMulDivExec : State = new State{
-        //     whenIsActive{
-        //         if(MULDIV){
-        //             when(io.muldivCtrl.ready){
-        //                 io.regCtrl.regFileWR := True
-        //                 io.regCtrl.regDestSel := DestDataSelect.muldivData
-        //                 goto(stateFetch)
-        //             }
-        //         } else {
-        //             // if we get into this state without M-extension, we halt execution -- instruction not supported if not configured!
-        //             goto(stateHalt)
-        //         }
-                
-        //     }
-        // }
         val stateWriteBack : State = new State{
             whenIsActive{
                 switch(io.instrType){
@@ -483,13 +452,13 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                             }
                         }
                     }
-                    if(MULDIV){
-                    is(isMulDiv){
-                        io.aluCtrl.opA := OpASelect.opReg1Data
-                        io.aluCtrl.opB := OpBSelect.opReg2Data
-                        io.memCtrl.dataEna := False
-                    }
-                    }
+                    // if(cfg.hasMULDIV){
+                    // is(isMulDiv){
+                    //     io.aluCtrl.opA := OpASelect.opReg1Data
+                    //     io.aluCtrl.opB := OpBSelect.opReg2Data
+                    //     io.memCtrl.dataEna := False
+                    // }
+                    // }
                 }
                 when(io.memCtrl.dataRdy & !io.halt){
                     switch(io.instrType){
@@ -500,7 +469,7 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                     }
                     goto(stateFetch)
                 }
-                if(MULDIV){
+                if(cfg.hasMULDIV){
                 when(io.muldivCtrl.ready & !io.halt){
                     io.regCtrl.regFileWR := True
                     io.regCtrl.regDestSel := DestDataSelect.muldivData
@@ -586,11 +555,6 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
             io.dbgState := B"0111"
         }.elsewhen(fsm.isActive(fsm.stateInterrupt)){
             io.dbgState := B"1001"
-        }
-        if(MULDIV){
-            // when(fsm.isActive(fsm.stateMulDivExec)){
-            //     io.dbgState := B"1010"
-            // }
         }
   }
 }

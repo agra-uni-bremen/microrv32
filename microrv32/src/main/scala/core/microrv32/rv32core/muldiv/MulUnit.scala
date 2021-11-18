@@ -15,13 +15,15 @@ class MulUnit extends Component {
     val product = out Bits(64 bits)
     val valid = in Bool
     val ready = out Bool
+    val busy = out Bool
     val operation = in(MulOperation())
   }
   // control unit
   val ctrl = new MulUnitControl()
   ctrl.io.valid := io.valid
   io.ready := ctrl.io.ready
-
+  io.busy := ctrl.io.busy
+  
   // regs
   val op = Reg(MulOperation()) init(MulOperation.mul)
   val mcand = Reg(UInt(33 bits)) init(0)

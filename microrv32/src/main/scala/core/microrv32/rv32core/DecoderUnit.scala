@@ -99,10 +99,18 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
                 iType := InstructionType.isRegReg
             }
             if(cfg.hasMULDIV){
-                when(funct7 === F7_MULDIV){
-                    decoded := True
-                    iType := InstructionType.isRegReg
-                }
+                // if(cfg.generateMultiply){
+                    // when(funct7 === F7_MULDIV & funct3 === F3_MUL_OPERATION){
+                    when(funct7 === F7_MULDIV){
+                        decoded := True
+                        iType := InstructionType.isRegReg
+                    }
+                // } else if(cfg.generateDivide){
+                //     when(funct7 === F7_MULDIV & funct3 === F3_DIV_OPERATION){
+                //         decoded := True
+                //         iType := InstructionType.isRegReg
+                //     }
+                // }
             }
             
         }
@@ -179,14 +187,14 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
             }
         }
         // M - extension, MUL, DIV, REM instructions
-        if(cfg.generateMultiply){
-        is(OP_MULDIV){
-            when(funct7 === F7_MULDIV){
-                decoded := True
-                iType := InstructionType.isMulDiv
-            }
-        }
-        }
+        // if(cfg.generateMultiply){
+        // is(OP_MULDIV){
+        //     when(funct7 === F7_MULDIV){
+        //         decoded := True
+        //         iType := InstructionType.isMulDiv
+        //     }
+        // }
+        // }
         is(OP_ZEROS){
             decoded := False
             iType := InstructionType.isIllegal

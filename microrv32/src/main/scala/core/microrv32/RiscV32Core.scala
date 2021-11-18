@@ -12,16 +12,16 @@ case class RV32CoreConfig(){
   // initial value of the programcounter
   var startVector = 0x80000000l
   // generate interface for riscv-formal
-  var formalInterface = true
+  var formalInterface = false
   // MUL extension 
   var generateMultiply = true
   // seperate division flag for MUL extension
-  var generateDivide = false
+  var generateDivide = true
   //
   var hasMULDIV = generateMultiply | generateDivide
   // check for Zmmul and that divide cannot be built alone
   assert(
-    assertion = (generateMultiply | (generateDivide & generateMultiply)),
+    assertion = (generateMultiply | (generateMultiply & generateDivide) | (!generateMultiply & !generateDivide)),
     message = "Cannot build DIV alone. Zmmul allows for multiplication subset alone (MUL, MULH, MULHU, MULHSU), generateMultiply & !generateDivision."
   )
   // CSR extension + registers (without it no support for some functions like interrupts)
@@ -229,12 +229,11 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   )
   ctrlLogic.io.aluCtrl.aluBranch := alu.io.output_bool
   
-  val MULDIV_EXTENSION : Boolean = cfg.generateMultiply | cfg.generateDivide 
-  val muldiv = if(MULDIV_EXTENSION) new MulDivUnit(cfg) else null
-  val muldivResult = Bits(32 bits)
+  val muldiv = if(cfg.hasMULDIV) new MulDivUnit(cfg) else null
+  val muldivResult =  Bits(32 bits)
   val muldivReady = Bool
   val muldivBusy = Bool
-  if(MULDIV_EXTENSION){
+  if(cfg.hasMULDIV){
     muldiv.io.rs1Data := regs.io.rs1Data
     muldiv.io.rs2Data := regs.io.rs2Data
     muldivResult := muldiv.io.destinationData

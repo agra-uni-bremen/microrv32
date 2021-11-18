@@ -2,7 +2,7 @@ package core.microrv32
 
 import spinal.core._
 /*
- * Constants and Masks and Enum definitions for CSR extension
+ * Constants and Masks and Enum definitions for M/Zmul extension
  */
 object MULDIVOpcode{
   // for RV32 Zicsr Extension (CSR)
@@ -11,6 +11,12 @@ object MULDIVOpcode{
   // derived from https://github.com/riscv/riscv-opcodes/blob/master/opcodes-rv32i
   def OP_MULDIV = M"0110011"
   
+  // DECODE MASKS
+  def F3_MUL_OPERATION = M"0--"
+  def F3_DIV_OPERATION = M"1--"
+  def F3_DIV_DIVU = M"10-"
+  def F3_REM_REMU = M"11-"
+
   // MUL
   def F3_MUL    = M"000"
   def F3_MULH   = M"001"
