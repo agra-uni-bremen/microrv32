@@ -5,10 +5,9 @@ import spinal.sim._
 import spinal.core.sim._
 
 import scala.util.Random
-import javax.net.ssl.TrustManager
 
-
-//MulUnit's testbench
+// Testbench generates (unconstrained) random numbers and applies them to the unit for each available operation
+// Using N as the test count. Simulate without wavetrace generation for faster simulation speeds.
 object MulUnitSim {
   def main(args: Array[String]) {
     SimConfig.doSim(new MulUnitTBTop){dut =>

@@ -106,7 +106,7 @@ case class ControlBundle(cfg : RV32CoreConfig) extends Bundle{
     // alu
     val aluCtrl = ALUCtrl()
     // muldiv
-    val muldivCtrl = if( cfg.generateMultiply | cfg.generateMultiply) MulDivCtrl() else null
+    val muldivCtrl = if(cfg.hasMULDIV) MulDivCtrl() else null
     // registerfile
     val regCtrl = out(RegFileControl())
     // csr
@@ -210,6 +210,7 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                         io.regCtrl.regFileWR := True
                         io.regCtrl.regDestSel := DestDataSelect.aluRes
                         if(cfg.hasMULDIV){
+                            // check for muldiv first, then for rv32i reg reg operation, then default case
                             when(io.instrFields.funct7 === F7_MULDIV){
                                 io.regCtrl.regFileWR := False
                                 io.regCtrl.regDestSel := DestDataSelect.muldivData
@@ -393,15 +394,6 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                     }
                     is(isFence){
                         goto(stateFetch)
-                    }
-                    if(cfg.hasMULDIV){
-                        is(isMulDiv){
-                            io.aluCtrl.opA := OpASelect.opReg1Data
-                            io.aluCtrl.opB := OpBSelect.opReg2Data
-                            io.muldivCtrl.valid := True
-                            goto(stateWriteBack)
-                            // goto(stateMulDivExec)
-                        }
                     }
                     is(isIllegal){
                         goto(stateTrap)

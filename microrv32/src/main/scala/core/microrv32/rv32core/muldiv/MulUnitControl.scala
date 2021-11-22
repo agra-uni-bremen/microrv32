@@ -4,7 +4,11 @@ import spinal.core._
 import spinal.lib._
 import spinal.lib.fsm._
 
-//Hardware definition
+/*
+* Control unit of the multiplication unit
+* This unit controls the multiplication sequence of the multiplication unit.
+* It checks for the LSB of the multiplier and directs the data path to add 0 or the multiplicand.
+*/
 class MulUnitControl extends Component {
   val io = new Bundle {
     val multiplierLSB = in Bits(1 bits)
@@ -15,7 +19,13 @@ class MulUnitControl extends Component {
     val ready = out Bool
     val busy = out Bool
   }
-
+  /* 
+  * state machine 
+  *   waits in idle for activation, 
+  *   initializes registers in initialize, 
+  *   calculates in mul 
+  *   and outputs result in done
+  */
   val controlFSM = new StateMachine{
     val mulCounter = Counter(0 to 31)
     val busyFlag = Reg(Bool) init(False)

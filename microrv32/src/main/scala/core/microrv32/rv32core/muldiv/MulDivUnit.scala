@@ -6,6 +6,16 @@ import spinal.lib._
 import core.microrv32.RV32CoreConfig
 import core.microrv32.MULDIVOpcode._
 
+/*
+* MulDivUnit
+* Takes rs1 and rs2 data words, a three bit operation and control signals
+* to produce a corresponding result data word (to be saved in a destination register).
+* In this unit the multiplication and division unit are intantiated based on 
+* the passed RV32 configuration.
+* As there is two cases (mul alone and mul+div) the output has to be handled for different cases.
+* This is currently done via switch case multiplexing as it allowes for scala-If statements to be used
+* to add more case statements for the configurations.
+*/
 class MulDivUnit(cfg : RV32CoreConfig) extends Component {
     val io = new Bundle{
         val rs1Data = in Bits(32 bits)
@@ -16,7 +26,9 @@ class MulDivUnit(cfg : RV32CoreConfig) extends Component {
         val ready = out Bool()
         val busy = out Bool()
     }
+    // MulDivUnit only is built if cfg.generateMultiply is true so no need to check this
     val mulUnit = new MulUnit()
+    // only generate the divUnit if the configuration says so
     val divUnit = if(cfg.generateDivide) new DivUnit() else null
     if(cfg.generateMultiply) {
         mulUnit.io.multiplicand := io.rs1Data
@@ -54,6 +66,8 @@ class MulDivUnit(cfg : RV32CoreConfig) extends Component {
                 io.ready := mulUnit.io.ready
                 io.busy := mulUnit.io.busy
             }
+            // only check for the other outputs on activated division unit, 
+            // by default they would produce nothing on the outputs
             if(cfg.generateDivide) {
             is(F3_DIV_DIVU){
                 io.destinationData := divUnit.io.quotient

@@ -3,6 +3,13 @@ package core.microrv32.rv32core.muldiv
 import spinal.core._
 import spinal.lib._
 
+/*
+* An additional top level unit is needed for the division unit
+* to input signed and unsigned numbers independently (but not in parallel)
+* to the unit from the simulaiton front end (as its using Scala there for the types)
+* As the transformation between the typing systems (especially with signed/unsigned -> bits)
+* is annoying to deal with. A top level with seperate input types is easier for the simulation.
+*/ 
 class DivUnitTBTop extends Component {
   val io = new Bundle {
     val dividend = in SInt (32 bits)

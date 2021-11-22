@@ -6,7 +6,8 @@ import spinal.core.sim._
 
 import scala.util.Random
 
-//DivUnit's testbench
+// Testbench generates (unconstrained) random numbers and applies them to the unit for each available operation
+// Using N as the test count. Simulate without wavetrace generation for faster simulation speeds.
 object DivUnitSim {
   def main(args: Array[String]) {
     SimConfig.doSim(new DivUnitTBTop) { dut =>

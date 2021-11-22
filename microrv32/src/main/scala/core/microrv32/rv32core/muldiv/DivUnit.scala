@@ -8,7 +8,18 @@ object DivOperation extends SpinalEnum {
   val div, divu, rem, remu = newElement()
 }
 
-//Hardware definition
+/*
+* Division unit
+* Takes divisor, dividend and operation (to distinguish signed and unsigned operations)
+* next to control signals to generate the quotient and remainder of the divisor and dividend.
+* This division unit works on fixed 32 bit width and is meant for the use in 
+* RISC-V, as the corner cases/exception handling is done as specified in the 
+* RISC-V specification.
+* The division unit implements a unsigned integer division algorithm which produces
+* both quotient and remainder at the same time and calculates the bits sequentially.
+* For sign handling some additional pre- and post-processing of sign bits and representations
+* are done.
+*/
 class DivUnit extends Component {
   val io = new Bundle {
     val divisor = in Bits(32 bits)
@@ -20,6 +31,33 @@ class DivUnit extends Component {
     val busy = out Bool()
     val operation = in(DivOperation())
   }
+  /*
+  * For the long division there are many algorithms available.
+  *
+  * Divide N(umerator) by D(enominator), placing quotient in Q, remainder in R,
+  * Equation holds 
+  *     Dividend = Quotient * Divisor + Remainder
+  *     or
+  *     Numerator = Quotient * Denominator + Remainder
+  * See the https://en.wikipedia.org/wiki/Division_algorithm#Integer_division_(unsigned)_with_remainder
+  * 
+  * if D = 0 then error(DivisionByZeroException) end
+  * Q := 0                  -- Initialize quotient and remainder to zero
+  * R := 0                     
+  * for i := n − 1 .. 0 do  -- Where n is number of bits in N
+  *   R := R << 1           -- Left-shift R by 1 bit
+  *   R(0) := N(i)          -- Set the least-significant bit of R equal to bit i of the numerator
+  *   if R >= D then
+  *     R := R − D
+  *     Q(i) := 1
+  *   end
+  * end
+  * 
+  * This division algorithm generates one remainder/quotient bit per cycle. 
+  * Thus taking 32 cycles for the calculation alone. 
+  * Exceptions are calculated faster (divison by zero and overflow cases).
+  */
+
   // control unit
   val ctrl = new DivUnitControl()
   ctrl.io.valid := io.valid
@@ -70,6 +108,8 @@ class DivUnit extends Component {
       quotientReg := U(0, 32 bits)
       op := io.operation
     }.elsewhen(ctrl.io.setCornerValues){
+      // handle exception cases defined by the RISC-V specification
+      // division by zero
       when(isDivisionByZero){
         when(isSignedOperation){
           quotientReg := S(-1, 32 bits).asUInt
@@ -79,14 +119,17 @@ class DivUnit extends Component {
           remainderReg := io.dividend.asUInt
         }
       }.elsewhen(isOverflow){
+        // overflow case 
         quotientReg := S((-Math.pow(2,32-1).toLong), 32 bits).asUInt
         remainderReg := U(0, 32 bits)
       }
     }.elsewhen(ctrl.io.calculate) {
+      // if(R>=D) save the difference with D, else just the non-conditional steps
       remainderReg := RgtD.mux[UInt](
         True -> tmpRem2,
         False -> tmpRem1
       )
+      // also set the quotient bit to 1 for that iteration step/bit
       when(RgtD){
         // quotientReg := tmpQuo1
         quotientReg(ctrl.io.iterationBit) := True
@@ -94,7 +137,15 @@ class DivUnit extends Component {
     }
   }
 
+  // additional pre and post sign handling for operations using signed values
   val signHandling = new Area {
+    /*
+    * Signs are produced by these cases
+    * N(+) : D(+) = Q(+), R(+)
+    * N(+) : D(-) = Q(-), R(+)
+    * N(-) : D(+) = Q(-), R(-)
+    * N(-) : D(-) = Q(+), R(-)
+    */
     val quotientSign = Reg(Bits(1 bits)) init (0)
     val remainderSign = Reg(Bits(1 bits)) init (0)
     val dividendSign = io.dividend(31 downto 31)

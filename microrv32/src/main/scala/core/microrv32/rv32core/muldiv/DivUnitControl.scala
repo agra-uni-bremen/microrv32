@@ -4,7 +4,14 @@ import spinal.core._
 import spinal.lib._
 import spinal.lib.fsm._
 
-//Hardware definition
+/*
+* Control unit of the division unit.
+* This unit controls the division sequence of the division unit.
+* As a shortcut (as its expected to be optimized by the synthesis) the condition R>=D
+* is not passed into the control unit (as it directly would mux/choose the case for setting bits/subtracting).
+* Instead the control unit can direct the datapath to calculate for 31 steps, or set the exception values for 
+* overflow and division by zero. 
+*/
 class DivUnitControl extends Component {
   val io = new Bundle {
     val loadValues = out Bool()
@@ -16,7 +23,14 @@ class DivUnitControl extends Component {
     val ready = out Bool()
     val busy = out Bool()
   }
-
+  /* 
+  * state machine 
+  *   waits in idle for activation, 
+  *   initializes registers in initialize, 
+  *   sets exception values in cornercase
+  *   calculates in div 
+  *   and outputs result in done
+  */
   val controlFSM = new StateMachine {
     val busyFlag = Reg(Bool) init(False)
     val divCounter = Reg(UInt(5 bits)) init(31)
@@ -54,11 +68,6 @@ class DivUnitControl extends Component {
             goto(stateDone)
         }
     }
-    // val stateDiv : State = new StateFsm(fsm=calcFSM()){
-    //     whenCompleted{
-    //         goto(stateDone)
-    //     }
-    // }
     val stateDiv : State = new State {
         whenIsActive{
             io.calculate := True
@@ -77,20 +86,5 @@ class DivUnitControl extends Component {
             goto(stateIdle)
         }
     }
-
-    // def calcFSM() = new StateMachine {
-    //     val divCounter = Reg(UInt(5 bits)) init(31)
-    //     val calculateState : State = new State with EntryPoint {
-    //         whenIsActive{
-    //             io.calculate := True
-    //             io.iterationBit := divCounter
-    //             when(divCounter === 0){
-    //                 exit()
-    //             }.otherwise{
-    //                 divCounter := divCounter - 1
-    //             }
-    //         }
-    //     }
-    // }
   }
 }
