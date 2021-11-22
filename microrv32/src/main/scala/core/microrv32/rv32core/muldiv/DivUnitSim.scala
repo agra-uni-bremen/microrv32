@@ -66,12 +66,14 @@ object DivUnitSim {
       // printf(
       //   "test# \t\t a * b\t\t\t=>\texpected: a*b \t\t\tretrieved: io.result\n"
       // )
-      var N = 30 // number of random test cases for each test
+      var N = 20000 // number of random test cases for each test
+      var aliveN = 5000
       printf("Starting random test (unconstrained) with N = %d per Test @SimTime= %d\n", N, simTime())
       println("START: DIV/REM Test (Signed / Signed)")
       for (idx <- 0 to N) {
         a = RndNextSInt32().toLong
         b = RndNextSInt32().toLong
+        if(idx%aliveN == 0) printf("ALIVE: Test %d of %d (%f %%)\n", idx, N, (idx.toFloat/N.toFloat)*100.0 )
         // printf("a = %d (%X), b = %d (%X), expect: div = %d (%X), rem = %d (%X)\n", a,a,b,b,(a/b),(a/b),(a%b),(a%b))
         applyDIVTestCase(a, b)
         waitUntil(dut.io.ready.toBoolean)
@@ -116,7 +118,8 @@ object DivUnitSim {
       for (idx <- 0 to N) {
         a = RndNextUInt32().toLong
         b = RndNextUInt32().toLong
-        // printf("a = %d (%X), b = %d (%X), expect: div = %d (%X), rem = %d (%X)\n", a,a,b,b,(a/b),(a/b),(a%b),(a%b))
+        if(idx%aliveN == 0) printf("ALIVE: Test %d of %d (%f %%)\n", idx, N, (idx.toFloat/N.toFloat)*100.0 )
+        // if(idx%aliveN == 0) printf("ALIVE: Test %d of %d", idx, N)        // printf("a = %d (%X), b = %d (%X), expect: div = %d (%X), rem = %d (%X)\n", a,a,b,b,(a/b),(a/b),(a%b),(a%b))
         applyDIVTestCase(a, b)
         waitUntil(dut.io.ready.toBoolean)
         if (b != 0) {

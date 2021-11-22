@@ -12,12 +12,11 @@ case class RV32CoreConfig(){
   // initial value of the programcounter
   var startVector = 0x80000000l
   // generate interface for riscv-formal
-  var formalInterface = false
+  var formalInterface = true
   // MUL extension 
   var generateMultiply = true
   // seperate division flag for MUL extension
   var generateDivide = true
-  //
   var hasMULDIV = generateMultiply | generateDivide
   // check for Zmmul and that divide cannot be built alone
   assert(
@@ -110,6 +109,9 @@ case class MemoryIF() extends Bundle{
 }
 
 case class RVFI() extends Bundle{
+  /*
+  * riscv-formal interface for formal verification
+  */
   val order = out UInt(64 bits)
   val insn = out Bits(32 bits)
   val trap = out Bool 
@@ -139,6 +141,10 @@ case class RVFI() extends Bundle{
 }
 
 case class CoreIO(formal : Boolean = false) extends Bundle{
+  /*
+  * Top level core interface, with interrupt, 
+  * memory access inteface and debugging IO lines.
+  */
   // memory bus access
   val memIF = MemoryIF()
   // cpu halted through ecall
