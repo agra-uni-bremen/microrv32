@@ -1,0 +1,27 @@
+[tasks]
+bmc
+prove
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 8
+prove: mode prove
+prove: depth 8
+cover: mode cover
+cover: depth 8
+
+[engines]
+smtbmc
+smtbmc z3 
+smtbmc boolector
+
+[script]
+read_verilog -formal Formal_Proof_Module_Wrapper.sv
+prep -top Formal_Proof_Module_Wrapper
+
+[files]
+Formal_Proof_Module_Wrapper.sv
+Formal_Proof_Module.sv
+RiscV32Core.v
+RiscV32Core.v_toplevel_regs_regFile.bin

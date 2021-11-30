@@ -1,0 +1,9 @@
+Elapsed clock time [H:MM:SS (secs)]: 0:00:42 (42)
+Elapsed process time [H:MM:SS (secs)]: 0:00:50 (50)
+engine_2 (smtbmc boolector) returned pass
+trace: FullProof_cover/engine_2/trace0.vcd
+trace: FullProof_cover/engine_2/trace1.vcd
+trace: FullProof_cover/engine_2/trace2.vcd
+trace: FullProof_cover/engine_2/trace3.vcd
+trace: FullProof_cover/engine_2/trace4.vcd
+and 33 further traces

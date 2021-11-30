@@ -14,9 +14,9 @@ case class RV32CoreConfig(){
   // generate interface for riscv-formal
   var formalInterface = true
   // MUL extension 
-  var generateMultiply = true
+  var generateMultiply = false
   // seperate division flag for MUL extension
-  var generateDivide = true
+  var generateDivide = false
   var hasMULDIV = generateMultiply | generateDivide
   // check for Zmmul and that divide cannot be built alone
   assert(
@@ -140,6 +140,20 @@ case class RVFI() extends Bundle{
   val halt = out Bool
 }
 
+// Milan:
+case class STATE() extends Bundle{
+  val pc = out UInt(32 bits)
+  val regs = out Bits(32 * 32 bits)
+  val fetch = out Bool
+}
+// Milan:
+case class CSR() extends Bundle{
+  val mtvec = out Bits(32 bits)
+  val mepc  = out Bits(32 bits)
+  val mcause = out Bits(32 bits)
+  val mtval = out Bits(32 bits)
+}
+
 case class CoreIO(formal : Boolean = false) extends Bundle{
   /*
   * Top level core interface, with interrupt, 
@@ -172,6 +186,9 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   val io = new CoreIO(cfg.formalInterface)
 
   val rvfi = if(cfg.formalInterface) RVFI() else null
+  // Milan:
+  val state = if(cfg.formalInterface) STATE() else null
+  val csr = if(cfg.formalInterface) CSR() else null
 
   val programCounter = Reg(UInt(32 bits)) init(U(cfg.startVector, 32 bits))
   val pcValMux = UInt(32 bits)
@@ -210,7 +227,8 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
 
   // registerfile with 32-bit datawidth
   // and 5-bit addresswidth
-  val regs = new RV32RegisterFile(5, 32, 32)
+  val regs = new RV32RegisterFileFPMI(5, 32, 32, cfg.formalInterface) // Milan
+
   regs.io.rs1 := decoder.io.fields.src1.asUInt
   regs.io.rs2 := decoder.io.fields.src2.asUInt
   regs.io.wrEna := ctrlLogic.io.regCtrl.regFileWR
@@ -610,6 +628,7 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
 
     // valid + insn
     when(io.dbgState === 1){
+      rvfi_mem_addr := 0
       rvfi_mem_wdata := 0
       rvfi_mem_rdata := 0
       rvfi_mem_rmask := 0
@@ -650,22 +669,16 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
       rvfi.pc_wdata := rvfi_pc_rdata
     }
 
-    // Mem
-    when(io.memIF.DMem.dataReady){
+    // Mem Writeback // Milan: Änderung
+    when(io.memIF.DMem.dataReady & io.dbgState === 4){
       rvfi_mem_addr := io.memIF.DMem.address
-      // when(io.sb.SBwrite){
       when(io.memIF.DMem.readWrite){
         rvfi_mem_wdata := io.memIF.DMem.writeData
-      }
-      when(io.memIF.DMem.readWrite){
         rvfi_mem_wmask := io.memIF.DMem.wrStrobe
       }.otherwise{
+        rvfi_mem_rdata := io.memIF.DMem.readData
         rvfi_mem_rmask := io.memIF.DMem.wrStrobe
       }
-    }
-    // Mem Writeback
-    when(io.memIF.DMem.dataReady & io.dbgState === 4){
-      rvfi_mem_rdata := io.memIF.DMem.readData
     }
     // Regs
     when(io.dbgState === 1){
@@ -715,6 +728,17 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     rvfi.mem_wmask := rvfi_mem_wmask
     rvfi.mem_rdata := rvfi_mem_rdata
     rvfi.mem_wdata := rvfi_mem_wdata
+
+    // State für FPMI
+    state.pc := programCounter
+    state.regs := regs.io.regs_o
+    state.fetch := (io.dbgState === 1)
+
+    // CSR für FPMI
+    csr.mtvec := CSRLogic.mtvec
+    csr.mepc := CSRLogic.mepc 
+    csr.mcause := CSRLogic.mcause
+    csr.mtval := CSRLogic.mtval
   }
 }
 
@@ -735,6 +759,17 @@ object RVFICore {
     SpinalConfig(
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
       targetDirectory = "rtl/rvfi"
+      ).generateVerilog(new RiscV32Core(RV32CoreConfig()))
+      .printPruned()
+  }
+}
+
+//Generate the Top Verilog for FPMI Interface
+object FPMICore {
+  def main(args: Array[String]) {
+    SpinalConfig(
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+      targetDirectory = "pm"
       ).generateVerilog(new RiscV32Core(RV32CoreConfig()))
       .printPruned()
   }

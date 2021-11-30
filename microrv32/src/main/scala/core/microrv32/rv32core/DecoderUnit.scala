@@ -94,7 +94,7 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
     // FIXME test if making two switch statements, one for iType and one for immediate, reduces generated verilog?
     switch(opcode){
         is(OP_REGREG){
-            when(funct7 === F7_Z | funct7 === F7_O){
+            when((funct7 === F7_Z) | (funct7 === F7_O && (funct3 === F3_SUB || funct3 === F3_SRA))){ // Milan: Fehler!
                 decoded := True
                 iType := InstructionType.isRegReg
             }
@@ -115,24 +115,32 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
             
         }
         is(OP_REGIMM){
-            decoded := True
-            iType := InstructionType.isRegImm        
-            immediate := extender.io.i_imm
+            when((funct3 =/= 1  && funct3 =/= 5) || (funct3 === 1 && funct7 === F7_Z) || (funct3 === 5 && (funct7 === F7_Z || funct7 === F7_O))){ // Milan: Fehler!
+                decoded := True
+                iType := InstructionType.isRegImm        
+                immediate := extender.io.i_imm
+            }
         }
         is(OP_BRANCH){
-            decoded := True
-            iType := InstructionType.isBranch
-            immediate := extender.io.b_imm
+            when(funct3 =/= 2 && funct3 =/= 3){ // Milan: Fehler!
+                decoded := True
+                iType := InstructionType.isBranch
+                immediate := extender.io.b_imm
+            }
         }
         is(OP_LOAD){
-            decoded := True
-            iType := InstructionType.isLoad
-            immediate := extender.io.i_imm
+            when(funct3 === F3_LB || funct3 === F3_LH || funct3 === F3_LW || funct3 === F3_LBU || funct3 === F3_LHU){ // Milan: Fehler!
+                decoded := True
+                iType := InstructionType.isLoad
+                immediate := extender.io.i_imm
+            }
         }
         is(OP_STORE){
-            decoded := True
-            iType := InstructionType.isStore
-            immediate := extender.io.s_imm
+            when(funct3 === F3_SB || funct3 === F3_SH || funct3 === F3_SW){ // Milan: Fehler!
+                decoded := True
+                iType := InstructionType.isStore
+                immediate := extender.io.s_imm
+            }
         }
         is(OP_LUI){
             decoded := True
@@ -150,13 +158,17 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
             immediate := extender.io.j_imm
         }
         is(OP_JALR){
-            decoded := True
-            iType := InstructionType.isCT_JALR
-            immediate := extender.io.i_imm
+            when(funct3 === F3_JALR){ // Milan: Fehler!
+                decoded := True
+                iType := InstructionType.isCT_JALR
+                immediate := extender.io.i_imm
+            }
         }
         is(OP_FENCE){
-            decoded := True
-            iType := InstructionType.isFence
+            when(funct3 === F3_FENCE){   // Milan: Fehler!
+                decoded := True
+                iType := InstructionType.isFence
+            }
         }
         is(OP_ECALL,OP_CSR){
             when(funct12 === F12_ECALL & source1 === 0 & funct3 === 0 & destination === 0){
