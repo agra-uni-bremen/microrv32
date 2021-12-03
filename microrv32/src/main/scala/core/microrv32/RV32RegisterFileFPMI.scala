@@ -38,39 +38,9 @@ class RV32RegisterFileFPMI(addressWidth : Int = 5, dataWidth : Int = 32, wordCou
     regFile.write(io.rd,io.rdData)
   }
   if(fpmi){
-    // io.regs_o := 0
-    io.regs_o(dataWidth - 1  downto 0) := regFile(U"00000")
-    io.regs_o(dataWidth * 2 - 1  downto dataWidth) := regFile(U"00001")
-    io.regs_o(dataWidth * 3 - 1  downto dataWidth* 2) := regFile(U"00010")
-    io.regs_o(dataWidth * 4 - 1  downto dataWidth* 3) := regFile(U"00011")
-    io.regs_o(dataWidth * 5 - 1  downto dataWidth* 4) := regFile(U"00100")
-    io.regs_o(dataWidth * 6 - 1  downto dataWidth* 5) := regFile(U"00101")
-    io.regs_o(dataWidth * 7 - 1  downto dataWidth* 6) := regFile(U"00110")
-    io.regs_o(dataWidth * 8 - 1  downto dataWidth* 7) := regFile(U"00111")
-    io.regs_o(dataWidth * 9 - 1  downto dataWidth* 8) := regFile(U"01000")
-    io.regs_o(dataWidth * 10 - 1  downto dataWidth* 9) := regFile(U"01001")
-    io.regs_o(dataWidth * 11 - 1  downto dataWidth* 10) := regFile(U"01010")
-    io.regs_o(dataWidth * 12 - 1  downto dataWidth* 11) := regFile(U"01011")
-    io.regs_o(dataWidth * 13 - 1  downto dataWidth* 12) := regFile(U"01100")
-    io.regs_o(dataWidth * 14 - 1  downto dataWidth* 13) := regFile(U"01101")
-    io.regs_o(dataWidth * 15 - 1  downto dataWidth* 14) := regFile(U"01110")
-    io.regs_o(dataWidth * 16 - 1  downto dataWidth* 15) := regFile(U"01111")
-    io.regs_o(dataWidth * 17 - 1  downto dataWidth* 16) := regFile(U"10000")
-    io.regs_o(dataWidth * 18 - 1  downto dataWidth* 17) := regFile(U"10001")
-    io.regs_o(dataWidth * 19 - 1  downto dataWidth* 18) := regFile(U"10010")
-    io.regs_o(dataWidth * 20 - 1  downto dataWidth* 19) := regFile(U"10011")
-    io.regs_o(dataWidth * 21 - 1  downto dataWidth* 20) := regFile(U"10100")
-    io.regs_o(dataWidth * 22 - 1  downto dataWidth* 21) := regFile(U"10101")
-    io.regs_o(dataWidth * 23 - 1  downto dataWidth* 22) := regFile(U"10110")
-    io.regs_o(dataWidth * 24 - 1  downto dataWidth* 23) := regFile(U"10111")
-    io.regs_o(dataWidth * 25 - 1  downto dataWidth* 24) := regFile(U"11000")
-    io.regs_o(dataWidth * 26 - 1  downto dataWidth* 25) := regFile(U"11001")
-    io.regs_o(dataWidth * 27 - 1  downto dataWidth* 26) := regFile(U"11010")
-    io.regs_o(dataWidth * 28 - 1  downto dataWidth* 27) := regFile(U"11011")
-    io.regs_o(dataWidth * 29 - 1  downto dataWidth* 28) := regFile(U"11100")
-    io.regs_o(dataWidth * 30 - 1  downto dataWidth* 29) := regFile(U"11101")
-    io.regs_o(dataWidth * 31 - 1  downto dataWidth* 30) := regFile(U"11110")
-    io.regs_o(dataWidth * 32 - 1  downto dataWidth* 31) := regFile(U"11111")
+    for(i <- 1 to wordCount){
+      io.regs_o((dataWidth * i - 1)  downto (dataWidth* (i-1))) := regFile(U(i - 1, addressWidth bits))
+    }
   }
 }
 
