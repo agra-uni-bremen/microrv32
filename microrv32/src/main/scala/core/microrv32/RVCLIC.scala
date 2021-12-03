@@ -1,7 +1,7 @@
 package core.microrv32
 
 import spinal.core._
-import core.microrv32.SimpleBus
+// import core.microrv32.SimpleBus
 import spinal.lib.slave
 
 /*
@@ -27,9 +27,9 @@ import spinal.lib.slave
 */
 class RVCLIC() extends Component{
     val io = new Bundle{
-        val irq = out Bool // replace by bundle with timer, swirq (and external irq)?
+        val irq = out Bool() // replace by bundle with timer, swirq (and external irq)?
         val sb = slave(SimpleBus(32,32))
-        val sel = in Bool
+        val sel = in Bool()
     }
     val MTIME_BASE = U"xbff8" // 0xbff8
     val MTIMECMP_BASE = U"x4000" // 0x4000

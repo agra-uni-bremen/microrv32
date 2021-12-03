@@ -17,8 +17,8 @@ class MulUnitTBTop extends Component{
     val multiplicandU = in UInt(32 bits)
     val multiplierU = in UInt(32 bits)
     val product = out SInt(64 bits)
-    val valid = in Bool
-    val ready = out Bool
+    val valid = in Bool()
+    val ready = out Bool()
     val operation = in(MulOperation())
   }
   val mulUnit = new MulUnit()

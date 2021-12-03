@@ -14,7 +14,7 @@ class RV32RegisterFile(addressWidth : Int, dataWidth : Int, wordCount : Int) ext
     val rs2 = in UInt(addressWidth bits)
     val rs1Data = out Bits(dataWidth bits)
     val rs2Data = out Bits(dataWidth bits)
-    val wrEna = in Bool
+    val wrEna = in Bool()
     val rd = in UInt(addressWidth bits)
     val rdData = in Bits(dataWidth bits)
   }

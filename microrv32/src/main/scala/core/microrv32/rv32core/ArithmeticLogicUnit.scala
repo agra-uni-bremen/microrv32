@@ -17,7 +17,7 @@ case class ALUBundle() extends Bundle{
     val opB = in Bits(32 bits)
     val operation = in(ALUInstruction())
     val output = out Bits(32 bits)
-    val output_bool = out Bool
+    val output_bool = out Bool()
 }
 
 class ArithmeticLogicUnit() extends Component{

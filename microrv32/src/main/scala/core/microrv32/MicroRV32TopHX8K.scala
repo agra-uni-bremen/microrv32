@@ -24,8 +24,8 @@ class MicroRV32TopHX8K(initHexfile:String) extends Component {
   val io = new Bundle {
     // clock and reset through spinalhdl
     val gpioLed = out Bits(8 bits)
-    val cpuFetch = out Bool
-    val cpuHalted = out Bool
+    val cpuFetch = out Bool()
+    val cpuHalted = out Bool()
     val cpuDbgState = out Bits(4 bits)
     val dbgBus = out Bits(16 bits)
     // val dbgClk = out Bool

@@ -13,7 +13,7 @@ import spinal.lib.slave
 class Memory(memoryWidth : Bits, wordCount : Int, initFile : String) extends Component {
   val io = new Bundle {
     val sb = slave(SimpleBus(32,32))
-    val sel = in Bool
+    val sel = in Bool()
   }
 
   // memory primitive

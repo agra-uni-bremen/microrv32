@@ -12,12 +12,12 @@ import spinal.lib.fsm._
 class MulUnitControl extends Component {
   val io = new Bundle {
     val multiplierLSB = in Bits(1 bits)
-    val addMultiplicand = out Bool
-    val loadValues = out Bool
-    val calculate = out Bool
-    val valid = in Bool
-    val ready = out Bool
-    val busy = out Bool
+    val addMultiplicand = out Bool()
+    val loadValues = out Bool()
+    val calculate = out Bool()
+    val valid = in Bool()
+    val ready = out Bool()
+    val busy = out Bool()
   }
   /* 
   * state machine 

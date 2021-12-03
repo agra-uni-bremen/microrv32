@@ -16,10 +16,10 @@ class RV32RegisterFileFPMI(addressWidth : Int = 5, dataWidth : Int = 32, wordCou
     val rs2 = in UInt(addressWidth bits)
     val rs1Data = out Bits(dataWidth bits)
     val rs2Data = out Bits(dataWidth bits)
-    val wrEna = in Bool
+    val wrEna = in Bool()
     val rd = in UInt(addressWidth bits)
     val rdData = in Bits(dataWidth bits)
-    val regs_o = out Bits(dataWidth * wordCount bits) // hier noch abhängig von fpmi generieren?!
+    val regs_o = if(fpmi) out Bits(dataWidth * wordCount bits) else null
   }
 
   val regFile = new Mem(Bits(dataWidth bits),wordCount)
@@ -72,62 +72,6 @@ class RV32RegisterFileFPMI(addressWidth : Int = 5, dataWidth : Int = 32, wordCou
     io.regs_o(dataWidth * 31 - 1  downto dataWidth* 30) := regFile(U"11110")
     io.regs_o(dataWidth * 32 - 1  downto dataWidth* 31) := regFile(U"11111")
   }
-
-  /* // Formal Stuff
-  GenerationFlags.formal {
-    assumeInitial(clockDomain.isResetActive)
-    // Generic Register for Verification
-    val f_address = UInt(addressWidth bits)
-    f_address.addAttribute("anyconst")
-    val f_reg = Reg(Bits(dataWidth bits))
-    assumeInitial(f_reg === 0)
-
-    // Test
-    /*
-    val f_regPast = Reg(Bool)
-    f_regPast := past(f_reg,2) === f_reg
-    */
-
-    // Always
-    ClockDomain.current.withoutReset(){
-      // Synchronize Generic Register
-      when(io.rd === f_address & io.wrEna & f_address =/= 0){
-        f_reg := io.rdData
-      }
-      // Asserts
-      when(io.rs1 === f_address){
-        assert(io.rs1Data === f_reg)
-      }
-      when(io.rs2 === f_address){
-        assert(io.rs2Data === f_reg)
-      }
-      when(f_address === 0){
-        assert(f_reg === 0)
-      }
-      // Test
-      /*
-      when(f_regPast){
-        assert(!io.wrEna)
-      }
-      */
-
-      // Full proof requires direct insight into the actual register:
-      if(unplugged){
-        assert(f_reg === regFile(f_address))
-      }
-    }
-
-    // Reset-State
-    /*
-    ClockDomain.current.duringReset {
-    }
-    */
-    // Non-ResetState
-
-    // cover statements
-    //cover(f_reg =/= 0 & io.rs1Data === f_reg)
-  }
-  */
 }
 
 //Generate the Top Verilog

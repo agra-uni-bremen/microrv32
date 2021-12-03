@@ -67,6 +67,7 @@ object RVOpcode{
   def F3_AND  = M"111"
 
   def F3_FENCE = M"000"
+  def F3_FENCE_I = M"001"
 
   def F7_Z = M"0000000"
   def F7_O = M"0100000"

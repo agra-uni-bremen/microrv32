@@ -12,11 +12,13 @@ case class RV32CoreConfig(){
   // initial value of the programcounter
   var startVector = 0x80000000l
   // generate interface for riscv-formal
-  var formalInterface = true
+  var formalInterface = false
+  var fpmi = false
+  var hasFormal = formalInterface | fpmi
   // MUL extension 
-  var generateMultiply = false
+  var generateMultiply = true
   // seperate division flag for MUL extension
-  var generateDivide = false
+  var generateDivide = true
   var hasMULDIV = generateMultiply | generateDivide
   // check for Zmmul and that divide cannot be built alone
   assert(
@@ -64,8 +66,8 @@ case class IMemIF() extends Bundle{
   */
   val instruction = in Bits(32 bits)
   val address = out Bits(32 bits)
-  val fetchEnable = out Bool
-  val instructionReady = in Bool
+  val fetchEnable = out Bool()
+  val instructionReady = in Bool()
 }
 
 case class DMemIF() extends Bundle{
@@ -92,10 +94,10 @@ case class DMemIF() extends Bundle{
   val address = out Bits(32 bits)
   val readData = in Bits(32 bits)
   val writeData = out Bits(32 bits)
-  val readWrite = out Bool // false : read, true : write
-  val enable = out Bool
+  val readWrite = out Bool() // false : read, true : write
+  val enable = out Bool()
   val wrStrobe = out Bits(4 bits)
-  val dataReady = in Bool
+  val dataReady = in Bool()
 }
 
 case class MemoryIF() extends Bundle{
@@ -114,7 +116,7 @@ case class RVFI() extends Bundle{
   */
   val order = out UInt(64 bits)
   val insn = out Bits(32 bits)
-  val trap = out Bool 
+  val trap = out Bool()
   val intr = out Bits(1 bits)
   val mode = out Bits(2 bits)
   val ixl = out Bits(2 bits)
@@ -137,14 +139,14 @@ case class RVFI() extends Bundle{
   val mem_wdata = out Bits(32 bits)
 
   val valid = out Bits(1 bits)
-  val halt = out Bool
+  val halt = out Bool()
 }
 
 // Milan:
 case class STATE() extends Bundle{
   val pc = out UInt(32 bits)
   val regs = out Bits(32 * 32 bits)
-  val fetch = out Bool
+  val fetch = out Bool()
 }
 // Milan:
 case class CSR() extends Bundle{
@@ -154,7 +156,7 @@ case class CSR() extends Bundle{
   val mtval = out Bits(32 bits)
 }
 
-case class CoreIO(formal : Boolean = false) extends Bundle{
+case class CoreIO() extends Bundle{
   /*
   * Top level core interface, with interrupt, 
   * memory access inteface and debugging IO lines.
@@ -162,16 +164,15 @@ case class CoreIO(formal : Boolean = false) extends Bundle{
   // memory bus access
   val memIF = MemoryIF()
   // cpu halted through ecall
-  val halted = out Bool
+  val halted = out Bool()
   // sync signal, asserted when core is in fetch state
-  val fetchSync = out Bool
+  val fetchSync = out Bool()
   // halting signals for external, memory mapped shutdown
-  val halt = in Bool
-  val haltErr = in Bool
+  val halt = in Bool()
+  val haltErr = in Bool()
   val dbgState = out Bits(4 bits)
   // interrupt timer
-  val irqTimer = in Bool
-  // val rvfi = if(formal) RVFI() else null
+  val irqTimer = in Bool()
 }
 
 /*
@@ -183,12 +184,12 @@ case class CoreIO(formal : Boolean = false) extends Bundle{
  */
 class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   // IO Definition
-  val io = new CoreIO(cfg.formalInterface)
+  val io = new CoreIO()
 
-  val rvfi = if(cfg.formalInterface) RVFI() else null
+  val rvfi = if(cfg.hasFormal) RVFI() else null
   // Milan:
-  val state = if(cfg.formalInterface) STATE() else null
-  val csr = if(cfg.formalInterface) CSR() else null
+  val state = if(cfg.fpmi) STATE() else null
+  val csr = if(cfg.fpmi) CSR() else null
 
   val programCounter = Reg(UInt(32 bits)) init(U(cfg.startVector, 32 bits))
   val pcValMux = UInt(32 bits)
@@ -227,7 +228,8 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
 
   // registerfile with 32-bit datawidth
   // and 5-bit addresswidth
-  val regs = new RV32RegisterFileFPMI(5, 32, 32, cfg.formalInterface) // Milan
+  // TODO if(cfg.fpmi) FPMIRegFile else NormalRegfile would be nicer
+  val regs = new RV32RegisterFileFPMI(5, 32, 32, cfg.fpmi)
 
   regs.io.rs1 := decoder.io.fields.src1.asUInt
   regs.io.rs2 := decoder.io.fields.src2.asUInt
@@ -598,7 +600,7 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     DestDataSelect.muldivData -> muldivResult
   )
 
-  if(cfg.formalInterface){
+  if(cfg.hasFormal){
     // RVF
     val rvfi_order = Reg(UInt(64 bits)) init(0)
     val rvfi_insn = Reg(Bits(32 bits)) init(0)

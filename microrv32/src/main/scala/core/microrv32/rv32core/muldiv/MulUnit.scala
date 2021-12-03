@@ -21,9 +21,9 @@ class MulUnit extends Component {
     val multiplicand = in Bits(32 bits)
     val multiplier = in Bits(32 bits)
     val product = out Bits(64 bits)
-    val valid = in Bool
-    val ready = out Bool
-    val busy = out Bool
+    val valid = in Bool()
+    val ready = out Bool()
+    val busy = out Bool()
     val operation = in(MulOperation())
   }
   // control unit

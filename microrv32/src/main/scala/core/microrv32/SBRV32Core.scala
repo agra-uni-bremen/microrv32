@@ -8,15 +8,15 @@ import core.microrv32.rv32core._
 case class SBCoreIO() extends Bundle{
     val sb = master(SimpleBus(32,32))
     // cpu halted through ecall
-    val halted = out Bool
+    val halted = out Bool()
     // sync signal, asserted when core is in fetch state
-    val fetchSync = out Bool
+    val fetchSync = out Bool()
     // halting signals for external, memory mapped shutdown
-    val halt = in Bool
-    val haltErr = in Bool
+    val halt = in Bool()
+    val haltErr = in Bool()
     val dbgState = out Bits(4 bits)
     // interrupt timer
-    val irqTimer = in Bool
+    val irqTimer = in Bool()
 }
 
 // differentiate between the source of transaction as it needs to be unified onto one bus

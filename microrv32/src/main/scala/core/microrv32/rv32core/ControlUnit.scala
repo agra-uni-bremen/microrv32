@@ -16,12 +16,12 @@ object PCSelect extends SpinalEnum{
 }
 
 case class PCControl() extends Bundle{
-    val enablePC = out Bool
+    val enablePC = out Bool()
     val pcValSel = out(PCSelect())
 }
 
 case class FetchControl() extends Bundle{
-    val sample = out Bool
+    val sample = out Bool()
 }
 
 object OpASelect extends SpinalEnum{
@@ -35,13 +35,13 @@ object OpBSelect extends SpinalEnum{
 case class ALUCtrl() extends Bundle{
     val opA = out(OpASelect())
     val opB = out(OpBSelect())
-    val aluBranch = in Bool
+    val aluBranch = in Bool()
 }
 
 case class MulDivCtrl() extends Bundle{
-    val valid = out Bool
-    val ready = in Bool
-    val busy = in Bool
+    val valid = out Bool()
+    val ready = in Bool()
+    val busy = in Bool()
 }
 
 object DestDataSelect extends SpinalEnum{
@@ -53,7 +53,7 @@ object DestDataSelect extends SpinalEnum{
 }
 
 case class RegFileControl() extends Bundle{
-    val regFileWR = out Bool
+    val regFileWR = out Bool()
     val regDestSel = out(DestDataSelect())
 }
 
@@ -67,9 +67,9 @@ object MCauseSelect extends SpinalEnum{
 
 case class CSRControl() extends Bundle{
     val writeSelect = out(CSRDataSelect())
-    val enable = out Bool
-    val newFetch = out Bool
-    val illegalAccess = in Bool
+    val enable = out Bool()
+    val newFetch = out Bool()
+    val illegalAccess = in Bool()
     val mcauseSelect = out(MCauseSelect())
 }
 
@@ -79,24 +79,24 @@ object MemoryStrobeSelect extends SpinalEnum{
 
 case class MemoryControl() extends Bundle{
     // I-Memory
-    val fetchEna = out Bool
-    val instrRdy = in Bool
+    val fetchEna = out Bool()
+    val instrRdy = in Bool()
     // D-Memory
-    val readWriteData = out Bool
-    val dataEna = out Bool
-    val dataRdy = in Bool
+    val readWriteData = out Bool()
+    val dataEna = out Bool()
+    val dataRdy = in Bool()
     val strobeSelect = out(MemoryStrobeSelect())
 }
 
 case class ExceptionControl() extends Bundle{
-    val misalignedJumpTarget = in Bool
-    val misalignedJumpLinkTarget = in Bool
-    val misalignedBranchTarget = in Bool
+    val misalignedJumpTarget = in Bool()
+    val misalignedJumpLinkTarget = in Bool()
+    val misalignedBranchTarget = in Bool()
 }
 
 case class ControlBundle(cfg : RV32CoreConfig) extends Bundle{
     // decoder
-    val validDecode = in Bool
+    val validDecode = in Bool()
     val instrType = in(InstructionType())
     val instrFields = in(DecodedFields())
     // program counter
@@ -114,15 +114,15 @@ case class ControlBundle(cfg : RV32CoreConfig) extends Bundle{
     // memory
     val memCtrl = MemoryControl()
     // exception handling
-    val irqPending = in Bool
-    val trapEntry = out Bool
-    val trapExit = out Bool
-    val irqEntry = out Bool
+    val irqPending = in Bool()
+    val trapEntry = out Bool()
+    val trapExit = out Bool()
+    val irqEntry = out Bool()
     val exceptions = in(ExceptionControl())
     // 
-    val halt = in Bool
-    val halted = out Bool
-    val fetchSync = out Bool
+    val halt = in Bool()
+    val halted = out Bool()
+    val fetchSync = out Bool()
     // debug output
     val dbgState = out Bits(4 bits)
 }

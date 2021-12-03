@@ -11,8 +11,8 @@ class Formal_Proof_Module(dataWidth : Int = 32, regLength : Int = 32, IALIGN : I
     val valid = in Bits(1 bits)
     val order = in UInt(64 bits)
     val insn = in Bits(dataWidth bits)
-    val trap = in Bool 
-    val halt = in Bool
+    val trap = in Bool()
+    val halt = in Bool()
     val intr = in Bits(1 bits)
     val mode = in Bits(2 bits)
     val ixl = in Bits(2 bits)
@@ -39,7 +39,7 @@ class Formal_Proof_Module(dataWidth : Int = 32, regLength : Int = 32, IALIGN : I
     val pc = in UInt(dataWidth bits)
     val regs = in Bits(dataWidth * regLength bits)
     // val csr = in Bits(dataWidth * regLength bits) // CSR Regs?!
-    val fetch = in Bool
+    val fetch = in Bool()
   }
 
   val csr1 = new Bundle{
@@ -50,22 +50,22 @@ class Formal_Proof_Module(dataWidth : Int = 32, regLength : Int = 32, IALIGN : I
   }
 
   val dbg = new Bundle{
-    val checkPoint = out Bool
-    val check = out Bool
+    val checkPoint = out Bool()
+    val check = out Bool()
     val insNr = out UInt(8 bits)
-    val zeroRegError = out Bool
-    val pcMisalligned = out Bool
-    val regError = out Bool
-    val jumpError = out Bool
-    val memError = out Bool
-    val execError = out Bool
-    val trap = out Bool
-    val exception = out UInt
+    val zeroRegError = out Bool()
+    val pcMisalligned = out Bool()
+    val regError = out Bool()
+    val jumpError = out Bool()
+    val memError = out Bool()
+    val execError = out Bool()
+    val trap = out Bool()
+    val exception = out UInt(5 bits)
   }
 
   // Reset of DUT
   val ctrl = new Bundle{
-    val reset1 = out Bool
+    val reset1 = out Bool()
   }
 
   // Controls the reset of connected cores, depending on the proof-mode
@@ -180,7 +180,7 @@ class Formal_Proof_Module(dataWidth : Int = 32, regLength : Int = 32, IALIGN : I
     val loadAddressMisaligned = Bool
     val storeAddressMisaligned = Bool
     val trap = Bool
-    val exception = UInt  // 0: none, 1: instruction address misaligned, 2: memory-address misaligned
+    val exception = UInt(5 bits)  // 0: none, 1: instruction address misaligned, 2: memory-address misaligned
 
     trap := False
     exception := 0 

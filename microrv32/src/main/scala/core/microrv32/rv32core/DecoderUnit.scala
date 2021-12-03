@@ -34,7 +34,7 @@ case class DecodeBundle() extends Bundle{
     val immediate = out Bits(32 bits)
     val csr_uimm = out Bits(5 bits)
     // valid decoding?
-    val decodeValid = out Bool
+    val decodeValid = out Bool()
     // instruction enum
     val instType = out(InstructionType())
     val csrType = out(CSRAccessType())
@@ -99,44 +99,37 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
                 iType := InstructionType.isRegReg
             }
             if(cfg.hasMULDIV){
-                // if(cfg.generateMultiply){
-                    // when(funct7 === F7_MULDIV & funct3 === F3_MUL_OPERATION){
                     when(funct7 === F7_MULDIV){
                         decoded := True
                         iType := InstructionType.isRegReg
                     }
-                // } else if(cfg.generateDivide){
-                //     when(funct7 === F7_MULDIV & funct3 === F3_DIV_OPERATION){
-                //         decoded := True
-                //         iType := InstructionType.isRegReg
-                //     }
-                // }
             }
             
         }
         is(OP_REGIMM){
-            when((funct3 =/= 1  && funct3 =/= 5) || (funct3 === 1 && funct7 === F7_Z) || (funct3 === 5 && (funct7 === F7_Z || funct7 === F7_O))){ // Milan: Fehler!
+            // TODO: refactor numeric constants into masks in RV32Opcode.scla (i.e funct3 =/= "-01" --> 001=1, 101=5)
+            when((funct3 =/= 1  && funct3 =/= 5) || (funct3 === 1 && funct7 === F7_Z) || (funct3 === 5 && (funct7 === F7_Z || funct7 === F7_O))){
                 decoded := True
                 iType := InstructionType.isRegImm        
                 immediate := extender.io.i_imm
             }
         }
         is(OP_BRANCH){
-            when(funct3 =/= 2 && funct3 =/= 3){ // Milan: Fehler!
+            when(funct3 === F3_BEQ || funct3 === F3_BNE || funct3 === F3_BLT || funct3 === F3_BGE || funct3 === F3_BLTU || funct3 === F3_BGEU){
                 decoded := True
                 iType := InstructionType.isBranch
                 immediate := extender.io.b_imm
             }
         }
         is(OP_LOAD){
-            when(funct3 === F3_LB || funct3 === F3_LH || funct3 === F3_LW || funct3 === F3_LBU || funct3 === F3_LHU){ // Milan: Fehler!
+            when(funct3 === F3_LB || funct3 === F3_LH || funct3 === F3_LW || funct3 === F3_LBU || funct3 === F3_LHU){
                 decoded := True
                 iType := InstructionType.isLoad
                 immediate := extender.io.i_imm
             }
         }
         is(OP_STORE){
-            when(funct3 === F3_SB || funct3 === F3_SH || funct3 === F3_SW){ // Milan: Fehler!
+            when(funct3 === F3_SB || funct3 === F3_SH || funct3 === F3_SW){
                 decoded := True
                 iType := InstructionType.isStore
                 immediate := extender.io.s_imm
@@ -158,14 +151,14 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
             immediate := extender.io.j_imm
         }
         is(OP_JALR){
-            when(funct3 === F3_JALR){ // Milan: Fehler!
+            when(funct3 === F3_JALR){
                 decoded := True
                 iType := InstructionType.isCT_JALR
                 immediate := extender.io.i_imm
             }
         }
         is(OP_FENCE){
-            when(funct3 === F3_FENCE){   // Milan: Fehler!
+            when(funct3 === F3_FENCE | funct3 === F3_FENCE_I){
                 decoded := True
                 iType := InstructionType.isFence
             }
@@ -198,15 +191,6 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
               }
             }
         }
-        // M - extension, MUL, DIV, REM instructions
-        // if(cfg.generateMultiply){
-        // is(OP_MULDIV){
-        //     when(funct7 === F7_MULDIV){
-        //         decoded := True
-        //         iType := InstructionType.isMulDiv
-        //     }
-        // }
-        // }
         is(OP_ZEROS){
             decoded := False
             iType := InstructionType.isIllegal
