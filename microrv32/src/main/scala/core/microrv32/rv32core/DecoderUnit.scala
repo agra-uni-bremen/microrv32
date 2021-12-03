@@ -94,7 +94,7 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
     // FIXME test if making two switch statements, one for iType and one for immediate, reduces generated verilog?
     switch(opcode){
         is(OP_REGREG){
-            when((funct7 === F7_Z) | (funct7 === F7_O && (funct3 === F3_SUB || funct3 === F3_SRA))){ // Milan: Fehler!
+            when((funct7 === F7_Z) | (funct7 === F7_O && (funct3 === F3_SUB || funct3 === F3_SRA))){
                 decoded := True
                 iType := InstructionType.isRegReg
             }
