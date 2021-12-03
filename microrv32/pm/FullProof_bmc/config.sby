@@ -1,0 +1,18 @@
+[options]
+mode bmc
+depth 8
+
+[engines]
+smtbmc
+smtbmc z3 
+smtbmc boolector
+
+[script]
+read_verilog -formal Formal_Proof_Module_Wrapper.sv
+prep -top Formal_Proof_Module_Wrapper
+
+[files]
+Formal_Proof_Module_Wrapper.sv
+Formal_Proof_Module.sv
+RiscV32Core.v
+RiscV32Core.v_toplevel_regs_regFile.bin

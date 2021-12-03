@@ -12,13 +12,13 @@ case class RV32CoreConfig(){
   // initial value of the programcounter
   var startVector = 0x80000000l
   // generate interface for riscv-formal
-  var formalInterface = false
-  var fpmi = false
+  var formalInterface = true
+  var fpmi = true
   var hasFormal = formalInterface | fpmi
   // MUL extension 
-  var generateMultiply = true
+  var generateMultiply = false
   // seperate division flag for MUL extension
-  var generateDivide = true
+  var generateDivide = false
   var hasMULDIV = generateMultiply | generateDivide
   // check for Zmmul and that divide cannot be built alone
   assert(

@@ -1,0 +1,78 @@
+SBY 13:56:51 [FullProof_bmc] Removing directory 'FullProof_bmc'.
+SBY 13:56:51 [FullProof_bmc] Copy 'Formal_Proof_Module_Wrapper.sv' to 'FullProof_bmc/src/Formal_Proof_Module_Wrapper.sv'.
+SBY 13:56:51 [FullProof_bmc] Copy 'Formal_Proof_Module.sv' to 'FullProof_bmc/src/Formal_Proof_Module.sv'.
+SBY 13:56:51 [FullProof_bmc] Copy 'RiscV32Core.v' to 'FullProof_bmc/src/RiscV32Core.v'.
+SBY 13:56:51 [FullProof_bmc] Copy 'RiscV32Core.v_toplevel_regs_regFile.bin' to 'FullProof_bmc/src/RiscV32Core.v_toplevel_regs_regFile.bin'.
+SBY 13:56:51 [FullProof_bmc] engine_0: smtbmc
+SBY 13:56:51 [FullProof_bmc] engine_1: smtbmc z3
+SBY 13:56:51 [FullProof_bmc] engine_2: smtbmc boolector
+SBY 13:56:51 [FullProof_bmc] base: starting process "cd FullProof_bmc/src; yosys -ql ../model/design.log ../model/design.ys"
+SBY 13:56:52 [FullProof_bmc] base: Warning: Wire RiscV32Core.\ctrlLogic_io_csrCtrl_illegalAccess is used but has no driver.
+SBY 13:56:53 [FullProof_bmc] base: finished (returncode=0)
+SBY 13:56:53 [FullProof_bmc] smt2: starting process "cd FullProof_bmc/model; yosys -ql design_smt2.log design_smt2.ys"
+SBY 13:56:53 [FullProof_bmc] smt2: finished (returncode=0)
+SBY 13:56:53 [FullProof_bmc] engine_0: starting process "cd FullProof_bmc; yosys-smtbmc --presat --unroll --noprogress -t 8  --append 0 --dump-vcd engine_0/trace.vcd --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2"
+SBY 13:56:53 [FullProof_bmc] engine_1: starting process "cd FullProof_bmc; yosys-smtbmc -s z3 --presat --noprogress -t 8  --append 0 --dump-vcd engine_1/trace.vcd --dump-vlogtb engine_1/trace_tb.v --dump-smtc engine_1/trace.smtc model/design_smt2.smt2"
+SBY 13:56:53 [FullProof_bmc] engine_2: starting process "cd FullProof_bmc; yosys-smtbmc -s boolector --presat --unroll --noprogress -t 8  --append 0 --dump-vcd engine_2/trace.vcd --dump-vlogtb engine_2/trace_tb.v --dump-smtc engine_2/trace.smtc model/design_smt2.smt2"
+SBY 13:56:53 [FullProof_bmc] engine_1: ##   0:00:00  Solver: z3
+SBY 13:56:53 [FullProof_bmc] engine_2: ##   0:00:00  Solver: boolector
+SBY 13:56:53 [FullProof_bmc] engine_0: ##   0:00:00  Solver: yices
+SBY 13:56:53 [FullProof_bmc] engine_1: ##   0:00:00  Checking assumptions in step 0..
+SBY 13:56:53 [FullProof_bmc] engine_1: ##   0:00:00  Checking assertions in step 0..
+SBY 13:56:53 [FullProof_bmc] engine_1: ##   0:00:00  Checking assumptions in step 1..
+SBY 13:56:53 [FullProof_bmc] engine_2: ##   0:00:00  Checking assumptions in step 0..
+SBY 13:56:53 [FullProof_bmc] engine_2: ##   0:00:00  Checking assertions in step 0..
+SBY 13:56:53 [FullProof_bmc] engine_0: ##   0:00:00  Checking assumptions in step 0..
+SBY 13:56:53 [FullProof_bmc] engine_0: ##   0:00:00  Checking assertions in step 0..
+SBY 13:56:53 [FullProof_bmc] engine_1: ##   0:00:00  Checking assertions in step 1..
+SBY 13:56:53 [FullProof_bmc] engine_1: ##   0:00:00  Checking assumptions in step 2..
+SBY 13:56:53 [FullProof_bmc] engine_2: ##   0:00:00  Checking assumptions in step 1..
+SBY 13:56:53 [FullProof_bmc] engine_0: ##   0:00:00  Checking assumptions in step 1..
+SBY 13:56:53 [FullProof_bmc] engine_0: ##   0:00:00  Checking assertions in step 1..
+SBY 13:56:53 [FullProof_bmc] engine_2: ##   0:00:00  Checking assertions in step 1..
+SBY 13:56:53 [FullProof_bmc] engine_0: ##   0:00:00  Checking assumptions in step 2..
+SBY 13:56:53 [FullProof_bmc] engine_1: ##   0:00:00  Checking assertions in step 2..
+SBY 13:56:53 [FullProof_bmc] engine_1: ##   0:00:00  Checking assumptions in step 3..
+SBY 13:56:53 [FullProof_bmc] engine_2: ##   0:00:00  Checking assumptions in step 2..
+SBY 13:56:53 [FullProof_bmc] engine_0: ##   0:00:00  Checking assertions in step 2..
+SBY 13:56:53 [FullProof_bmc] engine_2: ##   0:00:00  Checking assertions in step 2..
+SBY 13:56:54 [FullProof_bmc] engine_0: ##   0:00:00  Checking assumptions in step 3..
+SBY 13:56:54 [FullProof_bmc] engine_0: ##   0:00:00  Checking assertions in step 3..
+SBY 13:56:54 [FullProof_bmc] engine_2: ##   0:00:00  Checking assumptions in step 3..
+SBY 13:56:54 [FullProof_bmc] engine_0: ##   0:00:00  Checking assumptions in step 4..
+SBY 13:56:54 [FullProof_bmc] engine_2: ##   0:00:00  Checking assertions in step 3..
+SBY 13:56:54 [FullProof_bmc] engine_0: ##   0:00:00  Checking assertions in step 4..
+SBY 13:56:54 [FullProof_bmc] engine_1: ##   0:00:01  Checking assertions in step 3..
+SBY 13:56:54 [FullProof_bmc] engine_1: ##   0:00:01  Checking assumptions in step 4..
+SBY 13:56:54 [FullProof_bmc] engine_2: ##   0:00:01  Checking assumptions in step 4..
+SBY 13:56:54 [FullProof_bmc] engine_0: ##   0:00:01  Checking assumptions in step 5..
+SBY 13:56:54 [FullProof_bmc] engine_0: ##   0:00:01  Checking assertions in step 5..
+SBY 13:56:54 [FullProof_bmc] engine_2: ##   0:00:01  Checking assertions in step 4..
+SBY 13:56:55 [FullProof_bmc] engine_2: ##   0:00:01  Checking assumptions in step 5..
+SBY 13:56:55 [FullProof_bmc] engine_2: ##   0:00:01  Checking assertions in step 5..
+SBY 13:56:58 [FullProof_bmc] engine_1: ##   0:00:04  Checking assertions in step 4..
+SBY 13:56:58 [FullProof_bmc] engine_1: ##   0:00:04  Checking assumptions in step 5..
+SBY 13:56:59 [FullProof_bmc] engine_1: ##   0:00:05  Checking assertions in step 5..
+SBY 13:57:17 [FullProof_bmc] engine_0: ##   0:00:24  Checking assumptions in step 6..
+SBY 13:57:21 [FullProof_bmc] engine_0: ##   0:00:28  Checking assertions in step 6..
+SBY 13:57:25 [FullProof_bmc] engine_2: ##   0:00:31  Checking assumptions in step 6..
+SBY 13:57:25 [FullProof_bmc] engine_2: ##   0:00:32  Checking assertions in step 6..
+SBY 13:57:59 [FullProof_bmc] engine_1: ##   0:01:05  waiting for solver (1 minute)
+SBY 13:58:07 [FullProof_bmc] engine_0: ##   0:01:14  Checking assumptions in step 7..
+SBY 13:58:13 [FullProof_bmc] engine_0: ##   0:01:20  Checking assertions in step 7..
+SBY 13:58:25 [FullProof_bmc] engine_2: ##   0:01:32  waiting for solver (1 minute)
+SBY 13:59:07 [FullProof_bmc] engine_2: ##   0:02:14  Checking assumptions in step 7..
+SBY 13:59:08 [FullProof_bmc] engine_2: ##   0:02:15  Checking assertions in step 7..
+SBY 13:59:13 [FullProof_bmc] engine_0: ##   0:02:20  waiting for solver (1 minute)
+SBY 13:59:56 [FullProof_bmc] engine_1: ##   0:03:03  Checking assumptions in step 6..
+SBY 14:00:07 [FullProof_bmc] engine_1: ##   0:03:13  Checking assertions in step 6..
+SBY 14:00:08 [FullProof_bmc] engine_2: ##   0:03:15  waiting for solver (1 minute)
+SBY 14:00:14 [FullProof_bmc] engine_0: ##   0:03:20  Status: passed
+SBY 14:00:14 [FullProof_bmc] engine_0: finished (returncode=0)
+SBY 14:00:14 [FullProof_bmc] engine_0: Status returned by engine: pass
+SBY 14:00:14 [FullProof_bmc] engine_1: terminating process
+SBY 14:00:14 [FullProof_bmc] engine_2: terminating process
+SBY 14:00:14 [FullProof_bmc] summary: Elapsed clock time [H:MM:SS (secs)]: 0:03:22 (202)
+SBY 14:00:14 [FullProof_bmc] summary: Elapsed process time [H:MM:SS (secs)]: 0:03:22 (202)
+SBY 14:00:14 [FullProof_bmc] summary: engine_0 (smtbmc) returned pass
+SBY 14:00:14 [FullProof_bmc] DONE (PASS, rc=0)

@@ -1058,7 +1058,7 @@ class Formal_Proof_Module(dataWidth : Int = 32, regLength : Int = 32, IALIGN : I
         */
       }
       is(B"0001111"){ // Fence  ??
-        when(instruction.f3 === 0){
+        when(instruction.f3 === 0 || instruction.f3 === 1){ //new Fence-Instruction?!
           insType := 6
           insNr := 40
           regWrite := False

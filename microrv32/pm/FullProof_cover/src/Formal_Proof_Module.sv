@@ -1774,7 +1774,7 @@ module Formal_Proof_Module (
   assign when_Formal_Proof_Module_l619 = ((((insDecode_trap && (rvfi1_rd_addr == 5'h0)) && (rvfi1_trap == 1'b1)) && (rvfi1_pc_wdata == _zz_when_Formal_Proof_Module_l619)) || ((((! insDecode_trap) && (rvfi1_rd_addr == instruction_rd)) && ((rvfi1_rd_addr == 5'h0) || (rvfi1_rd_wdata == _zz_when_Formal_Proof_Module_l619_3))) && (rvfi1_pc_wdata == _zz_when_Formal_Proof_Module_l619_4)));
   assign when_Formal_Proof_Module_l634 = (instruction_f3 == 3'b000);
   assign when_Formal_Proof_Module_l649 = ((rvfi1_rs1_addr == instruction_rs1) && ((((insDecode_trap && (rvfi1_rd_addr == _zz_when_Formal_Proof_Module_l649)) && (rvfi1_trap == 1'b1)) && (rvfi1_pc_wdata == _zz_when_Formal_Proof_Module_l649_1)) || ((((! insDecode_trap) && (rvfi1_rd_addr == _zz_when_Formal_Proof_Module_l649_4)) && ((rvfi1_rd_addr == _zz_when_Formal_Proof_Module_l649_5) || (rvfi1_rd_wdata == _zz_when_Formal_Proof_Module_l649_6))) && (rvfi1_pc_wdata == {_zz_when_Formal_Proof_Module_l649_8,_zz_when_Formal_Proof_Module_l649_11}))));
-  assign when_Formal_Proof_Module_l1061 = ((instruction_f3 == 3'b000) || (instruction_f3 == 3'b001));
+  assign when_Formal_Proof_Module_l1061 = (instruction_f3 == 3'b000);
   assign dbg_insNr = insDecode_insNr;
   assign dbg_execError = (! insDecode_validExec);
   assign dbg_trap = insDecode_trap;
