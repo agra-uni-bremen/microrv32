@@ -146,3 +146,14 @@ class SBRV32Core(val cfg : RV32CoreConfig) extends Component{
         io.sb.SBsize := sbSizeMux
     }
 }
+
+//Generate the Top Verilog
+object SBRV32CoreTopVerilog {
+  def main(args: Array[String]) {
+    SpinalConfig(
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+      targetDirectory = "rtl"
+      ).generateVerilog(new SBRV32Core(RV32CoreConfig()))
+      .printPruned()
+  }
+}

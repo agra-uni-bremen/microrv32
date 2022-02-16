@@ -13,8 +13,7 @@ case class RV32CoreConfig(){
   var startVector = 0x80000000l
   // generate interface for riscv-formal
   var formalInterface = true
-  var fpmi = true
-  var hasFormal = formalInterface | fpmi
+  var hasFormal = formalInterface
   // MUL extension 
   var generateMultiply = false
   // seperate division flag for MUL extension
@@ -187,9 +186,6 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   val io = new CoreIO()
 
   val rvfi = if(cfg.hasFormal) RVFI() else null
-  // Milan:
-  val state = if(cfg.fpmi) STATE() else null
-  val csr = if(cfg.fpmi) CSR() else null
 
   val programCounter = Reg(UInt(32 bits)) init(U(cfg.startVector, 32 bits))
   val pcValMux = UInt(32 bits)
@@ -228,8 +224,7 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
 
   // registerfile with 32-bit datawidth
   // and 5-bit addresswidth
-  // TODO if(cfg.fpmi) FPMIRegFile else NormalRegfile would be nicer
-  val regs = new RV32RegisterFileFPMI(5, 32, 32, cfg.fpmi)
+  val regs = new RV32RegisterFile(5, 32, 32)
 
   regs.io.rs1 := decoder.io.fields.src1.asUInt
   regs.io.rs2 := decoder.io.fields.src2.asUInt
@@ -274,7 +269,6 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     muldivReady := False
     muldivBusy := False
   }
-
   // generate CSR logic only if class variable is set
   val CSRLogic = (cfg.csrExtension) generate new Area{
     //import controlFSM._
@@ -514,7 +508,6 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     irqPending := False
     csrValMux := B(0, 32 bits)
   }
-
   /*
   * Data memory interface
   */
@@ -730,17 +723,6 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     rvfi.mem_wmask := rvfi_mem_wmask
     rvfi.mem_rdata := rvfi_mem_rdata
     rvfi.mem_wdata := rvfi_mem_wdata
-
-    // State für FPMI
-    state.pc := programCounter
-    state.regs := regs.io.regs_o
-    state.fetch := (io.dbgState === 1)
-
-    // CSR für FPMI
-    csr.mtvec := CSRLogic.mtvec
-    csr.mepc := CSRLogic.mepc 
-    csr.mcause := CSRLogic.mcause
-    csr.mtval := CSRLogic.mtval
   }
 }
 
@@ -761,17 +743,6 @@ object RVFICore {
     SpinalConfig(
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
       targetDirectory = "rtl/rvfi"
-      ).generateVerilog(new RiscV32Core(RV32CoreConfig()))
-      .printPruned()
-  }
-}
-
-//Generate the Top Verilog for FPMI Interface
-object FPMICore {
-  def main(args: Array[String]) {
-    SpinalConfig(
-      defaultClockDomainFrequency=FixedFrequency(12 MHz),
-      targetDirectory = "pm"
       ).generateVerilog(new RiscV32Core(RV32CoreConfig()))
       .printPruned()
   }

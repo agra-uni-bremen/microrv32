@@ -1,24 +1,27 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Mon Oct  4 14:43:25 2021
+[*] Thu Nov 18 14:44:02 2021
 [*]
 [dumpfile] "/home/sallar/work/micrrv32-refactor/microrv32/simWorkspace/MicroRV32Top/test.vcd"
-[dumpfile_mtime] "Mon Oct  4 14:38:09 2021"
-[dumpfile_size] 590679
+[dumpfile_mtime] "Thu Nov 18 14:38:30 2021"
+[dumpfile_size] 825435
 [savefile] "/home/sallar/work/micrrv32-refactor/microrv32/vtb/sim/spinalhdl_trace.gtkw"
-[timestart] 1950
+[timestart] 6840
 [size] 1920 1027
 [pos] -1 -1
-*-11.000000 3170 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-11.000000 13883 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.MicroRV32Top.
 [treeopen] TOP.MicroRV32Top.cpu.
 [treeopen] TOP.MicroRV32Top.cpu.cpu.
 [treeopen] TOP.MicroRV32Top.cpu.cpu.decoder.
+[treeopen] TOP.MicroRV32Top.cpu.cpu.muldiv.
+[treeopen] TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.
+[treeopen] TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.
 [treeopen] TOP.MicroRV32Top.uartPeriph.
-[sst_width] 253
+[sst_width] 39
 [signals_width] 478
-[sst_expanded] 1
+[sst_expanded] 0
 [sst_vpaned_height] 337
 @c00200
 -top
@@ -205,9 +208,8 @@ TOP.MicroRV32Top.cpu.io_sb_SBwrite
 -io
 @1000200
 -sbRV32
-@800200
--CPU
 @c00200
+-CPU
 -CSR
 @28
 TOP.MicroRV32Top.cpu.cpu.CSRLogic_accessType[2:0]
@@ -267,7 +269,7 @@ TOP.MicroRV32Top.cpu.cpu.ctrlLogic_io_trapEntry
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic_io_trapExit
 @1401200
 -CTRL-FSM
-@c00201
+@c00200
 -DECODE
 @28
 TOP.MicroRV32Top.cpu.cpu.decoder_io_csrType[2:0]
@@ -293,7 +295,7 @@ TOP.MicroRV32Top.cpu.cpu.decoder_io_instType[4:0]
 TOP.MicroRV32Top.cpu.cpu.decoder.io_fields_opcode[6:0]
 @820
 TOP.MicroRV32Top.cpu.cpu.decoder.io_instType_string[95:0]
-@1401201
+@1401200
 -DECODE
 @c00200
 -DataPath
@@ -318,7 +320,6 @@ TOP.MicroRV32Top.cpu.cpu.regs_io_rs1Data[31:0]
 TOP.MicroRV32Top.cpu.cpu.regs_io_rs2Data[31:0]
 @1401200
 -DataPath
-@1000200
 -CPU
 @c00200
 -ALU
@@ -459,7 +460,7 @@ TOP.MicroRV32Top.cpu.cpu.alu.sub[31:0]
 TOP.MicroRV32Top.cpu.cpu.alu.unequal
 @1401200
 -ALU
-@c00200
+@800200
 -DECODER
 @22
 TOP.MicroRV32Top.cpu.cpu.decoder.csr[11:0]
@@ -517,10 +518,13 @@ TOP.MicroRV32Top.cpu.cpu.decoder.io_instType_string[95:0]
 @22
 TOP.MicroRV32Top.cpu.cpu.decoder.io_instruction[31:0]
 TOP.MicroRV32Top.cpu.cpu.decoder.opcode[6:0]
+@29
+TOP.MicroRV32Top.cpu.cpu.decoder.opcode[6:0]
+@22
 TOP.MicroRV32Top.cpu.cpu.decoder.shamt[4:0]
 TOP.MicroRV32Top.cpu.cpu.decoder.source1[4:0]
 TOP.MicroRV32Top.cpu.cpu.decoder.source2[4:0]
-@1401200
+@1000200
 -DECODER
 @c00200
 -REGFILE
@@ -837,11 +841,284 @@ TOP.MicroRV32Top.cpu.cpu.ctrlLogic.io_csrCtrl_writeSelect[0]
 TOP.MicroRV32Top.cpu.cpu.ctrlLogic.io_pcCtrl_pcValSel[2:0]
 @1401200
 -FSM
-@c00200
+@800200
 -MulDivUnit
+@c00200
+-muldiv
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1_io_quotient[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1_io_ready
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1_io_remainder[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.io_busy
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.io_destinationData[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.io_operation[2:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.io_ready
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.io_rs1Data[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.io_rs2Data[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.io_valid
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1_io_product[63:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1_io_ready
+@1401200
+-muldiv
+@c00200
 -MUL
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.ctrl_io_addMultiplicand
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.ctrl_io_busy
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.ctrl_io_calculate
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.ctrl_io_loadValues
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.ctrl_io_ready
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.io_multiplicand[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.io_multiplier[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.io_operation[1:0]
+@820
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.io_operation_string[47:0]
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.io_product[63:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.io_ready
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.io_valid
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.mcandSign[0]
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.mcand[32:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.mpLSB[0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.mplierSign[0]
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.multiply_iMcand[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.multiply_iMplier[30:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.multiply_muxedMcand[32:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.multiply_muxedMplier[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.multiply_summand[32:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op[1:0]
+@c00820
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+@28
+(0)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(1)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(2)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(3)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(4)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(5)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(6)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(7)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(8)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(9)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(10)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(11)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(12)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(13)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(14)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(15)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(16)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(17)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(18)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(19)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(20)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(21)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(22)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(23)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(24)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(25)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(26)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(27)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(28)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(29)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(30)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(31)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(32)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(33)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(34)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(35)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(36)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(37)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(38)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(39)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(40)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(41)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(42)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(43)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(44)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(45)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(46)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+(47)TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.op_string[47:0]
+@1401200
+-group_end
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.partialProduct[32:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.prod[64:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.reset
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.result[64:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.ctrl.controlFSM_mulCounter_willOverflow
+@24
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.ctrl.controlFSM_mulCounter_value[4:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.signHandling_isSignedOperation
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.signHandling_mulSign[0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.mulUnit_1.signHandling_prodSign[0]
 @1401200
 -MUL
+@c00200
+-DIV
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_dividend[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_divisor[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation[1:0]
+@c00820
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+@28
+(0)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(1)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(2)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(3)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(4)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(5)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(6)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(7)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(8)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(9)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(10)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(11)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(12)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(13)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(14)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(15)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(16)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(17)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(18)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(19)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(20)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(21)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(22)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(23)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(24)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(25)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(26)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(27)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(28)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(29)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(30)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(31)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(32)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(33)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(34)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(35)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(36)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(37)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(38)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+(39)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_operation_string[39:0]
+@1401a00
+-group_end
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_quotient[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_valid
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_ready
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.io_remainder[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.ctrl_io_busy
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.ctrl_io_calculate
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.ctrl_io_iterationBit[4:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.ctrl_io_loadValues
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.ctrl_io_ready
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.ctrl_io_setCornerValues
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.ctrl.controlFSM_divCounter[4:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.dividendReg[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.dividendTC[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.divisorReg[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.divisorTC[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.quotientReg[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.remainderReg[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op[1:0]
+@c00820
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+@28
+(0)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(1)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(2)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(3)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(4)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(5)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(6)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(7)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(8)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(9)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(10)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(11)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(12)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(13)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(14)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(15)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(16)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(17)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(18)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(19)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(20)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(21)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(22)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(23)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(24)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(25)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(26)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(27)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(28)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(29)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(30)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(31)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(32)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(33)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(34)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(35)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(36)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(37)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(38)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+(39)TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.op_string[39:0]
+@1401a00
+-group_end
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.RgtD
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.tmpRem1[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.tmpRem2[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.tmpQuo1[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.isCornerCase
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.isDivisionByZero
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.isOverflow
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.isSignedOperation
+@22
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.resultQuotient[31:0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.resultRemainder[31:0]
+@28
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.signHandling_dividendSign[0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.signHandling_divisorSign[0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.signHandling_quotientSign[0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.signHandling_remainderSign[0]
+TOP.MicroRV32Top.cpu.cpu.muldiv.divUnit_1.signHandling_signSet
+@1401200
+-DIV
+@1000200
 -MulDivUnit
 @c00200
 -SB
