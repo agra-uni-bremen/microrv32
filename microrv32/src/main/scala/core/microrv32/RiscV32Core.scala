@@ -141,20 +141,6 @@ case class RVFI() extends Bundle{
   val halt = out Bool()
 }
 
-// Milan:
-case class STATE() extends Bundle{
-  val pc = out UInt(32 bits)
-  val regs = out Bits(32 * 32 bits)
-  val fetch = out Bool()
-}
-// Milan:
-case class CSR() extends Bundle{
-  val mtvec = out Bits(32 bits)
-  val mepc  = out Bits(32 bits)
-  val mcause = out Bits(32 bits)
-  val mtval = out Bits(32 bits)
-}
-
 case class CoreIO() extends Bundle{
   /*
   * Top level core interface, with interrupt, 
@@ -534,7 +520,12 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   val branchTarget = UInt(32 bits)
   val trapTarget = UInt(32 bits)
   val mretTarget = UInt(32 bits)
+  
+  // original behavior
   incrPC := programCounter + 4
+  // mutated pc behavior 1c)
+  // incrPC := programCounter + 8
+  
   // TODO: maybe intoSInt instead asSInt here
   jalTarget := programCounter - 4 + decoder.io.immediate.asUInt // -4 because after fetch we increased PC
   jalrTarget := ((decoder.io.immediate.asUInt + regs.io.rs1Data.asUInt).asBits & ~B(1, 32 bits)).asUInt
@@ -585,10 +576,21 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     }
   }
 
+  // mutated timing behavior 3c)
+  // val ldCounter = Reg(UInt(32 bits)) init(0)
+  // val ldMutator = UInt(32 bits)
+  // when(io.memIF.DMem.enable && io.memIF.DMem.readWrite){
+  //   ldCounter := ldCounter + 1
+  // }
+  // ldMutator := (ldCounter > 600) ? (extMemData.asUInt+42) | extMemData.asUInt
+
   rdDataMux := ctrlLogic.io.regCtrl.regDestSel.mux(
     DestDataSelect.aluRes -> alu.io.output,
     DestDataSelect.aluBool -> B(alu.io.output_bool,32 bits),
+    // original behavior
     DestDataSelect.memReadData -> extMemData,
+    // mutated timing behavior 3c)
+    // DestDataSelect.memReadData -> B(ldMutator,32 bits),
     DestDataSelect.csrReadData -> CSRLogic.rval,
     DestDataSelect.muldivData -> muldivResult
   )
