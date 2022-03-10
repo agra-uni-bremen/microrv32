@@ -521,10 +521,7 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   val trapTarget = UInt(32 bits)
   val mretTarget = UInt(32 bits)
   
-  // original behavior
   incrPC := programCounter + 4
-  // mutated pc behavior 1c)
-  // incrPC := programCounter + 8
   
   // TODO: maybe intoSInt instead asSInt here
   jalTarget := programCounter - 4 + decoder.io.immediate.asUInt // -4 because after fetch we increased PC
@@ -575,22 +572,10 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
       extMemData := io.memIF.DMem.readData
     }
   }
-
-  // mutated timing behavior 3c)
-  // val ldCounter = Reg(UInt(32 bits)) init(0)
-  // val ldMutator = UInt(32 bits)
-  // when(io.memIF.DMem.enable && io.memIF.DMem.readWrite){
-  //   ldCounter := ldCounter + 1
-  // }
-  // ldMutator := (ldCounter > 600) ? (extMemData.asUInt+42) | extMemData.asUInt
-
   rdDataMux := ctrlLogic.io.regCtrl.regDestSel.mux(
     DestDataSelect.aluRes -> alu.io.output,
     DestDataSelect.aluBool -> B(alu.io.output_bool,32 bits),
-    // original behavior
     DestDataSelect.memReadData -> extMemData,
-    // mutated timing behavior 3c)
-    // DestDataSelect.memReadData -> B(ldMutator,32 bits),
     DestDataSelect.csrReadData -> CSRLogic.rval,
     DestDataSelect.muldivData -> muldivResult
   )
