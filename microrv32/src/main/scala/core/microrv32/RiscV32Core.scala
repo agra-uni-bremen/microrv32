@@ -24,6 +24,8 @@ case class RV32CoreConfig(){
     assertion = (generateMultiply | (generateMultiply & generateDivide) | (!generateMultiply & !generateDivide)),
     message = "Cannot build DIV alone. Zmmul allows for multiplication subset alone (MUL, MULH, MULHU, MULHSU), generateMultiply & !generateDivision."
   )
+  // support for compressed instruction set extension
+  var supportCompressed = true
   // CSR extension + registers (without it no support for some functions like interrupts)
   var csrExtension = true
   // debug, fsm state output (used for testing, verification and debugging purposes)
@@ -196,14 +198,12 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     programCounter := pcValMux
   }
 
-  val instructionBuffer = Reg(Bits(32 bits)) init(0)
-  // if there is a new instruciton at the instruction memory interface
-  // buffer it for the decoder
-  when(ctrlLogic.io.fetchCtrl.sample){
-    instructionBuffer := io.memIF.IMem.instruction
-  }
+  val fetchUnit = new FetchUnit(cfg)
+  fetchUnit.io.data := io.memIF.IMem.instruction
+  fetchUnit.io.sample := ctrlLogic.io.fetchCtrl.sample
+
   val decoder = new DecodeUnit(cfg)
-  decoder.io.instruction := instructionBuffer
+  decoder.io.instruction := fetchUnit.io.instruction
   ctrlLogic.io.validDecode := decoder.io.decodeValid
   ctrlLogic.io.instrType := decoder.io.instType
   ctrlLogic.io.instrFields := decoder.io.fields
