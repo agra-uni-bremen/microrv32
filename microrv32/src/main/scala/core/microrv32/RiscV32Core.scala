@@ -211,7 +211,6 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   // registerfile with 32-bit datawidth
   // and 5-bit addresswidth
   val regs = new RV32RegisterFile(5, 32, 32)
-
   regs.io.rs1 := decoder.io.fields.src1.asUInt
   regs.io.rs2 := decoder.io.fields.src2.asUInt
   regs.io.wrEna := ctrlLogic.io.regCtrl.regFileWR
@@ -256,201 +255,7 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     muldivBusy := False
   }
   // generate CSR logic only if class variable is set
-  val CSRLogic = (cfg.csrExtension) generate new Area{
-    //import controlFSM._
-    import RVCSR._
-    import CSRAccessType._
-    import InstructionType._
-
-    // input/output stage of CSR logic for read/write
-    val addr = UInt(12 bits)
-    //val rw = Bool // true means write
-    val accessType = CSRAccessType()
-    val ena = Bool // enable of CSR logic
-    val wval = Bits(32 bits) // write data
-    val rval = Reg(Bits(32 bits)) init(0) // read data
-    val newFetch = Bool
-    val isIllegalAccess = Bool
-
-    // internal signals
-    val rdX0 = Bool
-    val rs1X0 = Bool
-    val uimmZero = Bool
-    val chooseOperand = Bool
-    val wrCSRcnd = Bool
-
-    // CSR registers
-    // Machine Information Registers
-    val mvendorid = Reg(Bits(32 bits)) init(0) //RO - Vendor ID 
-    val marchid = Reg(Bits(32 bits)) init(0) // RO - Architecture ID
-    val mimpid = Reg(Bits(32 bits)) init(0) // RO - Implementation ID
-    val mhartid = Reg(Bits(32 bits)) init(0) // RO - Hardware thread ID
-    // Machine Trap Setup
-    val mstatus = Reg(Bits(32 bits)) init(MSTATUS_DEFAULT) // RW - Machine status retgister
-    val misa = Reg(Bits(32 bits)) init(MISA_DEFAULT) // RW - ISA and extensions
-    val medeleg = Reg(Bits(32 bits)) init(0) // RW - Machine exception delegation register
-    val mideleg = Reg(Bits(32 bits)) init(0) // RW - Machine interrupt delegation register
-    val mie = Reg(Bits(32 bits)) init(0) // RW - Machine interrupt-enable register
-    val mtvec = Reg(Bits(32 bits)) init(0) // RW - Machine trap-handler base address
-    // Machine Trap Handling
-    val mepc  = Reg(Bits(32 bits)) init(0) // RW - Machine exception program counter
-    val mcause = Reg(Bits(32 bits)) init(0) // RW - Machine trap cause
-    val mtval = Reg(Bits(32 bits)) init(0) // RW - Machine bad address or instruction
-    val mip = Reg(Bits(32 bits)) init(0) // RO - Machine interrupt pending
-    val mtinst = Reg(Bits(32 bits)) init(0) // RW - Machine trap instruction (transformed)
-    // Hardware Performance Monitor
-    val minstret = Reg(Bits(64 bits)) init(0) // RW - Instructions retired
-    val mcycle = Reg(Bits(64 bits)) init(0) // RW - Clock cycles executed
-
-    /* This funciton is used for CSR bit mask operations
-     * If a atmoic read+set or read+clear is happening, the given parameter
-     * in RS1 is used as a bitmask in which bits that are 1 will be
-     * set or cleared respectively. Bits that are 0 in the mask will
-     * be unchanged in the register and keep the old value.
-     */
-    def maskValue(oldVal : Bits, mask : Bits, newVal : Bits) : Bits = {
-      val writeValue = Bits(32 bits)
-      //writeValue := 0
-      writeValue := (oldVal & ~mask) | (newVal & mask)
-      writeValue
-    }
-
-    /* This function is used to write access the CSR registers.
-     * It covers to check for the access type (write, set, clear)
-     * and applies the given mask for the set/clear operations properly
-     * This function is used to give readability for the rw-logic below
-     */
-    def csrWriteAccess(toRegister : Bits, mask : Bits, newVal : Bits) : Unit = {
-      when(accessType === CSRwrite){
-        toRegister := newVal & mask
-      }.elsewhen(accessType === CSRset & decoder.io.csr_uimm =/= 0){
-        toRegister := maskValue(toRegister, mask, newVal)
-      }.elsewhen(accessType === CSRclear & decoder.io.csr_uimm =/= 0){
-        // TODO & FIXME check if mask or wval needs to be negated for atomic csr clear
-        toRegister := maskValue(toRegister, mask, ~newVal)
-      }
-    }
-
-    // determine condition whether or not to execute the write to a register
-    rdX0 := decoder.io.fields.dest === 0
-    rs1X0 := decoder.io.fields.src1 === 0
-    uimmZero := decoder.io.csr_uimm === 0
-    chooseOperand := decoder.io.instType === isCSR
-    wrCSRcnd := ((rs1X0 & chooseOperand) | (uimmZero & ~chooseOperand))
-
-    // RW-Logic for CSR Registers
-    rval := B(0, 32 bits)
-    isIllegalAccess := False
-    when(ena){
-      switch(addr){
-        // Machine Information Registers
-        is(MVENDORID_ADDR){
-          // RO
-          rval := mvendorid
-        }
-        is(MARCHID_ADDR){
-          // RO
-          rval := marchid
-        }
-        is(MIMPID_ADDR){
-          // RO
-          rval := mimpid
-        }
-        is(MHARTID_ADDR){
-          // RO
-          rval := mhartid
-        }
-        // Machine Trap Setup
-        is(MSTATUS_ADDR){
-          // RW
-          rval := mstatus & MSTATUS_READ_MASK
-          csrWriteAccess(toRegister = mstatus, mask = DEFAULT_CSR_MASK, wval)
-        }
-        is(MISA_ADDR){
-          // RW but here its only rv32i with csr, therefore no write to misa
-          rval := misa
-        }
-        is(MEDELEG_ADDR){
-          // RW
-          rval := medeleg
-          csrWriteAccess(toRegister = medeleg, mask = DEFAULT_CSR_MASK, wval)
-        }
-        is(MIDELEG_ADDR){
-          // RW
-          rval := mideleg
-          csrWriteAccess(toRegister = mideleg, mask = DEFAULT_CSR_MASK, wval)
-        }
-        is(MIE_ADDR){
-          // RW
-          rval := mie & MIE_RW_MASK
-          csrWriteAccess(toRegister = mie, mask = MIE_RW_MASK, wval)
-        }
-        is(MTVEC_ADDR){
-          // RW
-          rval := mtvec
-          csrWriteAccess(toRegister = mtvec, mask = MTVEC_WRITE_MASK, wval & MTVEC_WRITE_MASK)
-        }
-        // Machine Trap Handling
-        is(MEPC_ADDR){
-          // RW
-          rval := mepc
-          // not masking mepc[1:0] (therefore allowing non-zero values for mepc[1:0]) allows riscv-formal to find issues for branches
-          // to show misbehavior use next line with default csr masks instead of the mepc masks
-          //csrWriteAccess(toRegister = mepc, mask = DEFAULT_CSR_MASK, wval & DEFAULT_CSR_MASK)
-          csrWriteAccess(toRegister = mepc, mask = MEPC_WRITE_MASK, wval & MEPC_WRITE_MASK)
-        }
-        is(MCAUSE_ADDR){
-          // RW
-          rval := mcause
-          csrWriteAccess(toRegister = mcause, mask = DEFAULT_CSR_MASK, wval)
-        }
-        is(MTVAL_ADDR){
-          // RW
-          rval := mtval
-          csrWriteAccess(toRegister = mtval, mask = DEFAULT_CSR_MASK, wval)
-        }
-        is(MIP_ADDR){
-          // RO
-          rval := mip
-          // changed MIP register to be RO according to spec
-          // for timer interrupt pending interrupt is cleared by rewriting mtimecmp
-          //csrWriteAccess(toRegister = mip, mask = MIP_RW_MASK, wval)
-        }
-        // Hardware Performance Monitor / Machine Counters/Timers
-        is(MCYCLE_ADDR){
-          // RO 
-          rval := mcycle(31 downto 0)
-        }
-        is(MINSTRET_ADDR){
-          // RO
-          rval := minstret(31 downto 0)
-        }
-        is(MCYCLEH_ADDR){
-          // RO 
-          rval := mcycle(63 downto 32)
-        }
-        is(MINSTRETH_ADDR){
-          // RO
-          rval := minstret(63 downto 32)
-        }
-        default{
-          isIllegalAccess := True
-          rval := B(0, 32 bits)
-        }
-      }
-    }
-    when(io.irqTimer){
-      mip(MIP_MTIP) := True
-    }.otherwise{
-      mip(MIP_MTIP) := False
-    }
-    // increment minstret for every instruction retired
-    when(newFetch){
-      minstret := (minstret.asUInt + 1).asBits
-    }
-    // increment mcycle every clock cycle
-    mcycle := (mcycle.asUInt + 1).asBits
-  }
+  val CSRLogic = (cfg.csrExtension) generate new CSRUnit()
   if(cfg.csrExtension){
     CSRLogic.addr := decoder.io.fields.csr.asUInt
     // CSRLogic.wval := // MUX : MuxCSRInstruction, rs1Data, U(CSRUImmediate, 32 bits)
@@ -463,6 +268,11 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
       CSRDataSelect.csrImmData -> B(decoder.io.csr_uimm, 32 bits)
     )
     CSRLogic.wval := csrValMux
+    CSRLogic.newTimerIRQ := io.irqTimer
+    CSRLogic.rdX0 := decoder.io.fields.dest === 0
+    CSRLogic.rs1X0 := decoder.io.fields.src1 === 0
+    CSRLogic.uimmZero := decoder.io.csr_uimm === 0
+    CSRLogic.chooseOperand := decoder.io.instType === InstructionType.isCSR
     // direct RW for csr registers
     val mcauseMux = Bits(32 bits)
     mcauseMux := ctrlLogic.io.csrCtrl.mcauseSelect.mux(
@@ -472,7 +282,6 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
       MCauseSelect.trapMachineTimerIRQ -> RVCSR.TRAP_MACHINE_TIMER_INTERRUPT
       // default -> B(0, 32 bits)
     )
-
     when(ctrlLogic.io.trapEntry){
       // CSRLogic.mcause := RVCSR.TRAP_EXC_ECALL_M_MODE
       CSRLogic.mcause := mcauseMux
@@ -494,6 +303,7 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
     irqPending := False
     csrValMux := B(0, 32 bits)
   }
+
   /*
   * Data memory interface
   */
