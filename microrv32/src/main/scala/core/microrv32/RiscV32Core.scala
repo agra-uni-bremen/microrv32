@@ -24,8 +24,6 @@ case class RV32CoreConfig(){
     assertion = (generateMultiply | (generateMultiply & generateDivide) | (!generateMultiply & !generateDivide)),
     message = "Cannot build DIV alone. Zmmul allows for multiplication subset alone (MUL, MULH, MULHU, MULHSU), generateMultiply & !generateDivision."
   )
-  // support for compressed instruction set extension
-  var supportCompressed = true
   // CSR extension + registers (without it no support for some functions like interrupts)
   var csrExtension = true
   // debug, fsm state output (used for testing, verification and debugging purposes)
