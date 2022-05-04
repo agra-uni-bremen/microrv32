@@ -25,7 +25,7 @@ class RV32RegisterFile(addressWidth : Int, dataWidth : Int, wordCount : Int) ext
   // initialize all registers in register file with 32bit 0 values
   // https://spinalhdl.github.io/SpinalDoc-RTD/SpinalHDL/Data%20types/bits.html for shorthand B
   // https://www.tutorialspoint.com/scala/scala_lists.htm for list handling
-  regFile.init(List.fill(wordCount)(B(0,dataWidth bits)))
+  // regFile.init(List.fill(wordCount)(B(0,dataWidth bits)))
 
   io.rs1Data := regFile.readSync(io.rs1)
   io.rs2Data := regFile.readSync(io.rs2)

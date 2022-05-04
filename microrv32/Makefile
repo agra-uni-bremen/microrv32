@@ -94,10 +94,10 @@ show_sim_win:
 	gtkwave.exe vtb/sim/spinal_windows.gtkw &
 
 clean:
-	rm rtl/*.v
-	rm rtl/*.bin
-	rm simWorkspace/MicroRV32Top/rtl/*.v
-	rm simWorkspace/MicroRV32Top/rtl/*.bin
+	rm rtl/*.v -f
+	rm rtl/*.bin -f
+	rm simWorkspace/MicroRV32Top/rtl/*.v -f
+	rm simWorkspace/MicroRV32Top/rtl/*.bin -f
 	make clean -C vtb/
 
 .PHONY: clean rtl sim_verilog synth sw_basic-asm sw_instr sw_basic-c sw_cssr-tests sw_led_blink sw_led_c sw_timer_irq
