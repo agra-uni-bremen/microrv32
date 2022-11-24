@@ -1,0 +1,4 @@
+read_verilog tmp/RiscV32Core.v
+hierarchy -top RiscV32Core
+synth_ecp5
+write_json tmp/ecp5/RiscV32Core.json

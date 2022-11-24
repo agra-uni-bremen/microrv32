@@ -1,0 +1,5 @@
+read_verilog tmp/MicroRV32Top.v
+hierarchy -top MicroRV32Top
+synth_ice40
+write_blif tmp/hx8k/MicroRV32Top.blif
+write_json tmp/hx8k/MicroRV32Top.json

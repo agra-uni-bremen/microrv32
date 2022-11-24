@@ -8,15 +8,15 @@ import core.microrv32.rv32core._
 case class SBCoreIO() extends Bundle{
     val sb = master(SimpleBus(32,32))
     // cpu halted through ecall
-    val halted = out Bool
+    val halted = out Bool()
     // sync signal, asserted when core is in fetch state
-    val fetchSync = out Bool
+    val fetchSync = out Bool()
     // halting signals for external, memory mapped shutdown
-    val halt = in Bool
-    val haltErr = in Bool
+    val halt = in Bool()
+    val haltErr = in Bool()
     val dbgState = out Bits(4 bits)
     // interrupt timer
-    val irqTimer = in Bool
+    val irqTimer = in Bool()
 }
 
 // differentiate between the source of transaction as it needs to be unified onto one bus
@@ -24,10 +24,10 @@ object TransactionSource extends SpinalEnum{
     val none, error, imem, dmem = newElement()
 }
 
-class SBRV32Core(startVector : BigInt = 0x80000000l) extends Component{
+class SBRV32Core(val cfg : RV32CoreConfig) extends Component{
     val io = new SBCoreIO()
 
-    val cpu = new RiscV32Core(startVector)
+    val cpu = new RiscV32Core(cfg)
 
     io.halted := cpu.io.halted
     io.fetchSync := cpu.io.fetchSync
@@ -145,4 +145,15 @@ class SBRV32Core(startVector : BigInt = 0x80000000l) extends Component{
         io.sb.SBwrite := sbWriteMux
         io.sb.SBsize := sbSizeMux
     }
+}
+
+//Generate the Top Verilog
+object SBRV32CoreTopVerilog {
+  def main(args: Array[String]) {
+    SpinalConfig(
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+      targetDirectory = "rtl"
+      ).generateVerilog(new SBRV32Core(RV32CoreConfig()))
+      .printPruned()
+  }
 }

@@ -8,7 +8,8 @@ import core.microrv32.CSRAccessType._
 import core.microrv32.RVOpcode._
 import core.microrv32.CSROpcode._
 import core.microrv32.CSRAccessType
-//import core.microrv32.rv32core.ExtensionUnit
+import core.microrv32.MULDIVOpcode._
+import core.microrv32.RV32CoreConfig
 
 case class DecodedFields() extends Bundle{
     val opcode = out Bits(7 bits)
@@ -33,13 +34,13 @@ case class DecodeBundle() extends Bundle{
     val immediate = out Bits(32 bits)
     val csr_uimm = out Bits(5 bits)
     // valid decoding?
-    val decodeValid = out Bool
+    val decodeValid = out Bool()
     // instruction enum
     val instType = out(InstructionType())
     val csrType = out(CSRAccessType())
 }
 
-class DecodeUnit() extends Component{
+class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
     val io = new DecodeBundle()
 
     val extender = new ExtensionUnit()
@@ -91,30 +92,48 @@ class DecodeUnit() extends Component{
     // check for 7 bit opcode to determine type of instruction
     // for later: ensure 0 opcode is not allowed, currently its handled as illegal instruction that does not stop the fsm
     // FIXME test if making two switch statements, one for iType and one for immediate, reduces generated verilog?
-    switch(opcode){
+    switch(opcode, strict = false){
         is(OP_REGREG){
-            decoded := True
-            iType := InstructionType.isRegReg
+            when((funct7 === F7_Z) | (funct7 === F7_O && (funct3 === F3_SUB || funct3 === F3_SRA))){
+                decoded := True
+                iType := InstructionType.isRegReg
+            }
+            if(cfg.hasMULDIV){
+                    when(funct7 === F7_MULDIV){
+                        decoded := True
+                        iType := InstructionType.isRegReg
+                    }
+            }
+            
         }
         is(OP_REGIMM){
-            decoded := True
-            iType := InstructionType.isRegImm        
-            immediate := extender.io.i_imm
+            // TODO: refactor numeric constants into masks in RV32Opcode.scla (i.e funct3 =/= "-01" --> 001=1, 101=5)
+            when((funct3 =/= 1  && funct3 =/= 5) || (funct3 === 1 && funct7 === F7_Z) || (funct3 === 5 && (funct7 === F7_Z || funct7 === F7_O))){
+                decoded := True
+                iType := InstructionType.isRegImm        
+                immediate := extender.io.i_imm
+            }
         }
         is(OP_BRANCH){
-            decoded := True
-            iType := InstructionType.isBranch
-            immediate := extender.io.b_imm
+            when(funct3 === F3_BEQ || funct3 === F3_BNE || funct3 === F3_BLT || funct3 === F3_BGE || funct3 === F3_BLTU || funct3 === F3_BGEU){
+                decoded := True
+                iType := InstructionType.isBranch
+                immediate := extender.io.b_imm
+            }
         }
         is(OP_LOAD){
-            decoded := True
-            iType := InstructionType.isLoad
-            immediate := extender.io.i_imm
+            when(funct3 === F3_LB || funct3 === F3_LH || funct3 === F3_LW || funct3 === F3_LBU || funct3 === F3_LHU){
+                decoded := True
+                iType := InstructionType.isLoad
+                immediate := extender.io.i_imm
+            }
         }
         is(OP_STORE){
-            decoded := True
-            iType := InstructionType.isStore
-            immediate := extender.io.s_imm
+            when(funct3 === F3_SB || funct3 === F3_SH || funct3 === F3_SW){
+                decoded := True
+                iType := InstructionType.isStore
+                immediate := extender.io.s_imm
+            }
         }
         is(OP_LUI){
             decoded := True
@@ -132,13 +151,17 @@ class DecodeUnit() extends Component{
             immediate := extender.io.j_imm
         }
         is(OP_JALR){
-            decoded := True
-            iType := InstructionType.isCT_JALR
-            immediate := extender.io.i_imm
+            when(funct3 === F3_JALR){
+                decoded := True
+                iType := InstructionType.isCT_JALR
+                immediate := extender.io.i_imm
+            }
         }
         is(OP_FENCE){
-            decoded := True
-            iType := InstructionType.isFence
+            when(funct3 === F3_FENCE | funct3 === F3_FENCE_I){
+                decoded := True
+                iType := InstructionType.isFence
+            }
         }
         is(OP_ECALL,OP_CSR){
             when(funct12 === F12_ECALL & source1 === 0 & funct3 === 0 & destination === 0){

@@ -8,9 +8,9 @@ import spinal.lib.slave
 class Shutdown() extends Component{
     val io = new Bundle{
         val sb = slave(SimpleBus(32,32))
-        val sel = in(Bool)
-        val halt = out Bool
-        val haltErr = out Bool
+        val sel = in(Bool())
+        val halt = out Bool()
+        val haltErr = out Bool()
     }
     val rdy = Reg(Bool) init(False)
     val intAddr = UInt(4 bits)

@@ -69,7 +69,8 @@ object RVCSR{
   def MIE_RW_MASK        = B"0000_0000_0000_0000_0000_1000_1000_1000"
   def MTVEC_WRITE_MASK   = B"1111_1111_1111_1111_1111_1111_1111_1100"
   def MIP_RW_MASK        = B"0000_0000_0000_0000_0000_1000_1000_1000"
-  def MEPC_WRITE_MASK    = B"1111_1111_1111_1111_1111_1111_1111_1100"
+  def MEPC_WRITE_MASK_32 = B"1111_1111_1111_1111_1111_1111_1111_1100"
+  def MEPC_WRITE_MASK_16 = B"1111_1111_1111_1111_1111_1111_1111_1110"
 
   // mstatus access bits
   def MSTATUS_MIE  = 3
@@ -77,7 +78,23 @@ object RVCSR{
 
   // enable/pending interrupt access positions
   def MIP_MTIP = 7
-  
+
+  def generateMISAValue(muldiv : Boolean, compressed : Boolean) : Bits = {
+    // set bits [31:30] to '01' for XLEN = 32
+    // set bit [8] to '1' for rv32i
+    var misaVal = (1 << 30) | (1 << 7)
+    // var misaVal = 0x40000080 
+    if(muldiv){
+      // if M-extension is configured, set bit [12] to '1'
+      misaVal |= (1 << 11)
+    }
+    if(compressed){
+      // if C-extension is configured, set bit [2] to '1'
+      misaVal |= (1 << 1)
+    }
+    B(misaVal,32 bits)
+  }
+
 }
 
 // enum to control operation for CSR logic

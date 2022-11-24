@@ -10,7 +10,7 @@ import spinal.lib._
 */
 class ClockDivider(inCd : ClockDomain, inFrequencyHz : BigInt, outFrequencyHz : BigInt) extends Component {
     val io = new Bundle {
-        val outClk = out Bool
+        val outClk = out Bool()
     }
     // apply passed clockdomain object to clock divider logic
     val onInClk = inCd on new Area{

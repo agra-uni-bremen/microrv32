@@ -13,7 +13,7 @@ import spinal.lib.slave
 class Memory(memoryWidth : Bits, wordCount : Int, initFile : String) extends Component {
   val io = new Bundle {
     val sb = slave(SimpleBus(32,32))
-    val sel = in Bool
+    val sel = in Bool()
   }
 
   // memory primitive
@@ -142,7 +142,7 @@ class Memory(memoryWidth : Bits, wordCount : Int, initFile : String) extends Com
     4 -> 0,
     default -> 0
   )
-  val wdata = B(tmpData,32 bits) << wShift
+  val wdata = B(tmpData,32 bits) |<< wShift
   // write ram masked
   memRam.write(
     address = internalAddress,

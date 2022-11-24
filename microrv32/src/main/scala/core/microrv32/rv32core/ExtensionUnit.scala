@@ -1,7 +1,6 @@
 package core.microrv32.rv32core
 
 import spinal.core._
-//import scala.annotation.switch
 
 case class EUBundle() extends Bundle{
     val instruction = in Bits(32 bits)

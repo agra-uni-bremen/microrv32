@@ -1,0 +1,5 @@
+read_verilog tmp/RiscV32Core.v
+hierarchy -top RiscV32Core
+synth_ice40
+write_blif tmp/hx8k/RiscV32Core.blif
+write_json tmp/hx8k/RiscV32Core.json

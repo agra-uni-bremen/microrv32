@@ -28,20 +28,27 @@ object Tools {
       val tokens: Array[String] = line.split("(//)").map(_.trim)
       if (tokens.length > 0 && tokens(0) != "") {
         val i = BigInt(tokens(0).slice(6,8)+tokens(0).slice(4,6)+tokens(0).slice(2,4)+tokens(0).slice(0,2), 16)
-        // val i = BigInt(tokens(0).slice(0,2), 16)
-        // val j = BigInt(tokens(0).slice(2,4), 16)
-        // val k = BigInt(tokens(0).slice(4,6), 16)
-        // val l = BigInt(tokens(0).slice(6,8), 16)
-        // val instr = B(32 bits, (31 downto 24) -> B(i), (23 downto 16) -> B(j), (7 downto 0) -> B(k), (15 downto 8) -> B(l))
         buffer.append(B(i))
-        // buffer.append(B(j))
-        // buffer.append(B(k))
-        // buffer.append(B(l))
       }
     }
     buffer.toArray
   }
-
+  def readmemhHalf(path: String, upper: Boolean): Array[Bits] = {
+    val buffer = new ArrayBuffer[Bits]
+    var i : BigInt = 0
+    for (line <- Source.fromFile(path).getLines) {
+      val tokens: Array[String] = line.split("(//)").map(_.trim)
+      if (tokens.length > 0 && tokens(0) != "") {
+        if(!upper){
+          i = BigInt(tokens(0).slice(2,4)+tokens(0).slice(0,2), 16)
+        } else{
+          i = BigInt(tokens(0).slice(6,8)+tokens(0).slice(4,6), 16)
+        }
+        buffer.append(B(i))
+      }
+    }
+    buffer.toArray
+  }
   def readBytesFromTxt(path: String): Array[Bits] = {
     val buffer = new ArrayBuffer[Bits]
     for(line <- Source.fromFile(path).getLines){

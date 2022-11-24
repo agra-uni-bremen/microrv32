@@ -11,6 +11,8 @@ import spinal.lib.slave
 import core.microrv32.Tools._
 import spinal.lib.com.uart._
 
+import scala.io.Source
+
 /*
  * Top level of MicroRV32 platform for the Lattice Semiconductor HX8K FPGA .
  * It is a copy of the general MicroRV32 adding specific IO primitives for GPIO.
@@ -20,12 +22,12 @@ import spinal.lib.com.uart._
  * Binding cpu, memory and peripherals to memory mapped bus
  * By default builds blink-example for fpga use for code generation
  */
-class MicroRV32TopHX8K(initHexfile:String) extends Component {
+class MicroRV32TopHX8K(initHexfile:String, sizeHexfile:Int, rv32config : RV32CoreConfig = RV32CoreConfig()) extends Component {
   val io = new Bundle {
     // clock and reset through spinalhdl
     val gpioLed = out Bits(8 bits)
-    val cpuFetch = out Bool
-    val cpuHalted = out Bool
+    val cpuFetch = out Bool()
+    val cpuHalted = out Bool()
     val cpuDbgState = out Bits(4 bits)
     val dbgBus = out Bits(16 bits)
     // val dbgClk = out Bool
@@ -39,7 +41,7 @@ class MicroRV32TopHX8K(initHexfile:String) extends Component {
   // val clkDiv = new ClockDivider(ClockDomain.current,12000000, 12000000) // divide 12 mhz onboard clock to 10khz
   // slowClk := clkDiv.io.outClk
   // io.dbgClk := clkDiv.io.outClk
-  val cpu = new SBRV32Core()
+  val cpu = new SBRV32Core(rv32config)
   /*
    * NOTE: Make word count (second parameter of Memory) passable through top class and as makefile/sbt parameter
    * REMINDER: The amount of words per hexfile is four (4) times less than that of the 
@@ -53,10 +55,11 @@ class MicroRV32TopHX8K(initHexfile:String) extends Component {
    * With that the second parameter of Memory is 0x1200 in hex or 4608 in decimal
    */
   // val ram = new Memory(Bits(32 bits),8704,initHexfile) // riscv-ui-p-tests
-  //val ram = new Memory(Bits(32 bits),4104,initHexfile) // basic-led-c, basic-timerirq, crc8, benchmarks (fibo, gcd) but not freeRTOS benchmarks
-  val ram = new Memory(Bits(32 bits),100,initHexfile) // basic-led-blink
+  // val ram = new Memory(Bits(32 bits),4104,initHexfile) // basic-led-c, basic-timerirq, crc8, benchmarks (fibo, gcd) but not freeRTOS benchmarks
+  // val ram = new Memory(Bits(32 bits),100,initHexfile) // basic-led-blink
   // val ram = new Memory(Bits(32 bits),393216,initHexfile) // freertos (simple-tasks, simple-queues, etc.) including benchmarks
-   
+  val ram = new ByteAddressableMemory(sizeHexfile,initHexfile) // basic-compressed
+
   // val gpio = new GPIO()
   val gpio_led = new GPIOLED()
   val shutdown_periph = new Shutdown()
@@ -249,11 +252,20 @@ class MicroRV32TopHX8K(initHexfile:String) extends Component {
 //Generate the Top Verilog
 object MicroRV32TopHX8KVerilog {
   def main(args: Array[String]) {
+    var memSize = Source.fromFile(args(0)).getLines.size
     SpinalConfig(
+      defaultConfigForClockDomains = ClockDomainConfig(
+        resetKind = spinal.core.ASYNC,
+        resetActiveLevel = spinal.core.HIGH
+      ),
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
       targetDirectory = "rtl"
       //).generateVerilog(new MicroRV32TopHX8K("sw/basic-led-c/led-c.hex"))
-      ).generateVerilog(new MicroRV32TopHX8K(args(0)))
+      ).generateVerilog(new MicroRV32TopHX8K(args(0), memSize, RV32CoreConfig(
+        generateMultiply   = false,
+        generateDivide     = false,
+        generateCompressed = false
+      )))
       .printPruned()
   }
 }

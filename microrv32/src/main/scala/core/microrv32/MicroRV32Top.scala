@@ -11,6 +11,8 @@ import spinal.lib.slave
 import core.microrv32.Tools._
 import spinal.lib.com.uart._
 
+import scala.io.Source
+
 /*
  * Top level of MicroRV32 platform.
  * Memory mapping and IO mapping
@@ -18,12 +20,12 @@ import spinal.lib.com.uart._
  * Binding cpu, memory and peripherals to memory mapped bus
  * By default builds blink-example for fpga use for code generation
  */
-class MicroRV32Top(initHexfile:String) extends Component {
+class MicroRV32Top(initHexfile:String, sizeHexfile:Int, rv32config : RV32CoreConfig = RV32CoreConfig()) extends Component {
   val io = new Bundle {
     // clock and reset through spinalhdl
     val gpioLed = out Bits(8 bits)
-    val cpuFetch = out Bool
-    val cpuHalted = out Bool
+    val cpuFetch = out Bool()
+    val cpuHalted = out Bool()
     val cpuDbgState = out Bits(4 bits)
     val dbgBus = out Bits(16 bits)
     // val dbgClk = out Bool
@@ -38,7 +40,7 @@ class MicroRV32Top(initHexfile:String) extends Component {
   // slowClk := clkDiv.io.outClk
   // io.dbgClk := clkDiv.io.outClk
   //val cpu = new RV32Core()
-  val cpu = new SBRV32Core()
+  val cpu = new SBRV32Core(rv32config)
   /*
    * NOTE: Make word count (second parameter of Memory) passable through top class and as makefile/sbt parameter
    * REMINDER: The amount of words per hexfile is four (4) times less than that of the 
@@ -52,9 +54,19 @@ class MicroRV32Top(initHexfile:String) extends Component {
    * With that the second parameter of Memory is 0x1200 in hex or 4608 in decimal
    */
   // val ram = new Memory(Bits(32 bits),8704,initHexfile) // riscv-ui-p-tests
+  // val ram = new Memory(Bits(32 bits),1048576,initHexfile) // riscv-arch test (0x8000)
+  // val ram = new Memory(Bits(32 bits),,initHexfile) // riscv-ui-p-tests
   // val ram = new Memory(Bits(32 bits),4104,initHexfile) // basic-led-c, basic-timerirq, crc8, benchmarks (fibo, gcd) but not freeRTOS benchmarks
-  val ram = new Memory(Bits(32 bits),100,initHexfile) // basic-led-blink
-  // val ram = new Memory(Bits(32 bits),393216,initHexfile) // freertos (simple-tasks, simple-queues, etc.) including benchmarks
+  // val ram = new ByteAddressableMemory(4104,initHexfile) // basic-led-c, basic-timerirq, crc8, benchmarks (fibo, gcd) but not freeRTOS benchmarks
+  // val ram = new ByteAddressableMemory(2048,initHexfile) // basic-compressed
+  // val ram = new ByteAddressableMemory(3092,initHexfile) // riscv-uc-p test
+  // val ram = new ByteAddressableMemory(100,initHexfile) // basic-led-blink
+  // val ram = new ByteAddressableMemory(393216,initHexfile) // freertos (simple-tasks, simple-queues, etc.) including benchmarks
+  // val ram = new ByteAddressableMemory(2112,initHexfile) // embench-iot
+  // val ram = new ByteAddressableMemory(4928,initHexfile) // freertos (simple-tasks, simple-queues, etc.) including benchmarks
+  // val ram = new ByteAddressableMemory(386624,initHexfile) //NEW freertos (simple-tasks, simple-queues, etc.) including benchmarks
+  // val ram = new ByteAddressableMemory(393216,initHexfile) // freertos (simple-tasks, simple-queues, etc.) including benchmarks
+  val ram = new ByteAddressableMemory(sizeHexfile,initHexfile) // basic-compressed
    
   val gpio_led = new GPIOLED()
   val shutdown_periph = new Shutdown()
@@ -218,11 +230,62 @@ class MicroRV32Top(initHexfile:String) extends Component {
 //Generate the Top Verilog
 object MicroRV32TopVerilog {
   def main(args: Array[String]) {
+    var memSize = Source.fromFile(args(0)).getLines.size
     SpinalConfig(
+      defaultConfigForClockDomains = ClockDomainConfig(
+        resetKind = spinal.core.ASYNC,
+        resetActiveLevel = spinal.core.HIGH
+      ),
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
       targetDirectory = "rtl"
       //).generateVerilog(new MicroRV32Top("sw/basic-led-c/led-c.hex"))
-      ).generateVerilog(new MicroRV32Top(args(0)))
+      ).generateVerilog(new MicroRV32Top(args(0), memSize))
+      .printPruned()
+  }
+}
+
+//Generate the Top Verilog
+object MicroRV32VariantsVerilog {
+  def main(args: Array[String]) {
+
+    var memSize = Source.fromFile(args(0)).getLines.size
+    SpinalConfig(
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+      targetDirectory = "rtl/jsa-exp/rv32i"
+      ).generateVerilog(new MicroRV32Top(args(0), memSize, RV32CoreConfig(
+        generateMultiply   = false,
+        generateDivide     = false,
+        generateCompressed = false
+      )))
+      .printPruned()
+    SpinalConfig(
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+      targetDirectory = "rtl/jsa-exp/rv32im"
+      ).generateVerilog(new MicroRV32Top(args(0), memSize, RV32CoreConfig(
+        generateMultiply   = true,
+        generateDivide     = true,
+        generateCompressed = false
+      )))
+      .printPruned()
+    SpinalConfig(
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+      targetDirectory = "rtl/jsa-exp/rv32ic"
+      //).generateVerilog(new MicroRV32Top("sw/basic-led-c/led-c.hex"))
+      ).generateVerilog(new MicroRV32Top(args(0), memSize, RV32CoreConfig(
+        generateMultiply   = false,
+        generateDivide     = false,
+        generateCompressed = true
+      )))
+      .printPruned()
+    SpinalConfig(
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+      targetDirectory = "rtl/jsa-exp/rv32imc"
+      //).generateVerilog(new MicroRV32Top("sw/basic-led-c/led-c.hex"))
+      ).generateVerilog(new MicroRV32Top(args(0), memSize, RV32CoreConfig(
+        generateMultiply   = true,
+        generateDivide     = true,
+        generateCompressed = true
+      )))
       .printPruned()
   }
 }

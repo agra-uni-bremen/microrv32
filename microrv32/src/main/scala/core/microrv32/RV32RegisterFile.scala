@@ -1,6 +1,17 @@
 package core.microrv32
 
 import spinal.core._
+
+case class RegFileIO(addressWidth : Int, dataWidth : Int) extends Bundle{
+    val rs1 = in UInt(addressWidth bits)
+    val rs2 = in UInt(addressWidth bits)
+    val rs1Data = out Bits(dataWidth bits)
+    val rs2Data = out Bits(dataWidth bits)
+    val wrEna = in Bool()
+    val rd = in UInt(addressWidth bits)
+    val rdData = in Bits(dataWidth bits)
+}
+
 /*
  * The register for the rv32 core
  * Parameters
@@ -9,15 +20,7 @@ import spinal.core._
  * wordCount : Int -- Depth of the register file as Int
  */
 class RV32RegisterFile(addressWidth : Int, dataWidth : Int, wordCount : Int) extends Component{
-  val io = new Bundle{
-    val rs1 = in UInt(addressWidth bits)
-    val rs2 = in UInt(addressWidth bits)
-    val rs1Data = out Bits(dataWidth bits)
-    val rs2Data = out Bits(dataWidth bits)
-    val wrEna = in Bool
-    val rd = in UInt(addressWidth bits)
-    val rdData = in Bits(dataWidth bits)
-  }
+  val io = new RegFileIO(addressWidth, dataWidth)
   val regFile = new Mem(Bits(dataWidth bits),wordCount)
   // initialize all registers in register file with 32bit 0 values
   // https://spinalhdl.github.io/SpinalDoc-RTD/SpinalHDL/Data%20types/bits.html for shorthand B

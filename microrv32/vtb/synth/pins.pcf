@@ -51,7 +51,7 @@ set_io --warn-no-port io_gpioA_5 P13
 set_io --warn-no-port io_gpioA_6 T13
 set_io --warn-no-port io_gpioA_7 T14
 
-set_io --warn-no-port io_testIn T15
-set_io --warn-no-port io_testOut T16
+#set_io --warn-no-port io_testIn T15
+#set_io --warn-no-port io_testOut T16
 
 #set_io --warn-no-port io_dbgClk N2

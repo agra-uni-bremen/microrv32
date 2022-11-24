@@ -1,0 +1,4 @@
+read_verilog tmp/MicroRV32Top.v
+hierarchy -top MicroRV32Top
+synth_ecp5
+write_json tmp/ecp5/MicroRV32Top.json

@@ -8,12 +8,12 @@ import binascii
 
 in_file = sys.argv[1]
 out_file = sys.argv[2]
-if len(sys.argv) == 4:
-	# parse third argument as memory size given in hex (0xabc)
-	MEM_SIZE_IN_BYTES = int(sys.argv[3],16)
-else:
-	print("Using 0x2000 default size for mem_size")
-	MEM_SIZE_IN_BYTES = 0x2000
+# if len(sys.argv) == 4:
+# 	# parse third argument as memory size given in hex (0xabc)
+# 	MEM_SIZE_IN_BYTES = int(sys.argv[3],16)
+# else:
+# 	print("Using 0x2000 default size for mem_size")
+# 	MEM_SIZE_IN_BYTES = 0x2000
 
 Section = namedtuple("Section", ["header", "data"])
 
@@ -23,6 +23,7 @@ class AddressSpace:
 		self.right = right
 		assert right > left
 		diff = right - left
+		print("left: " + str(hex(left)) + " right: " + str(hex(right)) + " diff: " + str(hex(diff)))
 		assert diff % 4 == 0
 		self.data = diff*[0]
 		
@@ -31,7 +32,8 @@ class AddressSpace:
 		assert dst >= 0
 		
 		for i,x in enumerate(sec.data):
-			self.data[dst+i] = x
+                        # ~ print("idx: "+ str(i) + " dst+i:" + str(dst+i))
+                        self.data[dst+i] = x
 
 
 with open(in_file, 'rb') as f:
@@ -69,9 +71,10 @@ with open(in_file, 'rb') as f:
 	
 	with open(out_file, "w") as of:
 		bytes = list(mem.data)
-		bytes.extend((MEM_SIZE_IN_BYTES - len(bytes))*[0])
-		if len(bytes) > MEM_SIZE_IN_BYTES:
-			raise RuntimeError("executable does not fit into memory -- len:" + str(len(bytes)))
+		print("bytes length: " + str(len(bytes)) + ", HEX: " + str(hex(len(bytes))))
+		# bytes.extend((MEM_SIZE_IN_BYTES - len(bytes))*[0])
+		# if len(bytes) > MEM_SIZE_IN_BYTES:
+		# 	raise RuntimeError("executable does not fit into memory -- len:" + str(len(bytes)))
 		#s = ' '.join(["{:02X}".format(e) for e in bytes]) + "\n"
 		# reformat so it represents how its loaded in memory for microrv32
 		s = ''

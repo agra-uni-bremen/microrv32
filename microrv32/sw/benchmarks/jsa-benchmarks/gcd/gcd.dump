@@ -1,0 +1,152 @@
+make: Verzeichnis „/home/sallar/work/micrrv32-refactor/microrv32/sw/benchmarks/jsa-benchmarks/gcd“ wird betreten
+riscv32-unknown-elf-gcc bootstrap.S main.c -o main -march=rv32imc -mabi=ilp32 -mstrict-align -nostartfiles -Wl,--no-relax,--print-memory-usage  -T link.ld
+Memory region         Used Size  Region Size  %age Used
+             RAM:        2368 B         8 KB     28.91%
+riscv32-unknown-elf-objdump -D main
+
+main:     Dateiformat elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	000070b3          	and	ra,zero,zero
+80000004:	00007133          	and	sp,zero,zero
+80000008:	000071b3          	and	gp,zero,zero
+8000000c:	00007233          	and	tp,zero,zero
+80000010:	000072b3          	and	t0,zero,zero
+80000014:	00007333          	and	t1,zero,zero
+80000018:	000073b3          	and	t2,zero,zero
+8000001c:	00007433          	and	s0,zero,zero
+80000020:	000074b3          	and	s1,zero,zero
+80000024:	00007533          	and	a0,zero,zero
+80000028:	000075b3          	and	a1,zero,zero
+8000002c:	00007633          	and	a2,zero,zero
+80000030:	000076b3          	and	a3,zero,zero
+80000034:	00007733          	and	a4,zero,zero
+80000038:	000077b3          	and	a5,zero,zero
+8000003c:	00007833          	and	a6,zero,zero
+80000040:	000078b3          	and	a7,zero,zero
+80000044:	00007933          	and	s2,zero,zero
+80000048:	000079b3          	and	s3,zero,zero
+8000004c:	00007a33          	and	s4,zero,zero
+80000050:	00007ab3          	and	s5,zero,zero
+80000054:	00007b33          	and	s6,zero,zero
+80000058:	00007bb3          	and	s7,zero,zero
+8000005c:	00007c33          	and	s8,zero,zero
+80000060:	00007cb3          	and	s9,zero,zero
+80000064:	00007d33          	and	s10,zero,zero
+80000068:	00007db3          	and	s11,zero,zero
+8000006c:	00007e33          	and	t3,zero,zero
+80000070:	00007eb3          	and	t4,zero,zero
+80000074:	00007f33          	and	t5,zero,zero
+80000078:	00007fb3          	and	t6,zero,zero
+8000007c:	00001117          	auipc	sp,0x1
+80000080:	82410113          	addi	sp,sp,-2012 # 800008a0 <stack_end>
+80000084:	07d000ef          	jal	ra,80000900 <main>
+80000088:	05d00893          	li	a7,93
+8000008c:	4501                	li	a0,0
+8000008e:	020102b7          	lui	t0,0x2010
+80000092:	f1402873          	csrr	a6,mhartid
+80000096:	0102a023          	sw	a6,0(t0) # 2010000 <SYSCALL_ADDR>
+8000009a:	0112a023          	sw	a7,0(t0)
+8000009e:	b7ed                	j	80000088 <_start+0x88>
+
+800000a0 <stack_begin>:
+	...
+
+800008a0 <stack_end>:
+	...
+
+800008a2 <gcd>:
+800008a2:	7179                	addi	sp,sp,-48
+800008a4:	d622                	sw	s0,44(sp)
+800008a6:	1800                	addi	s0,sp,48
+800008a8:	fca42e23          	sw	a0,-36(s0)
+800008ac:	fcb42c23          	sw	a1,-40(s0)
+800008b0:	fdc42783          	lw	a5,-36(s0)
+800008b4:	ef8d                	bnez	a5,800008ee <gcd+0x4c>
+800008b6:	fd842783          	lw	a5,-40(s0)
+800008ba:	fef42623          	sw	a5,-20(s0)
+800008be:	a805                	j	800008ee <gcd+0x4c>
+800008c0:	fdc42703          	lw	a4,-36(s0)
+800008c4:	fd842783          	lw	a5,-40(s0)
+800008c8:	00e7db63          	bge	a5,a4,800008de <gcd+0x3c>
+800008cc:	fdc42703          	lw	a4,-36(s0)
+800008d0:	fd842783          	lw	a5,-40(s0)
+800008d4:	40f707b3          	sub	a5,a4,a5
+800008d8:	fcf42e23          	sw	a5,-36(s0)
+800008dc:	a809                	j	800008ee <gcd+0x4c>
+800008de:	fd842703          	lw	a4,-40(s0)
+800008e2:	fdc42783          	lw	a5,-36(s0)
+800008e6:	40f707b3          	sub	a5,a4,a5
+800008ea:	fcf42c23          	sw	a5,-40(s0)
+800008ee:	fd842783          	lw	a5,-40(s0)
+800008f2:	f7f9                	bnez	a5,800008c0 <gcd+0x1e>
+800008f4:	fec42783          	lw	a5,-20(s0)
+800008f8:	853e                	mv	a0,a5
+800008fa:	5432                	lw	s0,44(sp)
+800008fc:	6145                	addi	sp,sp,48
+800008fe:	8082                	ret
+
+80000900 <main>:
+80000900:	1101                	addi	sp,sp,-32
+80000902:	ce06                	sw	ra,28(sp)
+80000904:	cc22                	sw	s0,24(sp)
+80000906:	1000                	addi	s0,sp,32
+80000908:	000f47b7          	lui	a5,0xf4
+8000090c:	24078793          	addi	a5,a5,576 # f4240 <SYSCALL_ADDR-0x1f1bdc0>
+80000910:	fef42623          	sw	a5,-20(s0)
+80000914:	4785                	li	a5,1
+80000916:	fef42423          	sw	a5,-24(s0)
+8000091a:	fec42783          	lw	a5,-20(s0)
+8000091e:	fe842703          	lw	a4,-24(s0)
+80000922:	85ba                	mv	a1,a4
+80000924:	853e                	mv	a0,a5
+80000926:	00000097          	auipc	ra,0x0
+8000092a:	f7c080e7          	jalr	-132(ra) # 800008a2 <gcd>
+8000092e:	87aa                	mv	a5,a0
+80000930:	fef42223          	sw	a5,-28(s0)
+80000934:	4781                	li	a5,0
+80000936:	853e                	mv	a0,a5
+80000938:	40f2                	lw	ra,28(sp)
+8000093a:	4462                	lw	s0,24(sp)
+8000093c:	6105                	addi	sp,sp,32
+8000093e:	8082                	ret
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	2941                	jal	490 <SYSCALL_ADDR-0x200fb70>
+   2:	0000                	unimp
+   4:	7200                	flw	fs0,32(a2)
+   6:	7369                	lui	t1,0xffffa
+   8:	01007663          	bgeu	zero,a6,14 <SYSCALL_ADDR-0x200ffec>
+   c:	001f 0000 1004      	0x10040000001f
+  12:	7205                	lui	tp,0xfffe1
+  14:	3376                	fld	ft6,376(sp)
+  16:	6932                	flw	fs2,12(sp)
+  18:	7032                	flw	ft0,44(sp)
+  1a:	5f30                	lw	a2,120(a4)
+  1c:	326d                	jal	fffff9c6 <_end+0x7fffe9c6>
+  1e:	3070                	fld	fa2,224(s0)
+  20:	635f 7032 0030      	0x307032635f
+  26:	0108                	addi	a0,sp,128
+  28:	0b0a                	slli	s6,s6,0x2
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	3a434347          	fmsub.d	ft6,ft6,ft4,ft7,rmm
+   4:	2820                	fld	fs0,80(s0)
+   6:	39336367          	0x39336367
+   a:	3131                	jal	fffffc16 <_end+0x7fffec16>
+   c:	3665                	jal	fffffbb4 <_end+0x7fffebb4>
+   e:	3234                	fld	fa3,96(a2)
+  10:	6635                	lui	a2,0xd
+  12:	2029                	jal	1c <SYSCALL_ADDR-0x200ffe4>
+  14:	3031                	jal	fffff820 <_end+0x7fffe820>
+  16:	322e                	fld	ft4,232(sp)
+  18:	302e                	fld	ft0,232(sp)
+	...
+make: Verzeichnis „/home/sallar/work/micrrv32-refactor/microrv32/sw/benchmarks/jsa-benchmarks/gcd“ wird verlassen

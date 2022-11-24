@@ -6,7 +6,7 @@ top_synth:
 	nextpnr-ice40 -l synth/pnr_top.log --hx8k --package ct256 --json synth/top.json --pcf synth/pins.pcf --asc synth/top.asc
 	icepack -v synth/top.asc synth/top.bit
 top_synth_hx8k:
-	yosys -d -s synth/top.ys -l synth/synth_top.log
+	yosys -d -s synth/tophx8k.ys -l synth/synth_top.log
 	nextpnr-ice40 -l synth/pnr_top.log --hx8k --package ct256 --json synth/top.json --pcf synth/pins.pcf --asc synth/top.asc
 	icepack -v synth/top.asc synth/top.bit
 clean:

@@ -1,0 +1,1882 @@
+make: Verzeichnis „/home/sallar/work/micrrv32-refactor/microrv32/sw/benchmarks/jsa-benchmarks/matrix-multiply“ wird betreten
+riscv32-unknown-elf-gcc bootstrap.S main.c -o main -march=rv32i -mabi=ilp32 -mno-strict-align -nostartfiles -Wl,--no-relax,--print-memory-usage  -T link.ld
+Memory region         Used Size  Region Size  %age Used
+             RAM:        6152 B         8 KB     75.10%
+riscv32-unknown-elf-objdump -D -Mnumeric -Mno-aliases main
+
+main:     Dateiformat elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	000070b3          	and	x1,x0,x0
+80000004:	00007133          	and	x2,x0,x0
+80000008:	000071b3          	and	x3,x0,x0
+8000000c:	00007233          	and	x4,x0,x0
+80000010:	000072b3          	and	x5,x0,x0
+80000014:	00007333          	and	x6,x0,x0
+80000018:	000073b3          	and	x7,x0,x0
+8000001c:	00007433          	and	x8,x0,x0
+80000020:	000074b3          	and	x9,x0,x0
+80000024:	00007533          	and	x10,x0,x0
+80000028:	000075b3          	and	x11,x0,x0
+8000002c:	00007633          	and	x12,x0,x0
+80000030:	000076b3          	and	x13,x0,x0
+80000034:	00007733          	and	x14,x0,x0
+80000038:	000077b3          	and	x15,x0,x0
+8000003c:	00007833          	and	x16,x0,x0
+80000040:	000078b3          	and	x17,x0,x0
+80000044:	00007933          	and	x18,x0,x0
+80000048:	000079b3          	and	x19,x0,x0
+8000004c:	00007a33          	and	x20,x0,x0
+80000050:	00007ab3          	and	x21,x0,x0
+80000054:	00007b33          	and	x22,x0,x0
+80000058:	00007bb3          	and	x23,x0,x0
+8000005c:	00007c33          	and	x24,x0,x0
+80000060:	00007cb3          	and	x25,x0,x0
+80000064:	00007d33          	and	x26,x0,x0
+80000068:	00007db3          	and	x27,x0,x0
+8000006c:	00007e33          	and	x28,x0,x0
+80000070:	00007eb3          	and	x29,x0,x0
+80000074:	00007f33          	and	x30,x0,x0
+80000078:	00007fb3          	and	x31,x0,x0
+8000007c:	00001117          	auipc	x2,0x1
+80000080:	83410113          	addi	x2,x2,-1996 # 800008b0 <stack_end>
+80000084:	031000ef          	jal	x1,800008b4 <main>
+80000088:	05d00893          	addi	x17,x0,93
+8000008c:	00000513          	addi	x10,x0,0
+80000090:	020102b7          	lui	x5,0x2010
+80000094:	f1402873          	csrrs	x16,mhartid,x0
+80000098:	0102a023          	sw	x16,0(x5) # 2010000 <SYSCALL_ADDR>
+8000009c:	0112a023          	sw	x17,0(x5)
+800000a0:	fe9ff06f          	jal	x0,80000088 <_start+0x88>
+800000a4:	00000013          	addi	x0,x0,0
+800000a8:	00000013          	addi	x0,x0,0
+800000ac:	00000013          	addi	x0,x0,0
+
+800000b0 <stack_begin>:
+	...
+
+800008b0 <stack_end>:
+800008b0:	0000                	c.unimp
+	...
+
+800008b4 <main>:
+800008b4:	9a010113          	addi	x2,x2,-1632
+800008b8:	64112e23          	sw	x1,1628(x2)
+800008bc:	64812c23          	sw	x8,1624(x2)
+800008c0:	64912a23          	sw	x9,1620(x2)
+800008c4:	66010413          	addi	x8,x2,1632
+800008c8:	9a440793          	addi	x15,x8,-1628
+800008cc:	64000713          	addi	x14,x0,1600
+800008d0:	00070613          	addi	x12,x14,0
+800008d4:	00000593          	addi	x11,x0,0
+800008d8:	00078513          	addi	x10,x15,0
+800008dc:	00000097          	auipc	x1,0x0
+800008e0:	1bc080e7          	jalr	x1,444(x1) # 80000a98 <memset>
+800008e4:	9a440793          	addi	x15,x8,-1628
+800008e8:	64000613          	addi	x12,x0,1600
+800008ec:	00000593          	addi	x11,x0,0
+800008f0:	00078513          	addi	x10,x15,0
+800008f4:	00000097          	auipc	x1,0x0
+800008f8:	1a4080e7          	jalr	x1,420(x1) # 80000a98 <memset>
+800008fc:	fe042623          	sw	x0,-20(x8)
+80000900:	14c0006f          	jal	x0,80000a4c <main+0x198>
+80000904:	fe042423          	sw	x0,-24(x8)
+80000908:	12c0006f          	jal	x0,80000a34 <main+0x180>
+8000090c:	fec42703          	lw	x14,-20(x8)
+80000910:	00070793          	addi	x15,x14,0
+80000914:	00279793          	slli	x15,x15,0x2
+80000918:	00e787b3          	add	x15,x15,x14
+8000091c:	00279793          	slli	x15,x15,0x2
+80000920:	fe842703          	lw	x14,-24(x8)
+80000924:	00e787b3          	add	x15,x15,x14
+80000928:	00279793          	slli	x15,x15,0x2
+8000092c:	ff040713          	addi	x14,x8,-16
+80000930:	00f707b3          	add	x15,x14,x15
+80000934:	9a07aa23          	sw	x0,-1612(x15)
+80000938:	fe042223          	sw	x0,-28(x8)
+8000093c:	0e00006f          	jal	x0,80000a1c <main+0x168>
+80000940:	fec42703          	lw	x14,-20(x8)
+80000944:	00070793          	addi	x15,x14,0
+80000948:	00279793          	slli	x15,x15,0x2
+8000094c:	00e787b3          	add	x15,x15,x14
+80000950:	00279793          	slli	x15,x15,0x2
+80000954:	fe842703          	lw	x14,-24(x8)
+80000958:	00e787b3          	add	x15,x15,x14
+8000095c:	00279793          	slli	x15,x15,0x2
+80000960:	ff040713          	addi	x14,x8,-16
+80000964:	00f707b3          	add	x15,x14,x15
+80000968:	9b47a483          	lw	x9,-1612(x15)
+8000096c:	800017b7          	lui	x15,0x80001
+80000970:	b7478693          	addi	x13,x15,-1164 # 80000b74 <_end+0xfffff36c>
+80000974:	fec42703          	lw	x14,-20(x8)
+80000978:	00070793          	addi	x15,x14,0
+8000097c:	00279793          	slli	x15,x15,0x2
+80000980:	00e787b3          	add	x15,x15,x14
+80000984:	00279793          	slli	x15,x15,0x2
+80000988:	fe442703          	lw	x14,-28(x8)
+8000098c:	00e787b3          	add	x15,x15,x14
+80000990:	00279793          	slli	x15,x15,0x2
+80000994:	00f687b3          	add	x15,x13,x15
+80000998:	0007a603          	lw	x12,0(x15)
+8000099c:	800017b7          	lui	x15,0x80001
+800009a0:	1b478693          	addi	x13,x15,436 # 800011b4 <_end+0xfffff9ac>
+800009a4:	fe442703          	lw	x14,-28(x8)
+800009a8:	00070793          	addi	x15,x14,0
+800009ac:	00279793          	slli	x15,x15,0x2
+800009b0:	00e787b3          	add	x15,x15,x14
+800009b4:	00279793          	slli	x15,x15,0x2
+800009b8:	fe842703          	lw	x14,-24(x8)
+800009bc:	00e787b3          	add	x15,x15,x14
+800009c0:	00279793          	slli	x15,x15,0x2
+800009c4:	00f687b3          	add	x15,x13,x15
+800009c8:	0007a783          	lw	x15,0(x15)
+800009cc:	00078593          	addi	x11,x15,0
+800009d0:	00060513          	addi	x10,x12,0
+800009d4:	00000097          	auipc	x1,0x0
+800009d8:	0a0080e7          	jalr	x1,160(x1) # 80000a74 <__mulsi3>
+800009dc:	00050793          	addi	x15,x10,0
+800009e0:	00f486b3          	add	x13,x9,x15
+800009e4:	fec42703          	lw	x14,-20(x8)
+800009e8:	00070793          	addi	x15,x14,0
+800009ec:	00279793          	slli	x15,x15,0x2
+800009f0:	00e787b3          	add	x15,x15,x14
+800009f4:	00279793          	slli	x15,x15,0x2
+800009f8:	fe842703          	lw	x14,-24(x8)
+800009fc:	00e787b3          	add	x15,x15,x14
+80000a00:	00279793          	slli	x15,x15,0x2
+80000a04:	ff040713          	addi	x14,x8,-16
+80000a08:	00f707b3          	add	x15,x14,x15
+80000a0c:	9ad7aa23          	sw	x13,-1612(x15)
+80000a10:	fe442783          	lw	x15,-28(x8)
+80000a14:	00178793          	addi	x15,x15,1
+80000a18:	fef42223          	sw	x15,-28(x8)
+80000a1c:	fe442703          	lw	x14,-28(x8)
+80000a20:	01300793          	addi	x15,x0,19
+80000a24:	f0e7dee3          	bge	x15,x14,80000940 <main+0x8c>
+80000a28:	fe842783          	lw	x15,-24(x8)
+80000a2c:	00178793          	addi	x15,x15,1
+80000a30:	fef42423          	sw	x15,-24(x8)
+80000a34:	fe842703          	lw	x14,-24(x8)
+80000a38:	01300793          	addi	x15,x0,19
+80000a3c:	ece7d8e3          	bge	x15,x14,8000090c <main+0x58>
+80000a40:	fec42783          	lw	x15,-20(x8)
+80000a44:	00178793          	addi	x15,x15,1
+80000a48:	fef42623          	sw	x15,-20(x8)
+80000a4c:	fec42703          	lw	x14,-20(x8)
+80000a50:	01300793          	addi	x15,x0,19
+80000a54:	eae7d8e3          	bge	x15,x14,80000904 <main+0x50>
+80000a58:	00000793          	addi	x15,x0,0
+80000a5c:	00078513          	addi	x10,x15,0
+80000a60:	65c12083          	lw	x1,1628(x2)
+80000a64:	65812403          	lw	x8,1624(x2)
+80000a68:	65412483          	lw	x9,1620(x2)
+80000a6c:	66010113          	addi	x2,x2,1632
+80000a70:	00008067          	jalr	x0,0(x1)
+
+80000a74 <__mulsi3>:
+80000a74:	00050613          	addi	x12,x10,0
+80000a78:	00000513          	addi	x10,x0,0
+80000a7c:	0015f693          	andi	x13,x11,1
+80000a80:	00068463          	beq	x13,x0,80000a88 <__mulsi3+0x14>
+80000a84:	00c50533          	add	x10,x10,x12
+80000a88:	0015d593          	srli	x11,x11,0x1
+80000a8c:	00161613          	slli	x12,x12,0x1
+80000a90:	fe0596e3          	bne	x11,x0,80000a7c <__mulsi3+0x8>
+80000a94:	00008067          	jalr	x0,0(x1)
+
+80000a98 <memset>:
+80000a98:	00f00313          	addi	x6,x0,15
+80000a9c:	00050713          	addi	x14,x10,0
+80000aa0:	02c37e63          	bgeu	x6,x12,80000adc <memset+0x44>
+80000aa4:	00f77793          	andi	x15,x14,15
+80000aa8:	0a079063          	bne	x15,x0,80000b48 <memset+0xb0>
+80000aac:	08059263          	bne	x11,x0,80000b30 <memset+0x98>
+80000ab0:	ff067693          	andi	x13,x12,-16
+80000ab4:	00f67613          	andi	x12,x12,15
+80000ab8:	00e686b3          	add	x13,x13,x14
+80000abc:	00b72023          	sw	x11,0(x14)
+80000ac0:	00b72223          	sw	x11,4(x14)
+80000ac4:	00b72423          	sw	x11,8(x14)
+80000ac8:	00b72623          	sw	x11,12(x14)
+80000acc:	01070713          	addi	x14,x14,16
+80000ad0:	fed766e3          	bltu	x14,x13,80000abc <memset+0x24>
+80000ad4:	00061463          	bne	x12,x0,80000adc <memset+0x44>
+80000ad8:	00008067          	jalr	x0,0(x1)
+80000adc:	40c306b3          	sub	x13,x6,x12
+80000ae0:	00269693          	slli	x13,x13,0x2
+80000ae4:	00000297          	auipc	x5,0x0
+80000ae8:	005686b3          	add	x13,x13,x5
+80000aec:	00c68067          	jalr	x0,12(x13)
+80000af0:	00b70723          	sb	x11,14(x14)
+80000af4:	00b706a3          	sb	x11,13(x14)
+80000af8:	00b70623          	sb	x11,12(x14)
+80000afc:	00b705a3          	sb	x11,11(x14)
+80000b00:	00b70523          	sb	x11,10(x14)
+80000b04:	00b704a3          	sb	x11,9(x14)
+80000b08:	00b70423          	sb	x11,8(x14)
+80000b0c:	00b703a3          	sb	x11,7(x14)
+80000b10:	00b70323          	sb	x11,6(x14)
+80000b14:	00b702a3          	sb	x11,5(x14)
+80000b18:	00b70223          	sb	x11,4(x14)
+80000b1c:	00b701a3          	sb	x11,3(x14)
+80000b20:	00b70123          	sb	x11,2(x14)
+80000b24:	00b700a3          	sb	x11,1(x14)
+80000b28:	00b70023          	sb	x11,0(x14)
+80000b2c:	00008067          	jalr	x0,0(x1)
+80000b30:	0ff5f593          	andi	x11,x11,255
+80000b34:	00859693          	slli	x13,x11,0x8
+80000b38:	00d5e5b3          	or	x11,x11,x13
+80000b3c:	01059693          	slli	x13,x11,0x10
+80000b40:	00d5e5b3          	or	x11,x11,x13
+80000b44:	f6dff06f          	jal	x0,80000ab0 <memset+0x18>
+80000b48:	00279693          	slli	x13,x15,0x2
+80000b4c:	00000297          	auipc	x5,0x0
+80000b50:	005686b3          	add	x13,x13,x5
+80000b54:	00008293          	addi	x5,x1,0
+80000b58:	fa0680e7          	jalr	x1,-96(x13)
+80000b5c:	00028093          	addi	x1,x5,0 # 80000b4c <memset+0xb4>
+80000b60:	ff078793          	addi	x15,x15,-16
+80000b64:	40f70733          	sub	x14,x14,x15
+80000b68:	00f60633          	add	x12,x12,x15
+80000b6c:	f6c378e3          	bgeu	x6,x12,80000adc <memset+0x44>
+80000b70:	f3dff06f          	jal	x0,80000aac <memset+0x14>
+
+Disassembly of section .data:
+
+80000b74 <matA>:
+80000b74:	ffffffcf          	fnmadd.q	f31,f31,f31,f31
+80000b78:	00000027          	0x27
+80000b7c:	0000000f          	fence	unknown,unknown
+80000b80:	0002                	c.slli64	x0
+80000b82:	0000                	c.unimp
+80000b84:	0034                	c.addi4spn	x13,x2,8
+80000b86:	0000                	c.unimp
+80000b88:	00000047          	fmsub.s	f0,f0,f0,f0,rne
+80000b8c:	0002                	c.slli64	x0
+80000b8e:	0000                	c.unimp
+80000b90:	ffd0                	c.fsw	f12,60(x15)
+80000b92:	ffff                	0xffff
+80000b94:	ffc8                	c.fsw	f10,60(x15)
+80000b96:	ffff                	0xffff
+80000b98:	ffc8                	c.fsw	f10,60(x15)
+80000b9a:	ffff                	0xffff
+80000b9c:	000a                	c.slli	x0,0x2
+80000b9e:	0000                	c.unimp
+80000ba0:	ffe0                	c.fsw	f8,124(x15)
+80000ba2:	ffff                	0xffff
+80000ba4:	004e                	c.slli	x0,0x13
+80000ba6:	0000                	c.unimp
+80000ba8:	0055                	c.addi	x0,21
+80000baa:	0000                	c.unimp
+80000bac:	00000057          	0x57
+80000bb0:	005e                	c.slli	x0,0x17
+80000bb2:	0000                	c.unimp
+80000bb4:	001e                	c.slli	x0,0x7
+80000bb6:	0000                	c.unimp
+80000bb8:	ffffffc3          	fmadd.q	f31,f31,f31,f31
+80000bbc:	0061                	c.addi	x0,24
+80000bbe:	0000                	c.unimp
+80000bc0:	ffffffeb          	0xffffffeb
+80000bc4:	0030                	c.addi4spn	x12,x2,8
+80000bc6:	0000                	c.unimp
+80000bc8:	ff9d                	c.bnez	x15,80000b06 <memset+0x6e>
+80000bca:	ffff                	0xffff
+80000bcc:	ffffffcf          	fnmadd.q	f31,f31,f31,f31
+80000bd0:	ffa4                	c.fsw	f9,120(x15)
+80000bd2:	ffff                	0xffff
+80000bd4:	00000013          	addi	x0,x0,0
+80000bd8:	0001                	c.addi	x0,0
+80000bda:	0000                	c.unimp
+80000bdc:	0058                	c.addi4spn	x14,x2,4
+80000bde:	0000                	c.unimp
+80000be0:	0018                	0x18
+80000be2:	0000                	c.unimp
+80000be4:	fff4                	c.fsw	f13,124(x15)
+80000be6:	ffff                	0xffff
+80000be8:	ffec                	c.fsw	f11,124(x15)
+80000bea:	ffff                	0xffff
+80000bec:	fff8                	c.fsw	f14,124(x15)
+80000bee:	ffff                	0xffff
+80000bf0:	fff0                	c.fsw	f12,124(x15)
+80000bf2:	ffff                	0xffff
+80000bf4:	004a                	c.slli	x0,0x12
+80000bf6:	0000                	c.unimp
+80000bf8:	005e                	c.slli	x0,0x17
+80000bfa:	0000                	c.unimp
+80000bfc:	0035                	c.addi	x0,13
+80000bfe:	0000                	c.unimp
+80000c00:	0035                	c.addi	x0,13
+80000c02:	0000                	c.unimp
+80000c04:	002d                	c.addi	x0,11
+80000c06:	0000                	c.unimp
+80000c08:	0060                	c.addi4spn	x8,x2,12
+80000c0a:	0000                	c.unimp
+80000c0c:	0048                	c.addi4spn	x10,x2,4
+80000c0e:	0000                	c.unimp
+80000c10:	ff9e                	c.fswsp	f7,252(x2)
+80000c12:	ffff                	0xffff
+80000c14:	0032                	c.slli	x0,0xc
+80000c16:	0000                	c.unimp
+80000c18:	0021                	c.addi	x0,8
+80000c1a:	0000                	c.unimp
+80000c1c:	fff0                	c.fsw	f12,124(x15)
+80000c1e:	ffff                	0xffff
+80000c20:	ffffffcf          	fnmadd.q	f31,f31,f31,f31
+80000c24:	0000003f ffffffd0 	0xffffffd00000003f
+80000c2c:	ffffffaf          	0xffffffaf
+80000c30:	0060                	c.addi4spn	x8,x2,12
+80000c32:	0000                	c.unimp
+80000c34:	00000023          	sb	x0,0(x0) # 0 <SYSCALL_ADDR-0x2010000>
+80000c38:	0012                	c.slli	x0,0x4
+80000c3a:	0000                	c.unimp
+80000c3c:	0000004f          	fnmadd.s	f0,f0,f0,f0,rne
+80000c40:	0000001b          	0x1b
+80000c44:	0000000f          	fence	unknown,unknown
+80000c48:	ffda                	c.fswsp	f22,252(x2)
+80000c4a:	ffff                	0xffff
+80000c4c:	000c                	0xc
+80000c4e:	0000                	c.unimp
+80000c50:	ffa1                	c.bnez	x15,80000ba8 <matA+0x34>
+80000c52:	ffff                	0xffff
+80000c54:	ffff                	0xffff
+80000c56:	ffff                	0xffff
+80000c58:	004a                	c.slli	x0,0x12
+80000c5a:	0000                	c.unimp
+80000c5c:	ffe4                	c.fsw	f9,124(x15)
+80000c5e:	ffff                	0xffff
+80000c60:	ffc5                	c.bnez	x15,80000c18 <matA+0xa4>
+80000c62:	ffff                	0xffff
+80000c64:	ffb1                	c.bnez	x15,80000bc0 <matA+0x4c>
+80000c66:	ffff                	0xffff
+80000c68:	0058                	c.addi4spn	x14,x2,4
+80000c6a:	0000                	c.unimp
+80000c6c:	ff9c                	c.fsw	f15,56(x15)
+80000c6e:	ffff                	0xffff
+80000c70:	004e                	c.slli	x0,0x13
+80000c72:	0000                	c.unimp
+80000c74:	ffa8                	c.fsw	f10,120(x15)
+80000c76:	ffff                	0xffff
+80000c78:	ffa5                	c.bnez	x15,80000bf0 <matA+0x7c>
+80000c7a:	ffff                	0xffff
+80000c7c:	ffffffab          	0xffffffab
+80000c80:	00000013          	addi	x0,x0,0
+80000c84:	0008                	0x8
+80000c86:	0000                	c.unimp
+80000c88:	0042                	c.slli	x0,0x10
+80000c8a:	0000                	c.unimp
+80000c8c:	ffca                	c.fswsp	f18,252(x2)
+80000c8e:	ffff                	0xffff
+80000c90:	ffac                	c.fsw	f11,120(x15)
+80000c92:	ffff                	0xffff
+80000c94:	fff2                	c.fswsp	f28,252(x2)
+80000c96:	ffff                	0xffff
+80000c98:	ffe1                	c.bnez	x15,80000c70 <matA+0xfc>
+80000c9a:	ffff                	0xffff
+80000c9c:	0000000b          	0xb
+80000ca0:	000e                	c.slli	x0,0x3
+80000ca2:	0000                	c.unimp
+80000ca4:	ffcd                	c.bnez	x15,80000c5e <matA+0xea>
+80000ca6:	ffff                	0xffff
+80000ca8:	ffa0                	c.fsw	f8,120(x15)
+80000caa:	ffff                	0xffff
+80000cac:	0029                	c.addi	x0,10
+80000cae:	0000                	c.unimp
+80000cb0:	00000003          	lb	x0,0(x0) # 0 <SYSCALL_ADDR-0x2010000>
+80000cb4:	ffc1                	c.bnez	x15,80000c4c <matA+0xd8>
+80000cb6:	ffff                	0xffff
+80000cb8:	0045                	c.addi	x0,17
+80000cba:	0000                	c.unimp
+80000cbc:	000a                	c.slli	x0,0x2
+80000cbe:	0000                	c.unimp
+80000cc0:	ffa4                	c.fsw	f9,120(x15)
+80000cc2:	ffff                	0xffff
+80000cc4:	000a                	c.slli	x0,0x2
+80000cc6:	0000                	c.unimp
+80000cc8:	ffba                	c.fswsp	f14,252(x2)
+80000cca:	ffff                	0xffff
+80000ccc:	ffdc                	c.fsw	f15,60(x15)
+80000cce:	ffff                	0xffff
+80000cd0:	0011                	c.addi	x0,4
+80000cd2:	0000                	c.unimp
+80000cd4:	ffa5                	c.bnez	x15,80000c4c <matA+0xd8>
+80000cd6:	ffff                	0xffff
+80000cd8:	ffcd                	c.bnez	x15,80000c92 <matA+0x11e>
+80000cda:	ffff                	0xffff
+80000cdc:	fff6                	c.fswsp	f29,252(x2)
+80000cde:	ffff                	0xffff
+80000ce0:	003c                	c.addi4spn	x15,x2,8
+80000ce2:	0000                	c.unimp
+80000ce4:	00000017          	auipc	x0,0x0
+80000ce8:	fffc                	c.fsw	f15,124(x15)
+80000cea:	ffff                	0xffff
+80000cec:	003a                	c.slli	x0,0xe
+80000cee:	0000                	c.unimp
+80000cf0:	0000002f          	0x2f
+80000cf4:	fffffff3          	csrrci	x31,0xfff,31
+80000cf8:	0051                	c.addi	x0,20
+80000cfa:	0000                	c.unimp
+80000cfc:	0042                	c.slli	x0,0x10
+80000cfe:	0000                	c.unimp
+80000d00:	00000057          	0x57
+80000d04:	ffffffcb          	fnmsub.q	f31,f31,f31,f31
+80000d08:	000e                	c.slli	x0,0x3
+80000d0a:	0000                	c.unimp
+80000d0c:	004c                	c.addi4spn	x11,x2,4
+80000d0e:	0000                	c.unimp
+80000d10:	0000                	c.unimp
+80000d12:	0000                	c.unimp
+80000d14:	ff9e                	c.fswsp	f7,252(x2)
+80000d16:	ffff                	0xffff
+80000d18:	00000007          	0x7
+80000d1c:	005a                	c.slli	x0,0x16
+80000d1e:	0000                	c.unimp
+80000d20:	ffc0                	c.fsw	f8,60(x15)
+80000d22:	ffff                	0xffff
+80000d24:	ffe0                	c.fsw	f8,124(x15)
+80000d26:	ffff                	0xffff
+80000d28:	0001                	c.addi	x0,0
+80000d2a:	0000                	c.unimp
+80000d2c:	0012                	c.slli	x0,0x4
+80000d2e:	0000                	c.unimp
+80000d30:	ffffffc7          	fmsub.q	f31,f31,f31,f31
+80000d34:	ffd4                	c.fsw	f13,60(x15)
+80000d36:	ffff                	0xffff
+80000d38:	ffffffeb          	0xffffffeb
+80000d3c:	fffffff7          	0xfffffff7
+80000d40:	ffd6                	c.fswsp	f21,252(x2)
+80000d42:	ffff                	0xffff
+80000d44:	0051                	c.addi	x0,20
+80000d46:	0000                	c.unimp
+80000d48:	ffffffd7          	0xffffffd7
+80000d4c:	001c                	0x1c
+80000d4e:	0000                	c.unimp
+80000d50:	ffffffbf 0000004a 	0x4affffffbf
+80000d58:	0031                	c.addi	x0,12
+80000d5a:	0000                	c.unimp
+80000d5c:	ffa1                	c.bnez	x15,80000cb4 <matA+0x140>
+80000d5e:	ffff                	0xffff
+80000d60:	002a                	c.slli	x0,0xa
+80000d62:	0000                	c.unimp
+80000d64:	ffad                	c.bnez	x15,80000cde <matA+0x16a>
+80000d66:	ffff                	0xffff
+80000d68:	0021                	c.addi	x0,8
+80000d6a:	0000                	c.unimp
+80000d6c:	ffda                	c.fswsp	f22,252(x2)
+80000d6e:	ffff                	0xffff
+80000d70:	0058                	c.addi4spn	x14,x2,4
+80000d72:	0000                	c.unimp
+80000d74:	0032                	c.slli	x0,0xc
+80000d76:	0000                	c.unimp
+80000d78:	000d                	c.addi	x0,3
+80000d7a:	0000                	c.unimp
+80000d7c:	ffd0                	c.fsw	f12,60(x15)
+80000d7e:	ffff                	0xffff
+80000d80:	ffa4                	c.fsw	f9,120(x15)
+80000d82:	ffff                	0xffff
+80000d84:	0061                	c.addi	x0,24
+80000d86:	0000                	c.unimp
+80000d88:	005d                	c.addi	x0,23
+80000d8a:	0000                	c.unimp
+80000d8c:	0032                	c.slli	x0,0xc
+80000d8e:	0000                	c.unimp
+80000d90:	0056                	c.slli	x0,0x15
+80000d92:	0000                	c.unimp
+80000d94:	0000001b          	0x1b
+80000d98:	0028                	c.addi4spn	x10,x2,8
+80000d9a:	0000                	c.unimp
+80000d9c:	0025                	c.addi	x0,9
+80000d9e:	0000                	c.unimp
+80000da0:	00000017          	auipc	x0,0x0
+80000da4:	ffa5                	c.bnez	x15,80000d1c <matA+0x1a8>
+80000da6:	ffff                	0xffff
+80000da8:	fffd                	c.bnez	x15,80000da6 <matA+0x232>
+80000daa:	ffff                	0xffff
+80000dac:	0058                	c.addi4spn	x14,x2,4
+80000dae:	0000                	c.unimp
+80000db0:	0005                	c.addi	x0,1
+80000db2:	0000                	c.unimp
+80000db4:	ffffffb7          	lui	x31,0xfffff
+80000db8:	ffd5                	c.bnez	x15,80000d74 <matA+0x200>
+80000dba:	ffff                	0xffff
+80000dbc:	fff4                	c.fsw	f13,124(x15)
+80000dbe:	ffff                	0xffff
+80000dc0:	00000053          	fadd.s	f0,f0,f0,rne
+80000dc4:	00000007          	0x7
+80000dc8:	ffff                	0xffff
+80000dca:	ffff                	0xffff
+80000dcc:	fffffff7          	0xfffffff7
+80000dd0:	0004                	0x4
+80000dd2:	0000                	c.unimp
+80000dd4:	ffe4                	c.fsw	f9,124(x15)
+80000dd6:	ffff                	0xffff
+80000dd8:	ffffffd3          	0xffffffd3
+80000ddc:	002e                	c.slli	x0,0xb
+80000dde:	0000                	c.unimp
+80000de0:	0020                	c.addi4spn	x8,x2,8
+80000de2:	0000                	c.unimp
+80000de4:	0022                	c.slli	x0,0x8
+80000de6:	0000                	c.unimp
+80000de8:	00000043          	fmadd.s	f0,f0,f0,f0,rne
+80000dec:	00000013          	addi	x0,x0,0
+80000df0:	ffffffa7          	0xffffffa7
+80000df4:	00000037          	lui	x0,0x0
+80000df8:	ffd1                	c.bnez	x15,80000d94 <matA+0x220>
+80000dfa:	ffff                	0xffff
+80000dfc:	ffffffa3          	0xffffffa3
+80000e00:	fff5                	c.bnez	x15,80000dfc <matA+0x288>
+80000e02:	ffff                	0xffff
+80000e04:	002c                	c.addi4spn	x11,x2,8
+80000e06:	0000                	c.unimp
+80000e08:	0000002b          	0x2b
+80000e0c:	fff4                	c.fsw	f13,124(x15)
+80000e0e:	ffff                	0xffff
+80000e10:	ffd1                	c.bnez	x15,80000dac <matA+0x238>
+80000e12:	ffff                	0xffff
+80000e14:	00000057          	0x57
+80000e18:	ffe4                	c.fsw	f9,124(x15)
+80000e1a:	ffff                	0xffff
+80000e1c:	fffffff3          	csrrci	x31,0xfff,31
+80000e20:	ffb2                	c.fswsp	f12,252(x2)
+80000e22:	ffff                	0xffff
+80000e24:	ffe5                	c.bnez	x15,80000e1c <matA+0x2a8>
+80000e26:	ffff                	0xffff
+80000e28:	004a                	c.slli	x0,0x12
+80000e2a:	0000                	c.unimp
+80000e2c:	0054                	c.addi4spn	x13,x2,4
+80000e2e:	0000                	c.unimp
+80000e30:	fff1                	c.bnez	x15,80000e0c <matA+0x298>
+80000e32:	ffff                	0xffff
+80000e34:	ffc1                	c.bnez	x15,80000dcc <matA+0x258>
+80000e36:	ffff                	0xffff
+80000e38:	0008                	0x8
+80000e3a:	0000                	c.unimp
+80000e3c:	0021                	c.addi	x0,8
+80000e3e:	0000                	c.unimp
+80000e40:	ffd8                	c.fsw	f14,60(x15)
+80000e42:	ffff                	0xffff
+80000e44:	00000057          	0x57
+80000e48:	0024                	c.addi4spn	x9,x2,8
+80000e4a:	0000                	c.unimp
+80000e4c:	fffc                	c.fsw	f15,124(x15)
+80000e4e:	ffff                	0xffff
+80000e50:	ffec                	c.fsw	f11,124(x15)
+80000e52:	ffff                	0xffff
+80000e54:	0001                	c.addi	x0,0
+80000e56:	0000                	c.unimp
+80000e58:	0005                	c.addi	x0,1
+80000e5a:	0000                	c.unimp
+80000e5c:	0009                	c.addi	x0,2
+80000e5e:	0000                	c.unimp
+80000e60:	ffffffcb          	fnmsub.q	f31,f31,f31,f31
+80000e64:	002c                	c.addi4spn	x11,x2,8
+80000e66:	0000                	c.unimp
+80000e68:	0000003f ffffffec 	0xffffffec0000003f
+80000e70:	0021                	c.addi	x0,8
+80000e72:	0000                	c.unimp
+80000e74:	ffffffdb          	0xffffffdb
+80000e78:	ffc1                	c.bnez	x15,80000e10 <matA+0x29c>
+80000e7a:	ffff                	0xffff
+80000e7c:	ffea                	c.fswsp	f26,252(x2)
+80000e7e:	ffff                	0xffff
+80000e80:	00000033          	add	x0,x0,x0
+80000e84:	005a                	c.slli	x0,0x16
+80000e86:	0000                	c.unimp
+80000e88:	0018                	0x18
+80000e8a:	0000                	c.unimp
+80000e8c:	ffe2                	c.fswsp	f24,252(x2)
+80000e8e:	ffff                	0xffff
+80000e90:	ffc1                	c.bnez	x15,80000e28 <matA+0x2b4>
+80000e92:	ffff                	0xffff
+80000e94:	003c                	c.addi4spn	x15,x2,8
+80000e96:	0000                	c.unimp
+80000e98:	00000003          	lb	x0,0(x0) # 0 <SYSCALL_ADDR-0x2010000>
+80000e9c:	0038                	c.addi4spn	x14,x2,8
+80000e9e:	0000                	c.unimp
+80000ea0:	0038                	c.addi4spn	x14,x2,8
+80000ea2:	0000                	c.unimp
+80000ea4:	fffa                	c.fswsp	f30,252(x2)
+80000ea6:	ffff                	0xffff
+80000ea8:	001d                	c.addi	x0,7
+80000eaa:	0000                	c.unimp
+80000eac:	0041                	c.addi	x0,16
+80000eae:	0000                	c.unimp
+80000eb0:	0016                	c.slli	x0,0x5
+80000eb2:	0000                	c.unimp
+80000eb4:	ffe1                	c.bnez	x15,80000e8c <matA+0x318>
+80000eb6:	ffff                	0xffff
+80000eb8:	fffffffb          	0xfffffffb
+80000ebc:	000e                	c.slli	x0,0x3
+80000ebe:	0000                	c.unimp
+80000ec0:	0021                	c.addi	x0,8
+80000ec2:	0000                	c.unimp
+80000ec4:	ffffffcb          	fnmsub.q	f31,f31,f31,f31
+80000ec8:	0000003b          	0x3b
+80000ecc:	fffffff3          	csrrci	x31,0xfff,31
+80000ed0:	0012                	c.slli	x0,0x4
+80000ed2:	0000                	c.unimp
+80000ed4:	ffd8                	c.fsw	f14,60(x15)
+80000ed6:	ffff                	0xffff
+80000ed8:	0061                	c.addi	x0,24
+80000eda:	0000                	c.unimp
+80000edc:	ffe9                	c.bnez	x15,80000eb6 <matA+0x342>
+80000ede:	ffff                	0xffff
+80000ee0:	0000                	c.unimp
+80000ee2:	0000                	c.unimp
+80000ee4:	ffffffb3          	0xffffffb3
+80000ee8:	ffd5                	c.bnez	x15,80000ea4 <matA+0x330>
+80000eea:	ffff                	0xffff
+80000eec:	fff4                	c.fsw	f13,124(x15)
+80000eee:	ffff                	0xffff
+80000ef0:	ffb2                	c.fswsp	f12,252(x2)
+80000ef2:	ffff                	0xffff
+80000ef4:	fff2                	c.fswsp	f28,252(x2)
+80000ef6:	ffff                	0xffff
+80000ef8:	0036                	c.slli	x0,0xd
+80000efa:	0000                	c.unimp
+80000efc:	001d                	c.addi	x0,7
+80000efe:	0000                	c.unimp
+80000f00:	ffa8                	c.fsw	f10,120(x15)
+80000f02:	ffff                	0xffff
+80000f04:	0020                	c.addi4spn	x8,x2,8
+80000f06:	0000                	c.unimp
+80000f08:	ffd9                	c.bnez	x15,80000ea6 <matA+0x332>
+80000f0a:	ffff                	0xffff
+80000f0c:	002c                	c.addi4spn	x11,x2,8
+80000f0e:	0000                	c.unimp
+80000f10:	0055                	c.addi	x0,21
+80000f12:	0000                	c.unimp
+80000f14:	ffc4                	c.fsw	f9,60(x15)
+80000f16:	ffff                	0xffff
+80000f18:	ffc9                	c.bnez	x15,80000eb2 <matA+0x33e>
+80000f1a:	ffff                	0xffff
+80000f1c:	0062                	c.slli	x0,0x18
+80000f1e:	0000                	c.unimp
+80000f20:	ffffffcb          	fnmsub.q	f31,f31,f31,f31
+80000f24:	0006                	c.slli	x0,0x1
+80000f26:	0000                	c.unimp
+80000f28:	0015                	c.addi	x0,5
+80000f2a:	0000                	c.unimp
+80000f2c:	001c                	0x1c
+80000f2e:	0000                	c.unimp
+80000f30:	0029                	c.addi	x0,10
+80000f32:	0000                	c.unimp
+80000f34:	0055                	c.addi	x0,21
+80000f36:	0000                	c.unimp
+80000f38:	ffac                	c.fsw	f11,120(x15)
+80000f3a:	ffff                	0xffff
+80000f3c:	002d                	c.addi	x0,11
+80000f3e:	0000                	c.unimp
+80000f40:	002d                	c.addi	x0,11
+80000f42:	0000                	c.unimp
+80000f44:	000a                	c.slli	x0,0x2
+80000f46:	0000                	c.unimp
+80000f48:	ffdd                	c.bnez	x15,80000f06 <matA+0x392>
+80000f4a:	ffff                	0xffff
+80000f4c:	0032                	c.slli	x0,0xc
+80000f4e:	0000                	c.unimp
+80000f50:	0019                	c.addi	x0,6
+80000f52:	0000                	c.unimp
+80000f54:	ffcd                	c.bnez	x15,80000f0e <matA+0x39a>
+80000f56:	ffff                	0xffff
+80000f58:	ffe5                	c.bnez	x15,80000f50 <matA+0x3dc>
+80000f5a:	ffff                	0xffff
+80000f5c:	00000063          	beq	x0,x0,80000f5c <matA+0x3e8>
+80000f60:	005d                	c.addi	x0,23
+80000f62:	0000                	c.unimp
+80000f64:	ffd1                	c.bnez	x15,80000f00 <matA+0x38c>
+80000f66:	ffff                	0xffff
+80000f68:	0028                	c.addi4spn	x10,x2,8
+80000f6a:	0000                	c.unimp
+80000f6c:	0011                	c.addi	x0,4
+80000f6e:	0000                	c.unimp
+80000f70:	0024                	c.addi4spn	x9,x2,8
+80000f72:	0000                	c.unimp
+80000f74:	0055                	c.addi	x0,21
+80000f76:	0000                	c.unimp
+80000f78:	fffe                	c.fswsp	f31,252(x2)
+80000f7a:	ffff                	0xffff
+80000f7c:	fff5                	c.bnez	x15,80000f78 <matA+0x404>
+80000f7e:	ffff                	0xffff
+80000f80:	0054                	c.addi4spn	x13,x2,4
+80000f82:	0000                	c.unimp
+80000f84:	0050                	c.addi4spn	x12,x2,4
+80000f86:	0000                	c.unimp
+80000f88:	ffd5                	c.bnez	x15,80000f44 <matA+0x3d0>
+80000f8a:	ffff                	0xffff
+80000f8c:	ffcd                	c.bnez	x15,80000f46 <matA+0x3d2>
+80000f8e:	ffff                	0xffff
+80000f90:	0000002f          	0x2f
+80000f94:	005c                	c.addi4spn	x15,x2,4
+80000f96:	0000                	c.unimp
+80000f98:	ffd9                	c.bnez	x15,80000f36 <matA+0x3c2>
+80000f9a:	ffff                	0xffff
+80000f9c:	0055                	c.addi	x0,21
+80000f9e:	0000                	c.unimp
+80000fa0:	ffe2                	c.fswsp	f24,252(x2)
+80000fa2:	ffff                	0xffff
+80000fa4:	ffc8                	c.fsw	f10,60(x15)
+80000fa6:	ffff                	0xffff
+80000fa8:	ffc2                	c.fswsp	f16,252(x2)
+80000faa:	ffff                	0xffff
+80000fac:	0019                	c.addi	x0,6
+80000fae:	0000                	c.unimp
+80000fb0:	0044                	c.addi4spn	x9,x2,4
+80000fb2:	0000                	c.unimp
+80000fb4:	ffb6                	c.fswsp	f13,252(x2)
+80000fb6:	ffff                	0xffff
+80000fb8:	ffee                	c.fswsp	f27,252(x2)
+80000fba:	ffff                	0xffff
+80000fbc:	0000001b          	0x1b
+80000fc0:	0031                	c.addi	x0,12
+80000fc2:	0000                	c.unimp
+80000fc4:	fff0                	c.fsw	f12,124(x15)
+80000fc6:	ffff                	0xffff
+80000fc8:	0056                	c.slli	x0,0x15
+80000fca:	0000                	c.unimp
+80000fcc:	fffe                	c.fswsp	f31,252(x2)
+80000fce:	ffff                	0xffff
+80000fd0:	ffee                	c.fswsp	f27,252(x2)
+80000fd2:	ffff                	0xffff
+80000fd4:	0024                	c.addi4spn	x9,x2,8
+80000fd6:	0000                	c.unimp
+80000fd8:	fffffff3          	csrrci	x31,0xfff,31
+80000fdc:	fff0                	c.fsw	f12,124(x15)
+80000fde:	ffff                	0xffff
+80000fe0:	ffed                	c.bnez	x15,80000fda <matA+0x466>
+80000fe2:	ffff                	0xffff
+80000fe4:	ffffffe3          	bgeu	x31,x31,80000fe2 <matA+0x46e>
+80000fe8:	00000007          	0x7
+80000fec:	005a                	c.slli	x0,0x16
+80000fee:	0000                	c.unimp
+80000ff0:	00000057          	0x57
+80000ff4:	0034                	c.addi4spn	x13,x2,8
+80000ff6:	0000                	c.unimp
+80000ff8:	ffed                	c.bnez	x15,80000ff2 <matA+0x47e>
+80000ffa:	ffff                	0xffff
+80000ffc:	0022                	c.slli	x0,0x8
+80000ffe:	0000                	c.unimp
+80001000:	ffd0                	c.fsw	f12,60(x15)
+80001002:	ffff                	0xffff
+80001004:	0036                	c.slli	x0,0xd
+80001006:	0000                	c.unimp
+80001008:	ffba                	c.fswsp	f14,252(x2)
+8000100a:	ffff                	0xffff
+8000100c:	0022                	c.slli	x0,0x8
+8000100e:	0000                	c.unimp
+80001010:	ffffffef          	jal	x31,8000100e <matA+0x49a>
+80001014:	ffad                	c.bnez	x15,80000f8e <matA+0x41a>
+80001016:	ffff                	0xffff
+80001018:	0004                	0x4
+8000101a:	0000                	c.unimp
+8000101c:	00000057          	0x57
+80001020:	0000004f          	fnmadd.s	f0,f0,f0,f0,rne
+80001024:	ffb0                	c.fsw	f12,120(x15)
+80001026:	ffff                	0xffff
+80001028:	ffad                	c.bnez	x15,80000fa2 <matA+0x42e>
+8000102a:	ffff                	0xffff
+8000102c:	0045                	c.addi	x0,17
+8000102e:	0000                	c.unimp
+80001030:	ffe8                	c.fsw	f10,124(x15)
+80001032:	ffff                	0xffff
+80001034:	0050                	c.addi4spn	x12,x2,4
+80001036:	0000                	c.unimp
+80001038:	005e                	c.slli	x0,0x17
+8000103a:	0000                	c.unimp
+8000103c:	ffffffdb          	0xffffffdb
+80001040:	ff9e                	c.fswsp	f7,252(x2)
+80001042:	ffff                	0xffff
+80001044:	ffd4                	c.fsw	f13,60(x15)
+80001046:	ffff                	0xffff
+80001048:	ffa6                	c.fswsp	f9,252(x2)
+8000104a:	ffff                	0xffff
+8000104c:	ffff                	0xffff
+8000104e:	ffff                	0xffff
+80001050:	0000000b          	0xb
+80001054:	ffffffbb          	0xffffffbb
+80001058:	0020                	c.addi4spn	x8,x2,8
+8000105a:	0000                	c.unimp
+8000105c:	fffffff7          	0xfffffff7
+80001060:	fffffffb          	0xfffffffb
+80001064:	ffaa                	c.fswsp	f10,252(x2)
+80001066:	ffff                	0xffff
+80001068:	ffdf ffff 0032      	0x32ffffffdf
+8000106e:	0000                	c.unimp
+80001070:	0000003b          	0x3b
+80001074:	ffcd                	c.bnez	x15,8000102e <matA+0x4ba>
+80001076:	ffff                	0xffff
+80001078:	002a                	c.slli	x0,0xa
+8000107a:	0000                	c.unimp
+8000107c:	0059                	c.addi	x0,22
+8000107e:	0000                	c.unimp
+80001080:	0000000f          	fence	unknown,unknown
+80001084:	00000057          	0x57
+80001088:	fffe                	c.fswsp	f31,252(x2)
+8000108a:	ffff                	0xffff
+8000108c:	ffffffab          	0xffffffab
+80001090:	ffc8                	c.fsw	f10,60(x15)
+80001092:	ffff                	0xffff
+80001094:	004d                	c.addi	x0,19
+80001096:	0000                	c.unimp
+80001098:	ffffffeb          	0xffffffeb
+8000109c:	ffdf ffff ffa7      	0xffa7ffffffdf
+800010a2:	ffff                	0xffff
+800010a4:	ffffffe3          	bgeu	x31,x31,800010a2 <matA+0x52e>
+800010a8:	0038                	c.addi4spn	x14,x2,8
+800010aa:	0000                	c.unimp
+800010ac:	0024                	c.addi4spn	x9,x2,8
+800010ae:	0000                	c.unimp
+800010b0:	ffffffef          	jal	x31,800010ae <matA+0x53a>
+800010b4:	ffd6                	c.fswsp	f21,252(x2)
+800010b6:	ffff                	0xffff
+800010b8:	ffffffbb          	0xffffffbb
+800010bc:	ffffffe7          	0xffffffe7
+800010c0:	ffe9                	c.bnez	x15,8000109a <matA+0x526>
+800010c2:	ffff                	0xffff
+800010c4:	0021                	c.addi	x0,8
+800010c6:	0000                	c.unimp
+800010c8:	0035                	c.addi	x0,13
+800010ca:	0000                	c.unimp
+800010cc:	0039                	c.addi	x0,14
+800010ce:	0000                	c.unimp
+800010d0:	ffffffd7          	0xffffffd7
+800010d4:	0039                	c.addi	x0,14
+800010d6:	0000                	c.unimp
+800010d8:	fffffff7          	0xfffffff7
+800010dc:	ffd2                	c.fswsp	f20,252(x2)
+800010de:	ffff                	0xffff
+800010e0:	00000023          	sb	x0,0(x0) # 0 <SYSCALL_ADDR-0x2010000>
+800010e4:	0002                	c.slli64	x0
+800010e6:	0000                	c.unimp
+800010e8:	0049                	c.addi	x0,18
+800010ea:	0000                	c.unimp
+800010ec:	000e                	c.slli	x0,0x3
+800010ee:	0000                	c.unimp
+800010f0:	ffc0                	c.fsw	f8,60(x15)
+800010f2:	ffff                	0xffff
+800010f4:	0008                	0x8
+800010f6:	0000                	c.unimp
+800010f8:	ffa1                	c.bnez	x15,80001050 <matA+0x4dc>
+800010fa:	ffff                	0xffff
+800010fc:	ffff                	0xffff
+800010fe:	ffff                	0xffff
+80001100:	ffb8                	c.fsw	f14,120(x15)
+80001102:	ffff                	0xffff
+80001104:	fff1                	c.bnez	x15,800010e0 <matA+0x56c>
+80001106:	ffff                	0xffff
+80001108:	ffffffa3          	0xffffffa3
+8000110c:	fffffff7          	0xfffffff7
+80001110:	0045                	c.addi	x0,17
+80001112:	0000                	c.unimp
+80001114:	0024                	c.addi4spn	x9,x2,8
+80001116:	0000                	c.unimp
+80001118:	ffc4                	c.fsw	f9,60(x15)
+8000111a:	ffff                	0xffff
+8000111c:	0010                	0x10
+8000111e:	0000                	c.unimp
+80001120:	ffd5                	c.bnez	x15,800010dc <matA+0x568>
+80001122:	ffff                	0xffff
+80001124:	ffffffcb          	fnmsub.q	f31,f31,f31,f31
+80001128:	ffb1                	c.bnez	x15,80001084 <matA+0x510>
+8000112a:	ffff                	0xffff
+8000112c:	ffbe                	c.fswsp	f15,252(x2)
+8000112e:	ffff                	0xffff
+80001130:	ffa8                	c.fsw	f10,120(x15)
+80001132:	ffff                	0xffff
+80001134:	0006                	c.slli	x0,0x1
+80001136:	0000                	c.unimp
+80001138:	0064                	c.addi4spn	x9,x2,12
+8000113a:	0000                	c.unimp
+8000113c:	0000005b          	0x5b
+80001140:	ffffffc3          	fmadd.q	f31,f31,f31,f31
+80001144:	0030                	c.addi4spn	x12,x2,8
+80001146:	0000                	c.unimp
+80001148:	ffc4                	c.fsw	f9,60(x15)
+8000114a:	ffff                	0xffff
+8000114c:	001e                	c.slli	x0,0x7
+8000114e:	0000                	c.unimp
+80001150:	002c                	c.addi4spn	x11,x2,8
+80001152:	0000                	c.unimp
+80001154:	00000017          	auipc	x0,0x0
+80001158:	fff0                	c.fsw	f12,124(x15)
+8000115a:	ffff                	0xffff
+8000115c:	ffffffd7          	0xffffffd7
+80001160:	fffffff7          	0xfffffff7
+80001164:	00000023          	sb	x0,0(x0) # 0 <SYSCALL_ADDR-0x2010000>
+80001168:	ffb2                	c.fswsp	f12,252(x2)
+8000116a:	ffff                	0xffff
+8000116c:	ffba                	c.fswsp	f14,252(x2)
+8000116e:	ffff                	0xffff
+80001170:	fffd                	c.bnez	x15,8000116e <matA+0x5fa>
+80001172:	ffff                	0xffff
+80001174:	ffe8                	c.fsw	f10,124(x15)
+80001176:	ffff                	0xffff
+80001178:	0035                	c.addi	x0,13
+8000117a:	0000                	c.unimp
+8000117c:	002d                	c.addi	x0,11
+8000117e:	0000                	c.unimp
+80001180:	ffbe                	c.fswsp	f15,252(x2)
+80001182:	ffff                	0xffff
+80001184:	00000013          	addi	x0,x0,0
+80001188:	0044                	c.addi4spn	x9,x2,4
+8000118a:	0000                	c.unimp
+8000118c:	0012                	c.slli	x0,0x4
+8000118e:	0000                	c.unimp
+80001190:	ffa9                	c.bnez	x15,800010ea <matA+0x576>
+80001192:	ffff                	0xffff
+80001194:	ffc0                	c.fsw	f8,60(x15)
+80001196:	ffff                	0xffff
+80001198:	0051                	c.addi	x0,20
+8000119a:	0000                	c.unimp
+8000119c:	0001                	c.addi	x0,0
+8000119e:	0000                	c.unimp
+800011a0:	ffec                	c.fsw	f11,124(x15)
+800011a2:	ffff                	0xffff
+800011a4:	ffc5                	c.bnez	x15,8000115c <matA+0x5e8>
+800011a6:	ffff                	0xffff
+800011a8:	ffffffaf          	0xffffffaf
+800011ac:	ffed                	c.bnez	x15,800011a6 <matA+0x632>
+800011ae:	ffff                	0xffff
+800011b0:	ffa2                	c.fswsp	f8,252(x2)
+800011b2:	ffff                	0xffff
+
+800011b4 <matB>:
+800011b4:	0022                	c.slli	x0,0x8
+800011b6:	0000                	c.unimp
+800011b8:	0026                	c.slli	x0,0x9
+800011ba:	0000                	c.unimp
+800011bc:	ffc0                	c.fsw	f8,60(x15)
+800011be:	ffff                	0xffff
+800011c0:	0039                	c.addi	x0,14
+800011c2:	0000                	c.unimp
+800011c4:	ffdf ffff 0039      	0x39ffffffdf
+800011ca:	0000                	c.unimp
+800011cc:	0052                	c.slli	x0,0x14
+800011ce:	0000                	c.unimp
+800011d0:	ffb2                	c.fswsp	f12,252(x2)
+800011d2:	ffff                	0xffff
+800011d4:	ffdd                	c.bnez	x15,80001192 <matA+0x61e>
+800011d6:	ffff                	0xffff
+800011d8:	ffe0                	c.fsw	f8,124(x15)
+800011da:	ffff                	0xffff
+800011dc:	ffffffaf          	0xffffffaf
+800011e0:	0045                	c.addi	x0,17
+800011e2:	0000                	c.unimp
+800011e4:	0041                	c.addi	x0,16
+800011e6:	0000                	c.unimp
+800011e8:	ffffffcf          	fnmadd.q	f31,f31,f31,f31
+800011ec:	00000017          	auipc	x0,0x0
+800011f0:	fff0                	c.fsw	f12,124(x15)
+800011f2:	ffff                	0xffff
+800011f4:	004e                	c.slli	x0,0x13
+800011f6:	0000                	c.unimp
+800011f8:	0005                	c.addi	x0,1
+800011fa:	0000                	c.unimp
+800011fc:	0020                	c.addi4spn	x8,x2,8
+800011fe:	0000                	c.unimp
+80001200:	ffdc                	c.fsw	f15,60(x15)
+80001202:	ffff                	0xffff
+80001204:	ffd6                	c.fswsp	f21,252(x2)
+80001206:	ffff                	0xffff
+80001208:	003d                	c.addi	x0,15
+8000120a:	0000                	c.unimp
+8000120c:	0031                	c.addi	x0,12
+8000120e:	0000                	c.unimp
+80001210:	ffffffdb          	0xffffffdb
+80001214:	002c                	c.addi4spn	x11,x2,8
+80001216:	0000                	c.unimp
+80001218:	ffb8                	c.fsw	f14,120(x15)
+8000121a:	ffff                	0xffff
+8000121c:	000a                	c.slli	x0,0x2
+8000121e:	0000                	c.unimp
+80001220:	0042                	c.slli	x0,0x10
+80001222:	0000                	c.unimp
+80001224:	002e                	c.slli	x0,0xb
+80001226:	0000                	c.unimp
+80001228:	002e                	c.slli	x0,0xb
+8000122a:	0000                	c.unimp
+8000122c:	00000017          	auipc	x0,0x0
+80001230:	003a                	c.slli	x0,0xe
+80001232:	0000                	c.unimp
+80001234:	0039                	c.addi	x0,14
+80001236:	0000                	c.unimp
+80001238:	000c                	0xc
+8000123a:	0000                	c.unimp
+8000123c:	ffffffb3          	0xffffffb3
+80001240:	ffffffe3          	bgeu	x31,x31,8000123e <matB+0x8a>
+80001244:	0001                	c.addi	x0,0
+80001246:	0000                	c.unimp
+80001248:	0012                	c.slli	x0,0x4
+8000124a:	0000                	c.unimp
+8000124c:	0036                	c.slli	x0,0xd
+8000124e:	0000                	c.unimp
+80001250:	ffbc                	c.fsw	f15,120(x15)
+80001252:	ffff                	0xffff
+80001254:	ffac                	c.fsw	f11,120(x15)
+80001256:	ffff                	0xffff
+80001258:	004e                	c.slli	x0,0x13
+8000125a:	0000                	c.unimp
+8000125c:	ffd1                	c.bnez	x15,800011f8 <matB+0x44>
+8000125e:	ffff                	0xffff
+80001260:	ffd2                	c.fswsp	f20,252(x2)
+80001262:	ffff                	0xffff
+80001264:	0000001b          	0x1b
+80001268:	0000003b          	0x3b
+8000126c:	ffff                	0xffff
+8000126e:	ffff                	0xffff
+80001270:	fff6                	c.fswsp	f29,252(x2)
+80001272:	ffff                	0xffff
+80001274:	003a                	c.slli	x0,0xe
+80001276:	0000                	c.unimp
+80001278:	fffa                	c.fswsp	f30,252(x2)
+8000127a:	ffff                	0xffff
+8000127c:	ffee                	c.fswsp	f27,252(x2)
+8000127e:	ffff                	0xffff
+80001280:	0016                	c.slli	x0,0x5
+80001282:	0000                	c.unimp
+80001284:	0019                	c.addi	x0,6
+80001286:	0000                	c.unimp
+80001288:	fff2                	c.fswsp	f28,252(x2)
+8000128a:	ffff                	0xffff
+8000128c:	ffa5                	c.bnez	x15,80001204 <matB+0x50>
+8000128e:	ffff                	0xffff
+80001290:	ffed                	c.bnez	x15,8000128a <matB+0xd6>
+80001292:	ffff                	0xffff
+80001294:	ffffffaf          	0xffffffaf
+80001298:	005a                	c.slli	x0,0x16
+8000129a:	0000                	c.unimp
+8000129c:	001e                	c.slli	x0,0x7
+8000129e:	0000                	c.unimp
+800012a0:	fff4                	c.fsw	f13,124(x15)
+800012a2:	ffff                	0xffff
+800012a4:	ffdc                	c.fsw	f15,60(x15)
+800012a6:	ffff                	0xffff
+800012a8:	0028                	c.addi4spn	x10,x2,8
+800012aa:	0000                	c.unimp
+800012ac:	ffc8                	c.fsw	f10,60(x15)
+800012ae:	ffff                	0xffff
+800012b0:	0001                	c.addi	x0,0
+800012b2:	0000                	c.unimp
+800012b4:	ff9f ffff 0026      	0x26ffffff9f
+800012ba:	0000                	c.unimp
+800012bc:	0000005b          	0x5b
+800012c0:	0060                	c.addi4spn	x8,x2,12
+800012c2:	0000                	c.unimp
+800012c4:	ffe4                	c.fsw	f9,124(x15)
+800012c6:	ffff                	0xffff
+800012c8:	ffc1                	c.bnez	x15,80001260 <matB+0xac>
+800012ca:	ffff                	0xffff
+800012cc:	ffbd                	c.bnez	x15,8000124a <matB+0x96>
+800012ce:	ffff                	0xffff
+800012d0:	0030                	c.addi4spn	x12,x2,8
+800012d2:	0000                	c.unimp
+800012d4:	0000002f          	0x2f
+800012d8:	004d                	c.addi	x0,19
+800012da:	0000                	c.unimp
+800012dc:	0004                	0x4
+800012de:	0000                	c.unimp
+800012e0:	ffda                	c.fswsp	f22,252(x2)
+800012e2:	ffff                	0xffff
+800012e4:	003e                	c.slli	x0,0xf
+800012e6:	0000                	c.unimp
+800012e8:	fff9                	c.bnez	x15,800012c6 <matB+0x112>
+800012ea:	ffff                	0xffff
+800012ec:	0028                	c.addi4spn	x10,x2,8
+800012ee:	0000                	c.unimp
+800012f0:	00000013          	addi	x0,x0,0
+800012f4:	ffd0                	c.fsw	f12,60(x15)
+800012f6:	ffff                	0xffff
+800012f8:	0012                	c.slli	x0,0x4
+800012fa:	0000                	c.unimp
+800012fc:	fffa                	c.fswsp	f30,252(x2)
+800012fe:	ffff                	0xffff
+80001300:	00000053          	fadd.s	f0,f0,f0,rne
+80001304:	001e                	c.slli	x0,0x7
+80001306:	0000                	c.unimp
+80001308:	fffffffb          	0xfffffffb
+8000130c:	0039                	c.addi	x0,14
+8000130e:	0000                	c.unimp
+80001310:	0001                	c.addi	x0,0
+80001312:	0000                	c.unimp
+80001314:	002c                	c.addi4spn	x11,x2,8
+80001316:	0000                	c.unimp
+80001318:	ffffffef          	jal	x31,80001316 <matB+0x162>
+8000131c:	ffffffb3          	0xffffffb3
+80001320:	ffc5                	c.bnez	x15,800012d8 <matB+0x124>
+80001322:	ffff                	0xffff
+80001324:	ffca                	c.fswsp	f18,252(x2)
+80001326:	ffff                	0xffff
+80001328:	ffca                	c.fswsp	f18,252(x2)
+8000132a:	ffff                	0xffff
+8000132c:	002e                	c.slli	x0,0xb
+8000132e:	0000                	c.unimp
+80001330:	fff5                	c.bnez	x15,8000132c <matB+0x178>
+80001332:	ffff                	0xffff
+80001334:	0054                	c.addi4spn	x13,x2,4
+80001336:	0000                	c.unimp
+80001338:	001a                	c.slli	x0,0x6
+8000133a:	0000                	c.unimp
+8000133c:	0022                	c.slli	x0,0x8
+8000133e:	0000                	c.unimp
+80001340:	0058                	c.addi4spn	x14,x2,4
+80001342:	0000                	c.unimp
+80001344:	ffea                	c.fswsp	f26,252(x2)
+80001346:	ffff                	0xffff
+80001348:	000e                	c.slli	x0,0x3
+8000134a:	0000                	c.unimp
+8000134c:	0022                	c.slli	x0,0x8
+8000134e:	0000                	c.unimp
+80001350:	ffd1                	c.bnez	x15,800012ec <matB+0x138>
+80001352:	ffff                	0xffff
+80001354:	ffb8                	c.fsw	f14,120(x15)
+80001356:	ffff                	0xffff
+80001358:	004a                	c.slli	x0,0x12
+8000135a:	0000                	c.unimp
+8000135c:	ffc4                	c.fsw	f9,60(x15)
+8000135e:	ffff                	0xffff
+80001360:	000d                	c.addi	x0,3
+80001362:	0000                	c.unimp
+80001364:	ffb1                	c.bnez	x15,800012c0 <matB+0x10c>
+80001366:	ffff                	0xffff
+80001368:	fffffff7          	0xfffffff7
+8000136c:	ffde                	c.fswsp	f23,252(x2)
+8000136e:	ffff                	0xffff
+80001370:	ffffffc7          	fmsub.q	f31,f31,f31,f31
+80001374:	0064                	c.addi4spn	x9,x2,12
+80001376:	0000                	c.unimp
+80001378:	ffffffdb          	0xffffffdb
+8000137c:	005d                	c.addi	x0,23
+8000137e:	0000                	c.unimp
+80001380:	ffa4                	c.fsw	f9,120(x15)
+80001382:	ffff                	0xffff
+80001384:	0000003b          	0x3b
+80001388:	ffe8                	c.fsw	f10,124(x15)
+8000138a:	ffff                	0xffff
+8000138c:	0004                	0x4
+8000138e:	0000                	c.unimp
+80001390:	001f 0000 fff6      	0xfff60000001f
+80001396:	ffff                	0xffff
+80001398:	ffa6                	c.fswsp	f9,252(x2)
+8000139a:	ffff                	0xffff
+8000139c:	003e                	c.slli	x0,0xf
+8000139e:	0000                	c.unimp
+800013a0:	0000002b          	0x2b
+800013a4:	0029                	c.addi	x0,10
+800013a6:	0000                	c.unimp
+800013a8:	ffd2                	c.fswsp	f20,252(x2)
+800013aa:	ffff                	0xffff
+800013ac:	ffb1                	c.bnez	x15,80001308 <matB+0x154>
+800013ae:	ffff                	0xffff
+800013b0:	000c                	0xc
+800013b2:	0000                	c.unimp
+800013b4:	0019                	c.addi	x0,6
+800013b6:	0000                	c.unimp
+800013b8:	ffad                	c.bnez	x15,80001332 <matB+0x17e>
+800013ba:	ffff                	0xffff
+800013bc:	fff1                	c.bnez	x15,80001398 <matB+0x1e4>
+800013be:	ffff                	0xffff
+800013c0:	fffffff7          	0xfffffff7
+800013c4:	ffe6                	c.fswsp	f25,252(x2)
+800013c6:	ffff                	0xffff
+800013c8:	ffd2                	c.fswsp	f20,252(x2)
+800013ca:	ffff                	0xffff
+800013cc:	ffa6                	c.fswsp	f9,252(x2)
+800013ce:	ffff                	0xffff
+800013d0:	0009                	c.addi	x0,2
+800013d2:	0000                	c.unimp
+800013d4:	ffe6                	c.fswsp	f25,252(x2)
+800013d6:	ffff                	0xffff
+800013d8:	ffa9                	c.bnez	x15,80001332 <matB+0x17e>
+800013da:	ffff                	0xffff
+800013dc:	ffffffa7          	0xffffffa7
+800013e0:	004a                	c.slli	x0,0x12
+800013e2:	0000                	c.unimp
+800013e4:	004e                	c.slli	x0,0x13
+800013e6:	0000                	c.unimp
+800013e8:	0005                	c.addi	x0,1
+800013ea:	0000                	c.unimp
+800013ec:	ffb1                	c.bnez	x15,80001348 <matB+0x194>
+800013ee:	ffff                	0xffff
+800013f0:	fff0                	c.fsw	f12,124(x15)
+800013f2:	ffff                	0xffff
+800013f4:	ffe8                	c.fsw	f10,124(x15)
+800013f6:	ffff                	0xffff
+800013f8:	ffa5                	c.bnez	x15,80001370 <matB+0x1bc>
+800013fa:	ffff                	0xffff
+800013fc:	00000033          	add	x0,x0,x0
+80001400:	ffa1                	c.bnez	x15,80001358 <matB+0x1a4>
+80001402:	ffff                	0xffff
+80001404:	0012                	c.slli	x0,0x4
+80001406:	0000                	c.unimp
+80001408:	ffd8                	c.fsw	f14,60(x15)
+8000140a:	ffff                	0xffff
+8000140c:	0060                	c.addi4spn	x8,x2,12
+8000140e:	0000                	c.unimp
+80001410:	ffce                	c.fswsp	f19,252(x2)
+80001412:	ffff                	0xffff
+80001414:	0000004b          	fnmsub.s	f0,f0,f0,f0,rne
+80001418:	005e                	c.slli	x0,0x17
+8000141a:	0000                	c.unimp
+8000141c:	0058                	c.addi4spn	x14,x2,4
+8000141e:	0000                	c.unimp
+80001420:	ffc2                	c.fswsp	f16,252(x2)
+80001422:	ffff                	0xffff
+80001424:	fffd                	c.bnez	x15,80001422 <matB+0x26e>
+80001426:	ffff                	0xffff
+80001428:	ffb5                	c.bnez	x15,800013a4 <matB+0x1f0>
+8000142a:	ffff                	0xffff
+8000142c:	ffd4                	c.fsw	f13,60(x15)
+8000142e:	ffff                	0xffff
+80001430:	ffc1                	c.bnez	x15,800013c8 <matB+0x214>
+80001432:	ffff                	0xffff
+80001434:	0036                	c.slli	x0,0xd
+80001436:	0000                	c.unimp
+80001438:	ffffffe3          	bgeu	x31,x31,80001436 <matB+0x282>
+8000143c:	0010                	0x10
+8000143e:	0000                	c.unimp
+80001440:	0051                	c.addi	x0,20
+80001442:	0000                	c.unimp
+80001444:	00000057          	0x57
+80001448:	fffffff7          	0xfffffff7
+8000144c:	ffd6                	c.fswsp	f21,252(x2)
+8000144e:	ffff                	0xffff
+80001450:	ffffffe7          	0xffffffe7
+80001454:	ffa5                	c.bnez	x15,800013cc <matB+0x218>
+80001456:	ffff                	0xffff
+80001458:	003e                	c.slli	x0,0xf
+8000145a:	0000                	c.unimp
+8000145c:	000a                	c.slli	x0,0x2
+8000145e:	0000                	c.unimp
+80001460:	001f 0000 0022      	0x220000001f
+80001466:	0000                	c.unimp
+80001468:	ffffffeb          	0xffffffeb
+8000146c:	005e                	c.slli	x0,0x17
+8000146e:	0000                	c.unimp
+80001470:	ffa8                	c.fsw	f10,120(x15)
+80001472:	ffff                	0xffff
+80001474:	00000047          	fmsub.s	f0,f0,f0,f0,rne
+80001478:	0002                	c.slli64	x0
+8000147a:	0000                	c.unimp
+8000147c:	0016                	c.slli	x0,0x5
+8000147e:	0000                	c.unimp
+80001480:	0028                	c.addi4spn	x10,x2,8
+80001482:	0000                	c.unimp
+80001484:	ffb6                	c.fswsp	f13,252(x2)
+80001486:	ffff                	0xffff
+80001488:	00000013          	addi	x0,x0,0
+8000148c:	0031                	c.addi	x0,12
+8000148e:	0000                	c.unimp
+80001490:	ffbd                	c.bnez	x15,8000140e <matB+0x25a>
+80001492:	ffff                	0xffff
+80001494:	fff5                	c.bnez	x15,80001490 <matB+0x2dc>
+80001496:	ffff                	0xffff
+80001498:	ffd4                	c.fsw	f13,60(x15)
+8000149a:	ffff                	0xffff
+8000149c:	ffcd                	c.bnez	x15,80001456 <matB+0x2a2>
+8000149e:	ffff                	0xffff
+800014a0:	ffe6                	c.fswsp	f25,252(x2)
+800014a2:	ffff                	0xffff
+800014a4:	ffa1                	c.bnez	x15,800013fc <matB+0x248>
+800014a6:	ffff                	0xffff
+800014a8:	ffe0                	c.fsw	f8,124(x15)
+800014aa:	ffff                	0xffff
+800014ac:	ffba                	c.fswsp	f14,252(x2)
+800014ae:	ffff                	0xffff
+800014b0:	fffe                	c.fswsp	f31,252(x2)
+800014b2:	ffff                	0xffff
+800014b4:	fff1                	c.bnez	x15,80001490 <matB+0x2dc>
+800014b6:	ffff                	0xffff
+800014b8:	000e                	c.slli	x0,0x3
+800014ba:	0000                	c.unimp
+800014bc:	0000004f          	fnmadd.s	f0,f0,f0,f0,rne
+800014c0:	ffa1                	c.bnez	x15,80001418 <matB+0x264>
+800014c2:	ffff                	0xffff
+800014c4:	0052                	c.slli	x0,0x14
+800014c6:	0000                	c.unimp
+800014c8:	003a                	c.slli	x0,0xe
+800014ca:	0000                	c.unimp
+800014cc:	ffe5                	c.bnez	x15,800014c4 <matB+0x310>
+800014ce:	ffff                	0xffff
+800014d0:	0059                	c.addi	x0,22
+800014d2:	0000                	c.unimp
+800014d4:	fffffff7          	0xfffffff7
+800014d8:	fff2                	c.fswsp	f28,252(x2)
+800014da:	ffff                	0xffff
+800014dc:	ffec                	c.fsw	f11,124(x15)
+800014de:	ffff                	0xffff
+800014e0:	fffe                	c.fswsp	f31,252(x2)
+800014e2:	ffff                	0xffff
+800014e4:	0000005b          	0x5b
+800014e8:	00000043          	fmadd.s	f0,f0,f0,f0,rne
+800014ec:	00000017          	auipc	x0,0x0
+800014f0:	ffa5                	c.bnez	x15,80001468 <matB+0x2b4>
+800014f2:	ffff                	0xffff
+800014f4:	0000003b          	0x3b
+800014f8:	002e                	c.slli	x0,0xb
+800014fa:	0000                	c.unimp
+800014fc:	ffffffd7          	0xffffffd7
+80001500:	ff9c                	c.fsw	f15,56(x15)
+80001502:	ffff                	0xffff
+80001504:	ff9d                	c.bnez	x15,80001442 <matB+0x28e>
+80001506:	ffff                	0xffff
+80001508:	00000063          	beq	x0,x0,80001508 <matB+0x354>
+8000150c:	0049                	c.addi	x0,18
+8000150e:	0000                	c.unimp
+80001510:	0028                	c.addi4spn	x10,x2,8
+80001512:	0000                	c.unimp
+80001514:	fffffffb          	0xfffffffb
+80001518:	ffad                	c.bnez	x15,80001492 <matB+0x2de>
+8000151a:	ffff                	0xffff
+8000151c:	0026                	c.slli	x0,0x9
+8000151e:	0000                	c.unimp
+80001520:	00000043          	fmadd.s	f0,f0,f0,f0,rne
+80001524:	ffe2                	c.fswsp	f24,252(x2)
+80001526:	ffff                	0xffff
+80001528:	0026                	c.slli	x0,0x9
+8000152a:	0000                	c.unimp
+8000152c:	0062                	c.slli	x0,0x18
+8000152e:	0000                	c.unimp
+80001530:	003e                	c.slli	x0,0xf
+80001532:	0000                	c.unimp
+80001534:	0000000b          	0xb
+80001538:	0012                	c.slli	x0,0x4
+8000153a:	0000                	c.unimp
+8000153c:	0002                	c.slli64	x0
+8000153e:	0000                	c.unimp
+80001540:	ffc5                	c.bnez	x15,800014f8 <matB+0x344>
+80001542:	ffff                	0xffff
+80001544:	003e                	c.slli	x0,0xf
+80001546:	0000                	c.unimp
+80001548:	003c                	c.addi4spn	x15,x2,8
+8000154a:	0000                	c.unimp
+8000154c:	ff9d                	c.bnez	x15,8000148a <matB+0x2d6>
+8000154e:	ffff                	0xffff
+80001550:	fffc                	c.fsw	f15,124(x15)
+80001552:	ffff                	0xffff
+80001554:	00000017          	auipc	x0,0x0
+80001558:	0062                	c.slli	x0,0x18
+8000155a:	0000                	c.unimp
+8000155c:	ff9e                	c.fswsp	f7,252(x2)
+8000155e:	ffff                	0xffff
+80001560:	ffb1                	c.bnez	x15,800014bc <matB+0x308>
+80001562:	ffff                	0xffff
+80001564:	0030                	c.addi4spn	x12,x2,8
+80001566:	0000                	c.unimp
+80001568:	00000013          	addi	x0,x0,0
+8000156c:	0020                	c.addi4spn	x8,x2,8
+8000156e:	0000                	c.unimp
+80001570:	ffb0                	c.fsw	f12,120(x15)
+80001572:	ffff                	0xffff
+80001574:	0000003f 00000027 	0x270000003f
+8000157c:	000e                	c.slli	x0,0x3
+8000157e:	0000                	c.unimp
+80001580:	00000033          	add	x0,x0,x0
+80001584:	ffae                	c.fswsp	f11,252(x2)
+80001586:	ffff                	0xffff
+80001588:	ffe4                	c.fsw	f9,124(x15)
+8000158a:	ffff                	0xffff
+8000158c:	ffffffcf          	fnmadd.q	f31,f31,f31,f31
+80001590:	ffffffbb          	0xffffffbb
+80001594:	0021                	c.addi	x0,8
+80001596:	0000                	c.unimp
+80001598:	fffffffb          	0xfffffffb
+8000159c:	00000027          	0x27
+800015a0:	ffe9                	c.bnez	x15,8000157a <matB+0x3c6>
+800015a2:	ffff                	0xffff
+800015a4:	0032                	c.slli	x0,0xc
+800015a6:	0000                	c.unimp
+800015a8:	00000013          	addi	x0,x0,0
+800015ac:	ffae                	c.fswsp	f11,252(x2)
+800015ae:	ffff                	0xffff
+800015b0:	00000003          	lb	x0,0(x0) # 0 <SYSCALL_ADDR-0x2010000>
+800015b4:	0004                	0x4
+800015b6:	0000                	c.unimp
+800015b8:	ffd1                	c.bnez	x15,80001554 <matB+0x3a0>
+800015ba:	ffff                	0xffff
+800015bc:	0025                	c.addi	x0,9
+800015be:	0000                	c.unimp
+800015c0:	0011                	c.addi	x0,4
+800015c2:	0000                	c.unimp
+800015c4:	0064                	c.addi4spn	x9,x2,12
+800015c6:	0000                	c.unimp
+800015c8:	0046                	c.slli	x0,0x11
+800015ca:	0000                	c.unimp
+800015cc:	ffffffab          	0xffffffab
+800015d0:	003e                	c.slli	x0,0xf
+800015d2:	0000                	c.unimp
+800015d4:	0010                	0x10
+800015d6:	0000                	c.unimp
+800015d8:	ffce                	c.fswsp	f19,252(x2)
+800015da:	ffff                	0xffff
+800015dc:	ffffffe3          	bgeu	x31,x31,800015da <matB+0x426>
+800015e0:	fffe                	c.fswsp	f31,252(x2)
+800015e2:	ffff                	0xffff
+800015e4:	ffff                	0xffff
+800015e6:	ffff                	0xffff
+800015e8:	0000003b          	0x3b
+800015ec:	ffbc                	c.fsw	f15,120(x15)
+800015ee:	ffff                	0xffff
+800015f0:	0029                	c.addi	x0,10
+800015f2:	0000                	c.unimp
+800015f4:	ffca                	c.fswsp	f18,252(x2)
+800015f6:	ffff                	0xffff
+800015f8:	005e                	c.slli	x0,0x17
+800015fa:	0000                	c.unimp
+800015fc:	0016                	c.slli	x0,0x5
+800015fe:	0000                	c.unimp
+80001600:	0012                	c.slli	x0,0x4
+80001602:	0000                	c.unimp
+80001604:	ffb2                	c.fswsp	f12,252(x2)
+80001606:	ffff                	0xffff
+80001608:	ffbe                	c.fswsp	f15,252(x2)
+8000160a:	ffff                	0xffff
+8000160c:	ffda                	c.fswsp	f22,252(x2)
+8000160e:	ffff                	0xffff
+80001610:	ffcc                	c.fsw	f11,60(x15)
+80001612:	ffff                	0xffff
+80001614:	ffc4                	c.fsw	f9,60(x15)
+80001616:	ffff                	0xffff
+80001618:	ffa0                	c.fsw	f8,120(x15)
+8000161a:	ffff                	0xffff
+8000161c:	0000004f          	fnmadd.s	f0,f0,f0,f0,rne
+80001620:	0056                	c.slli	x0,0x15
+80001622:	0000                	c.unimp
+80001624:	00000047          	fmsub.s	f0,f0,f0,f0,rne
+80001628:	00000007          	0x7
+8000162c:	ffd0                	c.fsw	f12,60(x15)
+8000162e:	ffff                	0xffff
+80001630:	0039                	c.addi	x0,14
+80001632:	0000                	c.unimp
+80001634:	0008                	0x8
+80001636:	0000                	c.unimp
+80001638:	ffffffef          	jal	x31,80001636 <matB+0x482>
+8000163c:	0000000f          	fence	unknown,unknown
+80001640:	0045                	c.addi	x0,17
+80001642:	0000                	c.unimp
+80001644:	000a                	c.slli	x0,0x2
+80001646:	0000                	c.unimp
+80001648:	0000000f          	fence	unknown,unknown
+8000164c:	0035                	c.addi	x0,13
+8000164e:	0000                	c.unimp
+80001650:	0029                	c.addi	x0,10
+80001652:	0000                	c.unimp
+80001654:	fff6                	c.fswsp	f29,252(x2)
+80001656:	ffff                	0xffff
+80001658:	0025                	c.addi	x0,9
+8000165a:	0000                	c.unimp
+8000165c:	ffba                	c.fswsp	f14,252(x2)
+8000165e:	ffff                	0xffff
+80001660:	fffc                	c.fsw	f15,124(x15)
+80001662:	ffff                	0xffff
+80001664:	fffd                	c.bnez	x15,80001662 <matB+0x4ae>
+80001666:	ffff                	0xffff
+80001668:	ffffffcb          	fnmsub.q	f31,f31,f31,f31
+8000166c:	ffde                	c.fswsp	f23,252(x2)
+8000166e:	ffff                	0xffff
+80001670:	002e                	c.slli	x0,0xb
+80001672:	0000                	c.unimp
+80001674:	ffd9                	c.bnez	x15,80001612 <matB+0x45e>
+80001676:	ffff                	0xffff
+80001678:	0064                	c.addi4spn	x9,x2,12
+8000167a:	0000                	c.unimp
+8000167c:	ffd9                	c.bnez	x15,8000161a <matB+0x466>
+8000167e:	ffff                	0xffff
+80001680:	ffea                	c.fswsp	f26,252(x2)
+80001682:	ffff                	0xffff
+80001684:	ffed                	c.bnez	x15,8000167e <matB+0x4ca>
+80001686:	ffff                	0xffff
+80001688:	0035                	c.addi	x0,13
+8000168a:	0000                	c.unimp
+8000168c:	0055                	c.addi	x0,21
+8000168e:	0000                	c.unimp
+80001690:	ffbd                	c.bnez	x15,8000160e <matB+0x45a>
+80001692:	ffff                	0xffff
+80001694:	002e                	c.slli	x0,0xb
+80001696:	0000                	c.unimp
+80001698:	00000063          	beq	x0,x0,80001698 <matB+0x4e4>
+8000169c:	0009                	c.addi	x0,2
+8000169e:	0000                	c.unimp
+800016a0:	0032                	c.slli	x0,0xc
+800016a2:	0000                	c.unimp
+800016a4:	ffffffcb          	fnmsub.q	f31,f31,f31,f31
+800016a8:	ffe5                	c.bnez	x15,800016a0 <matB+0x4ec>
+800016aa:	ffff                	0xffff
+800016ac:	002e                	c.slli	x0,0xb
+800016ae:	0000                	c.unimp
+800016b0:	fffffff3          	csrrci	x31,0xfff,31
+800016b4:	0028                	c.addi4spn	x10,x2,8
+800016b6:	0000                	c.unimp
+800016b8:	002d                	c.addi	x0,11
+800016ba:	0000                	c.unimp
+800016bc:	ffffffc7          	fmsub.q	f31,f31,f31,f31
+800016c0:	0060                	c.addi4spn	x8,x2,12
+800016c2:	0000                	c.unimp
+800016c4:	ffde                	c.fswsp	f23,252(x2)
+800016c6:	ffff                	0xffff
+800016c8:	ffffffbb          	0xffffffbb
+800016cc:	0016                	c.slli	x0,0x5
+800016ce:	0000                	c.unimp
+800016d0:	ffb0                	c.fsw	f12,120(x15)
+800016d2:	ffff                	0xffff
+800016d4:	ffd5                	c.bnez	x15,80001690 <matB+0x4dc>
+800016d6:	ffff                	0xffff
+800016d8:	0029                	c.addi	x0,10
+800016da:	0000                	c.unimp
+800016dc:	ffd0                	c.fsw	f12,60(x15)
+800016de:	ffff                	0xffff
+800016e0:	00000057          	0x57
+800016e4:	ffffffc7          	fmsub.q	f31,f31,f31,f31
+800016e8:	0056                	c.slli	x0,0x15
+800016ea:	0000                	c.unimp
+800016ec:	002e                	c.slli	x0,0xb
+800016ee:	0000                	c.unimp
+800016f0:	ffd4                	c.fsw	f13,60(x15)
+800016f2:	ffff                	0xffff
+800016f4:	0046                	c.slli	x0,0x11
+800016f6:	0000                	c.unimp
+800016f8:	0020                	c.addi4spn	x8,x2,8
+800016fa:	0000                	c.unimp
+800016fc:	fff5                	c.bnez	x15,800016f8 <matB+0x544>
+800016fe:	ffff                	0xffff
+80001700:	ffb2                	c.fswsp	f12,252(x2)
+80001702:	ffff                	0xffff
+80001704:	ffa8                	c.fsw	f10,120(x15)
+80001706:	ffff                	0xffff
+80001708:	fff2                	c.fswsp	f28,252(x2)
+8000170a:	ffff                	0xffff
+8000170c:	ffee                	c.fswsp	f27,252(x2)
+8000170e:	ffff                	0xffff
+80001710:	ffa1                	c.bnez	x15,80001668 <matB+0x4b4>
+80001712:	ffff                	0xffff
+80001714:	fff1                	c.bnez	x15,800016f0 <matB+0x53c>
+80001716:	ffff                	0xffff
+80001718:	0022                	c.slli	x0,0x8
+8000171a:	0000                	c.unimp
+8000171c:	003c                	c.addi4spn	x15,x2,8
+8000171e:	0000                	c.unimp
+80001720:	ffca                	c.fswsp	f18,252(x2)
+80001722:	ffff                	0xffff
+80001724:	00000063          	beq	x0,x0,80001724 <matB+0x570>
+80001728:	0062                	c.slli	x0,0x18
+8000172a:	0000                	c.unimp
+8000172c:	002c                	c.addi4spn	x11,x2,8
+8000172e:	0000                	c.unimp
+80001730:	ffffffeb          	0xffffffeb
+80001734:	fffa                	c.fswsp	f30,252(x2)
+80001736:	ffff                	0xffff
+80001738:	ffc8                	c.fsw	f10,60(x15)
+8000173a:	ffff                	0xffff
+8000173c:	ffe6                	c.fswsp	f25,252(x2)
+8000173e:	ffff                	0xffff
+80001740:	0006                	c.slli	x0,0x1
+80001742:	0000                	c.unimp
+80001744:	004a                	c.slli	x0,0x12
+80001746:	0000                	c.unimp
+80001748:	ffd1                	c.bnez	x15,800016e4 <matB+0x530>
+8000174a:	ffff                	0xffff
+8000174c:	ffc8                	c.fsw	f10,60(x15)
+8000174e:	ffff                	0xffff
+80001750:	0002                	c.slli64	x0
+80001752:	0000                	c.unimp
+80001754:	0015                	c.addi	x0,5
+80001756:	0000                	c.unimp
+80001758:	0031                	c.addi	x0,12
+8000175a:	0000                	c.unimp
+8000175c:	00000027          	0x27
+80001760:	005d                	c.addi	x0,23
+80001762:	0000                	c.unimp
+80001764:	0026                	c.slli	x0,0x9
+80001766:	0000                	c.unimp
+80001768:	ff9d                	c.bnez	x15,800016a6 <matB+0x4f2>
+8000176a:	ffff                	0xffff
+8000176c:	ffffffcb          	fnmsub.q	f31,f31,f31,f31
+80001770:	005a                	c.slli	x0,0x16
+80001772:	0000                	c.unimp
+80001774:	ffac                	c.fsw	f11,120(x15)
+80001776:	ffff                	0xffff
+80001778:	0032                	c.slli	x0,0xc
+8000177a:	0000                	c.unimp
+8000177c:	00000063          	beq	x0,x0,8000177c <matB+0x5c8>
+80001780:	0000002b          	0x2b
+80001784:	0061                	c.addi	x0,24
+80001786:	0000                	c.unimp
+80001788:	ffec                	c.fsw	f11,124(x15)
+8000178a:	ffff                	0xffff
+8000178c:	0019                	c.addi	x0,6
+8000178e:	0000                	c.unimp
+80001790:	ffffffeb          	0xffffffeb
+80001794:	001f 0000 ffc7      	0xffc70000001f
+8000179a:	ffff                	0xffff
+8000179c:	00000053          	fadd.s	f0,f0,f0,rne
+800017a0:	0000002f          	0x2f
+800017a4:	ffffffaf          	0xffffffaf
+800017a8:	ffba                	c.fswsp	f14,252(x2)
+800017aa:	ffff                	0xffff
+800017ac:	0010                	0x10
+800017ae:	0000                	c.unimp
+800017b0:	0000004f          	fnmadd.s	f0,f0,f0,f0,rne
+800017b4:	ffbe                	c.fswsp	f15,252(x2)
+800017b6:	ffff                	0xffff
+800017b8:	ffc5                	c.bnez	x15,80001770 <matB+0x5bc>
+800017ba:	ffff                	0xffff
+800017bc:	0002                	c.slli64	x0
+800017be:	0000                	c.unimp
+800017c0:	ffc4                	c.fsw	f9,60(x15)
+800017c2:	ffff                	0xffff
+800017c4:	ff9f ffff 000e      	0xeffffff9f
+800017ca:	0000                	c.unimp
+800017cc:	0039                	c.addi	x0,14
+800017ce:	0000                	c.unimp
+800017d0:	0060                	c.addi4spn	x8,x2,12
+800017d2:	0000                	c.unimp
+800017d4:	fffd                	c.bnez	x15,800017d2 <matB+0x61e>
+800017d6:	ffff                	0xffff
+800017d8:	0064                	c.addi4spn	x9,x2,12
+800017da:	0000                	c.unimp
+800017dc:	0005                	c.addi	x0,1
+800017de:	0000                	c.unimp
+800017e0:	00000017          	auipc	x0,0x0
+800017e4:	ffc2                	c.fswsp	f16,252(x2)
+800017e6:	ffff                	0xffff
+800017e8:	ffca                	c.fswsp	f18,252(x2)
+800017ea:	ffff                	0xffff
+800017ec:	ffb9                	c.bnez	x15,8000174a <matB+0x596>
+800017ee:	ffff                	0xffff
+800017f0:	0020                	c.addi4spn	x8,x2,8
+	...
+
+Disassembly of section .sdata:
+
+800017f4 <UART_TX_DATA_ADDR>:
+800017f4:	0000                	c.unimp
+800017f6:	8200                	0x8200
+
+800017f8 <UART_TX_CTRL_ADDR>:
+800017f8:	0004                	0x4
+800017fa:	8200                	0x8200
+
+800017fc <UART_RX_DATA_ADDR>:
+800017fc:	0008                	0x8
+800017fe:	8200                	0x8200
+
+80001800 <MTIMECMP_REG>:
+80001800:	4000                	c.lw	x8,0(x8)
+80001802:	0200                	c.addi4spn	x8,x2,256
+
+80001804 <MTIME_REG>:
+80001804:	bff8                	c.fsd	f14,248(x15)
+80001806:	0200                	c.addi4spn	x8,x2,256
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	2141                	c.jal	480 <SYSCALL_ADDR-0x200fb80>
+   2:	0000                	c.unimp
+   4:	7200                	c.flw	f8,32(x12)
+   6:	7369                	c.lui	x6,0xffffa
+   8:	01007663          	bgeu	x0,x16,14 <SYSCALL_ADDR-0x200ffec>
+   c:	00000017          	auipc	x0,0x0
+  10:	1004                	c.addi4spn	x9,x2,32
+  12:	7205                	c.lui	x4,0xfffe1
+  14:	3376                	c.fldsp	f6,376(x2)
+  16:	6932                	c.flwsp	f18,12(x2)
+  18:	7032                	c.flwsp	f0,44(x2)
+  1a:	0030                	c.addi4spn	x12,x2,8
+  1c:	0106                	c.slli	x2,0x1
+  1e:	0108                	c.addi4spn	x10,x2,128
+  20:	0b0a                	c.slli	x22,0x2
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	3a434347          	fmsub.d	f6,f6,f4,f7,rmm
+   4:	2820                	c.fld	f8,80(x8)
+   6:	39336367          	0x39336367
+   a:	3131                	c.jal	fffffc16 <_end+0x7fffe40e>
+   c:	3665                	c.jal	fffffbb4 <_end+0x7fffe3ac>
+   e:	3234                	c.fld	f13,96(x12)
+  10:	6635                	c.lui	x12,0xd
+  12:	2029                	c.jal	1c <SYSCALL_ADDR-0x200ffe4>
+  14:	3031                	c.jal	fffff820 <_end+0x7fffe018>
+  16:	322e                	c.fldsp	f4,232(x2)
+  18:	302e                	c.fldsp	f0,232(x2)
+	...
+
+Disassembly of section .debug_line:
+
+00000000 <.debug_line>:
+   0:	0094                	c.addi4spn	x13,x2,64
+   2:	0000                	c.unimp
+   4:	004e0003          	lb	x0,4(x28)
+   8:	0000                	c.unimp
+   a:	0101                	c.addi	x2,0
+   c:	000d0efb          	0xd0efb
+  10:	0101                	c.addi	x2,0
+  12:	0101                	c.addi	x2,0
+  14:	0000                	c.unimp
+  16:	0100                	c.addi4spn	x8,x2,128
+  18:	0000                	c.unimp
+  1a:	2e01                	c.jal	32a <SYSCALL_ADDR-0x200fcd6>
+  1c:	2f2e                	c.fldsp	f30,200(x2)
+  1e:	2e2e                	c.fldsp	f28,200(x2)
+  20:	2f2e2e2f          	0x2f2e2e2f
+  24:	2e2e                	c.fldsp	f28,200(x2)
+  26:	2f2e2e2f          	0x2f2e2e2f
+  2a:	2f2e                	c.fldsp	f30,200(x2)
+  2c:	6972                	c.flwsp	f18,28(x2)
+  2e:	2d766373          	csrrsi	x6,0x2d7,12
+  32:	2f636367          	0x2f636367
+  36:	696c                	c.flw	f11,84(x10)
+  38:	6762                	c.flwsp	f14,24(x2)
+  3a:	632f6363          	bltu	x30,x18,660 <SYSCALL_ADDR-0x200f9a0>
+  3e:	69666e6f          	jal	x28,666d4 <SYSCALL_ADDR-0x1fa992c>
+  42:	69722f67          	0x69722f67
+  46:	00766373          	csrrsi	x6,0x7,12
+  4a:	6d00                	c.flw	f8,24(x10)
+  4c:	6c75                	c.lui	x24,0x1d
+  4e:	6964                	c.flw	f9,84(x10)
+  50:	00532e33          	slt	x28,x6,x5
+  54:	0001                	c.addi	x0,0
+  56:	0000                	c.unimp
+  58:	0500                	c.addi4spn	x8,x2,640
+  5a:	7402                	c.flwsp	f8,32(x2)
+  5c:	000a                	c.slli	x0,0x2
+  5e:	0380                	c.addi4spn	x8,x2,448
+  60:	0124                	c.addi4spn	x9,x2,136
+  62:	04090103          	lb	x2,64(x18)
+  66:	0100                	c.addi4spn	x8,x2,128
+  68:	04090203          	lb	x4,64(x18)
+  6c:	0100                	c.addi4spn	x8,x2,128
+  6e:	04090103          	lb	x2,64(x18)
+  72:	0100                	c.addi4spn	x8,x2,128
+  74:	04090103          	lb	x2,64(x18)
+  78:	0100                	c.addi4spn	x8,x2,128
+  7a:	04090203          	lb	x4,64(x18)
+  7e:	0100                	c.addi4spn	x8,x2,128
+  80:	04090103          	lb	x2,64(x18)
+  84:	0100                	c.addi4spn	x8,x2,128
+  86:	04090103          	lb	x2,64(x18)
+  8a:	0100                	c.addi4spn	x8,x2,128
+  8c:	04090103          	lb	x2,64(x18)
+  90:	0100                	c.addi4spn	x8,x2,128
+  92:	0409                	c.addi	x8,2
+  94:	0000                	c.unimp
+  96:	0101                	c.addi	x2,0
+
+Disassembly of section .debug_info:
+
+00000000 <.debug_info>:
+   0:	0022                	c.slli	x0,0x8
+   2:	0000                	c.unimp
+   4:	0002                	c.slli64	x0
+   6:	0000                	c.unimp
+   8:	0000                	c.unimp
+   a:	0104                	c.addi4spn	x9,x2,128
+   c:	0000                	c.unimp
+   e:	0000                	c.unimp
+  10:	0a74                	c.addi4spn	x13,x2,284
+  12:	8000                	0x8000
+  14:	0a98                	c.addi4spn	x14,x2,336
+  16:	8000                	0x8000
+  18:	0000                	c.unimp
+  1a:	0000                	c.unimp
+  1c:	0038                	c.addi4spn	x14,x2,8
+  1e:	0000                	c.unimp
+  20:	009e                	c.slli	x1,0x7
+  22:	0000                	c.unimp
+  24:	8001                	c.srli64	x8
+
+Disassembly of section .debug_abbrev:
+
+00000000 <.debug_abbrev>:
+   0:	1101                	c.addi	x2,-32
+   2:	1000                	c.addi4spn	x8,x2,32
+   4:	1106                	c.slli	x2,0x21
+   6:	1201                	c.addi	x4,-32
+   8:	0301                	c.addi	x6,0
+   a:	1b0e                	c.slli	x22,0x23
+   c:	250e                	c.fldsp	f10,192(x2)
+   e:	130e                	c.slli	x6,0x23
+  10:	0005                	c.addi	x0,1
+	...
+
+Disassembly of section .debug_aranges:
+
+00000000 <.debug_aranges>:
+   0:	001c                	0x1c
+   2:	0000                	c.unimp
+   4:	0002                	c.slli64	x0
+   6:	0000                	c.unimp
+   8:	0000                	c.unimp
+   a:	0004                	0x4
+   c:	0000                	c.unimp
+   e:	0000                	c.unimp
+  10:	0a74                	c.addi4spn	x13,x2,284
+  12:	8000                	0x8000
+  14:	0024                	c.addi4spn	x9,x2,8
+	...
+
+Disassembly of section .debug_str:
+
+00000000 <.debug_str>:
+   0:	2e2e                	c.fldsp	f28,200(x2)
+   2:	2f2e2e2f          	0x2f2e2e2f
+   6:	2e2e                	c.fldsp	f28,200(x2)
+   8:	2f2e2e2f          	0x2f2e2e2f
+   c:	2e2e                	c.fldsp	f28,200(x2)
+   e:	722f2e2f          	0x722f2e2f
+  12:	7369                	c.lui	x6,0xffffa
+  14:	672d7663          	bgeu	x26,x18,680 <SYSCALL_ADDR-0x200f980>
+  18:	6c2f6363          	bltu	x30,x2,6de <SYSCALL_ADDR-0x200f922>
+  1c:	6269                	c.lui	x4,0x1a
+  1e:	2f636367          	0x2f636367
+  22:	666e6f63          	bltu	x28,x6,6a0 <SYSCALL_ADDR-0x200f960>
+  26:	6769                	c.lui	x14,0x1a
+  28:	7369722f          	0x7369722f
+  2c:	6d2f7663          	bgeu	x30,x18,6f8 <SYSCALL_ADDR-0x200f908>
+  30:	6c75                	c.lui	x24,0x1d
+  32:	6964                	c.flw	f9,84(x10)
+  34:	00532e33          	slt	x28,x6,x5
+  38:	6d6f682f          	0x6d6f682f
+  3c:	2f65                	c.jal	7f4 <SYSCALL_ADDR-0x200f80c>
+  3e:	6c6c6173          	csrrsi	x2,0x6c6,24
+  42:	7261                	c.lui	x4,0xffff8
+  44:	6f6f742f          	0x6f6f742f
+  48:	736c                	c.flw	f11,100(x14)
+  4a:	7369722f          	0x7369722f
+  4e:	672d7663          	bgeu	x26,x18,6ba <SYSCALL_ADDR-0x200f946>
+  52:	756e                	c.flwsp	f10,248(x2)
+  54:	742d                	c.lui	x8,0xfffeb
+  56:	636c6f6f          	jal	x30,c668c <SYSCALL_ADDR-0x1f49974>
+  5a:	6168                	c.flw	f10,68(x10)
+  5c:	6e69                	c.lui	x28,0x1a
+  5e:	6975622f          	0x6975622f
+  62:	646c                	c.flw	f11,76(x8)
+  64:	672d                	c.lui	x14,0xb
+  66:	6e2d6363          	bltu	x26,x2,74c <SYSCALL_ADDR-0x200f8b4>
+  6a:	7765                	c.lui	x14,0xffff9
+  6c:	696c                	c.flw	f11,84(x10)
+  6e:	2d62                	c.fldsp	f26,24(x2)
+  70:	67617473          	csrrci	x8,0x676,2
+  74:	3265                	c.jal	fffffa1c <_end+0x7fffe214>
+  76:	7369722f          	0x7369722f
+  7a:	34367663          	bgeu	x12,x3,3c6 <SYSCALL_ADDR-0x200fc3a>
+  7e:	752d                	c.lui	x10,0xfffeb
+  80:	6b6e                	c.flwsp	f22,216(x2)
+  82:	6f6e                	c.flwsp	f30,216(x2)
+  84:	652d6e77          	0x652d6e77
+  88:	666c                	c.flw	f11,76(x12)
+  8a:	3376722f          	0x3376722f
+  8e:	6932                	c.flwsp	f18,12(x2)
+  90:	706c692f          	0x706c692f
+  94:	6c2f3233          	0x6c2f3233
+  98:	6269                	c.lui	x4,0x1a
+  9a:	00636367          	0x636367
+  9e:	20554e47          	fmsub.s	f28,f10,f5,f4,rmm
+  a2:	5341                	c.li	x6,-16
+  a4:	3220                	c.fld	f8,96(x12)
+  a6:	332e                	c.fldsp	f6,232(x2)
+  a8:	0035                	c.addi	x0,13
+make: Verzeichnis „/home/sallar/work/micrrv32-refactor/microrv32/sw/benchmarks/jsa-benchmarks/matrix-multiply“ wird verlassen

@@ -1,8 +1,9 @@
 simROM = sw/basic-led-blink/blink.hex
 synthROM = sw/basic-led-blink/blink.hex
+variant ?= rv32imc
 
 sim_spinal:
-	sbt "runMain core.microrv32.MicroRV32TopSim $(simROM)"
+	sbt "runMain core.microrv32.MicroRV32TopSim $(simROM) $(variant)" 
 
 sim_spinal_freeRTOS-tasks-1:
 	sbt "runMain core.microrv32.MicroRV32TopSim sw/freeRTOS-prebuilt/simple-tasks/riscv-main.hex"
@@ -26,21 +27,18 @@ rtl_hx8k:
 	sbt "runMain core.microrv32.MicroRV32TopHX8KVerilog $(synthROM)"
 
 sim_verilog: rtl
-	cp rtl/MicroRV32Top.v vtb/rtl/MicroRV32Top.v
-	cp rtl/MicroRV32Top.v_toplevel_cpu_cpu_regs_regFile.bin vtb/MicroRV32Top.v_toplevel_cpu_cpu_regs_regFile.bin
-	cp rtl/MicroRV32Top.v_toplevel_ram_memRam_*.bin vtb/MicroRV32Top.v_toplevel_ram_memRam_*.bin
+	cp rtl/MicroRV32Top.v* vtb/rtl/
+	cp rtl/MicroRV32Top.v* vtb/
 	make top_sim -C vtb 
 
 synth: rtl 
-	cp rtl/MicroRV32Top.v vtb/rtl/MicroRV32Top.v
-	cp rtl/MicroRV32Top.v_toplevel_cpu_cpu_regs_regFile.bin vtb/MicroRV32Top.v_toplevel_cpu_cpu_regs_regFile.bin
-	cp rtl/MicroRV32Top.v_toplevel_ram_memRam_*.bin vtb/
+	cp rtl/MicroRV32Top.v* vtb/rtl/
+	cp rtl/MicroRV32Top.v* vtb/
 	make top_synth -C vtb
 
 synth_hx8k: rtl_hx8k 
-	cp rtl/MicroRV32TopHX8K.v vtb/rtl/MicroRV32TopHX8K.v
-	cp rtl/MicroRV32TopHX8K.v_toplevel_cpu_cpu_regs_regFile.bin vtb/MicroRV32TopHX8K.v_toplevel_cpu_cpu_regs_regFile.bin
-	cp rtl/MicroRV32TopHX8K.v_toplevel_ram_memRam_*.bin vtb/
+	cp rtl/MicroRV32TopHX8K.v* vtb/rtl/
+	cp rtl/MicroRV32TopHX8K.v* vtb/
 	make top_synth_hx8k -C vtb
 
 sw_basic-asm:
@@ -80,8 +78,12 @@ sw_crc:
 	make hex -C sw/crc8/
 
 sw_gpio2:
-	make dump-code -C sw/gpio-2/ > sw/gpio-2/dump.txt
-	make hex -C sw/gpio-2/
+	make dump-code -C sw/basic-gpio-2/ > sw/basic-gpio-2/dump.txt
+	make hex -C sw/basic-gpio-2/
+
+sw_gpiouart:
+	make dump-code -C sw/gpio-uart-1/ > sw/gpio-uart-1/dump.txt
+	make hex -C sw/gpio-uart-1/
 
 show_sim_linux:
 	gtkwave vtb/sim/spinalhdl_trace.gtkw &
@@ -90,10 +92,14 @@ show_sim_win:
 	gtkwave.exe vtb/sim/spinal_windows.gtkw &
 
 clean:
-	rm rtl/*.v
-	rm rtl/*.bin
-	rm simWorkspace/MicroRV32Top/rtl/*.v
-	rm simWorkspace/MicroRV32Top/rtl/*.bin
+	rm -f rtl/*.v
+	rm -f rtl/*.bin
+	rm -rf rtl/jsa-exp/rv32*/*.v
+	rm -rf rtl/jsa-exp/rv32*/*.bin
+	rm -f simWorkspace/MicroRV32Top/rtl/*.v
+	rm -f simWorkspace/MicroRV32Top/rtl/*.bin
+	rm -f ./*.v
+	rm -f ./*.bin
 	make clean -C vtb/
 
 .PHONY: clean rtl sim_verilog synth sw_basic-asm sw_instr sw_basic-c sw_cssr-tests sw_led_blink sw_led_c sw_timer_irq

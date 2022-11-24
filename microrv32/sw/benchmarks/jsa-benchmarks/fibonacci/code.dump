@@ -1,0 +1,170 @@
+make: Verzeichnis „/home/sallar/work/micrrv32-refactor/microrv32/sw/benchmarks/jsa-benchmarks/fibonacci“ wird betreten
+riscv32-unknown-elf-gcc bootstrap.S main.c -o main -march=rv32imc -mabi=ilp32 -nostartfiles -Wl,--no-relax,--print-memory-usage  -T link.ld
+Memory region         Used Size  Region Size  %age Used
+             RAM:        2448 B         8 KB     29.88%
+riscv32-unknown-elf-objdump -D main
+
+main:     Dateiformat elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	000070b3          	and	ra,zero,zero
+80000004:	00007133          	and	sp,zero,zero
+80000008:	000071b3          	and	gp,zero,zero
+8000000c:	00007233          	and	tp,zero,zero
+80000010:	000072b3          	and	t0,zero,zero
+80000014:	00007333          	and	t1,zero,zero
+80000018:	000073b3          	and	t2,zero,zero
+8000001c:	00007433          	and	s0,zero,zero
+80000020:	000074b3          	and	s1,zero,zero
+80000024:	00007533          	and	a0,zero,zero
+80000028:	000075b3          	and	a1,zero,zero
+8000002c:	00007633          	and	a2,zero,zero
+80000030:	000076b3          	and	a3,zero,zero
+80000034:	00007733          	and	a4,zero,zero
+80000038:	000077b3          	and	a5,zero,zero
+8000003c:	00007833          	and	a6,zero,zero
+80000040:	000078b3          	and	a7,zero,zero
+80000044:	00007933          	and	s2,zero,zero
+80000048:	000079b3          	and	s3,zero,zero
+8000004c:	00007a33          	and	s4,zero,zero
+80000050:	00007ab3          	and	s5,zero,zero
+80000054:	00007b33          	and	s6,zero,zero
+80000058:	00007bb3          	and	s7,zero,zero
+8000005c:	00007c33          	and	s8,zero,zero
+80000060:	00007cb3          	and	s9,zero,zero
+80000064:	00007d33          	and	s10,zero,zero
+80000068:	00007db3          	and	s11,zero,zero
+8000006c:	00007e33          	and	t3,zero,zero
+80000070:	00007eb3          	and	t4,zero,zero
+80000074:	00007f33          	and	t5,zero,zero
+80000078:	00007fb3          	and	t6,zero,zero
+8000007c:	00001117          	auipc	sp,0x1
+80000080:	82410113          	addi	sp,sp,-2012 # 800008a0 <stack_end>
+80000084:	021000ef          	jal	ra,800008a4 <main>
+80000088:	05d00893          	li	a7,93
+8000008c:	4501                	li	a0,0
+8000008e:	020102b7          	lui	t0,0x2010
+80000092:	f1402873          	csrr	a6,mhartid
+80000096:	0102a023          	sw	a6,0(t0) # 2010000 <SYSCALL_ADDR>
+8000009a:	0112a023          	sw	a7,0(t0)
+8000009e:	b7ed                	j	80000088 <_start+0x88>
+
+800000a0 <stack_begin>:
+	...
+
+800008a0 <stack_end>:
+800008a0:	0000                	unimp
+	...
+
+800008a4 <main>:
+800008a4:	7139                	addi	sp,sp,-64
+800008a6:	de22                	sw	s0,60(sp)
+800008a8:	0080                	addi	s0,sp,64
+800008aa:	4601                	li	a2,0
+800008ac:	4681                	li	a3,0
+800008ae:	fcc42823          	sw	a2,-48(s0)
+800008b2:	fcd42a23          	sw	a3,-44(s0)
+800008b6:	4705                	li	a4,1
+800008b8:	4781                	li	a5,0
+800008ba:	fce42423          	sw	a4,-56(s0)
+800008be:	fcf42623          	sw	a5,-52(s0)
+800008c2:	4705                	li	a4,1
+800008c4:	4781                	li	a5,0
+800008c6:	fce42023          	sw	a4,-64(s0)
+800008ca:	fcf42223          	sw	a5,-60(s0)
+800008ce:	fec42423          	sw	a2,-24(s0)
+800008d2:	fed42623          	sw	a3,-20(s0)
+800008d6:	fd042703          	lw	a4,-48(s0)
+800008da:	fd442783          	lw	a5,-44(s0)
+800008de:	fee42023          	sw	a4,-32(s0)
+800008e2:	fef42223          	sw	a5,-28(s0)
+800008e6:	fc842703          	lw	a4,-56(s0)
+800008ea:	fcc42783          	lw	a5,-52(s0)
+800008ee:	fce42c23          	sw	a4,-40(s0)
+800008f2:	fcf42e23          	sw	a5,-36(s0)
+800008f6:	a89d                	j	8000096c <main+0xc8>
+800008f8:	fe042603          	lw	a2,-32(s0)
+800008fc:	fe442683          	lw	a3,-28(s0)
+80000900:	fd842503          	lw	a0,-40(s0)
+80000904:	fdc42583          	lw	a1,-36(s0)
+80000908:	00a60733          	add	a4,a2,a0
+8000090c:	883a                	mv	a6,a4
+8000090e:	00c83833          	sltu	a6,a6,a2
+80000912:	00b687b3          	add	a5,a3,a1
+80000916:	00f806b3          	add	a3,a6,a5
+8000091a:	87b6                	mv	a5,a3
+8000091c:	fce42023          	sw	a4,-64(s0)
+80000920:	fcf42223          	sw	a5,-60(s0)
+80000924:	fd842703          	lw	a4,-40(s0)
+80000928:	fdc42783          	lw	a5,-36(s0)
+8000092c:	fee42023          	sw	a4,-32(s0)
+80000930:	fef42223          	sw	a5,-28(s0)
+80000934:	fc042703          	lw	a4,-64(s0)
+80000938:	fc442783          	lw	a5,-60(s0)
+8000093c:	fce42c23          	sw	a4,-40(s0)
+80000940:	fcf42e23          	sw	a5,-36(s0)
+80000944:	fe842603          	lw	a2,-24(s0)
+80000948:	fec42683          	lw	a3,-20(s0)
+8000094c:	4505                	li	a0,1
+8000094e:	4581                	li	a1,0
+80000950:	00a60733          	add	a4,a2,a0
+80000954:	883a                	mv	a6,a4
+80000956:	00c83833          	sltu	a6,a6,a2
+8000095a:	00b687b3          	add	a5,a3,a1
+8000095e:	00f806b3          	add	a3,a6,a5
+80000962:	87b6                	mv	a5,a3
+80000964:	fee42423          	sw	a4,-24(s0)
+80000968:	fef42623          	sw	a5,-20(s0)
+8000096c:	fec42783          	lw	a5,-20(s0)
+80000970:	eb99                	bnez	a5,80000986 <main+0xe2>
+80000972:	fec42783          	lw	a5,-20(s0)
+80000976:	f3c9                	bnez	a5,800008f8 <main+0x54>
+80000978:	fe842703          	lw	a4,-24(s0)
+8000097c:	67e1                	lui	a5,0x18
+8000097e:	6a078793          	addi	a5,a5,1696 # 186a0 <SYSCALL_ADDR-0x1ff7960>
+80000982:	f6e7fbe3          	bgeu	a5,a4,800008f8 <main+0x54>
+80000986:	4781                	li	a5,0
+80000988:	853e                	mv	a0,a5
+8000098a:	5472                	lw	s0,60(sp)
+8000098c:	6121                	addi	sp,sp,64
+8000098e:	8082                	ret
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	2941                	jal	490 <SYSCALL_ADDR-0x200fb70>
+   2:	0000                	unimp
+   4:	7200                	flw	fs0,32(a2)
+   6:	7369                	lui	t1,0xffffa
+   8:	01007663          	bgeu	zero,a6,14 <SYSCALL_ADDR-0x200ffec>
+   c:	001f 0000 1004      	0x10040000001f
+  12:	7205                	lui	tp,0xfffe1
+  14:	3376                	fld	ft6,376(sp)
+  16:	6932                	flw	fs2,12(sp)
+  18:	7032                	flw	ft0,44(sp)
+  1a:	5f30                	lw	a2,120(a4)
+  1c:	326d                	jal	fffff9c6 <_end+0x7fffe9c6>
+  1e:	3070                	fld	fa2,224(s0)
+  20:	635f 7032 0030      	0x307032635f
+  26:	0108                	addi	a0,sp,128
+  28:	0b0a                	slli	s6,s6,0x2
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	3a434347          	fmsub.d	ft6,ft6,ft4,ft7,rmm
+   4:	2820                	fld	fs0,80(s0)
+   6:	39336367          	0x39336367
+   a:	3131                	jal	fffffc16 <_end+0x7fffec16>
+   c:	3665                	jal	fffffbb4 <_end+0x7fffebb4>
+   e:	3234                	fld	fa3,96(a2)
+  10:	6635                	lui	a2,0xd
+  12:	2029                	jal	1c <SYSCALL_ADDR-0x200ffe4>
+  14:	3031                	jal	fffff820 <_end+0x7fffe820>
+  16:	322e                	fld	ft4,232(sp)
+  18:	302e                	fld	ft0,232(sp)
+	...
+make: Verzeichnis „/home/sallar/work/micrrv32-refactor/microrv32/sw/benchmarks/jsa-benchmarks/fibonacci“ wird verlassen

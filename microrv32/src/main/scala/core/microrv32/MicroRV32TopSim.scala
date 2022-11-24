@@ -27,14 +27,41 @@ object MicroRV32TopSim {
   def main(args: Array[String]) {
     // set to true if you want to log riscv-tests simulation results into ./log/rv32ui-p-tests.log
     var logFileEnabled = false
-
-    var reachedEnd = false
     var failPC : BigInt = 0
     var passPC : BigInt = 0
-    if(args.length > 1){
-      failPC = BigInt(args(1),16)
-      passPC = BigInt(args(2),16)
+    
+    var reachedEnd = false
+    
+    var enaMul = false
+    var enaDiv = false
+    var enaComp = false
+
+    // some very crude and experimental commandline argument handling
+    // if logFileEnabled is set in test bench, the arguments after the binary are the failpc and passpc for automatic check and logging
+    // else the argument passed after the binary is the core variant (used for semi-automatic benchmarking)
+    if(logFileEnabled){
+      if(args.length > 1){
+        failPC = BigInt(args(1),16)
+        passPC = BigInt(args(2),16)
+      }
+    } else {
+      if(args.length > 1){
+        args(1) match {
+          case "rv32i" => {enaMul = false; enaDiv = false; enaComp = false}
+          case "rv32im" => {enaMul = true; enaDiv = true; enaComp = false}
+          case "rv32ic" => {enaMul = false; enaDiv = false; enaComp = true}
+          case "rv32imc" => {enaMul = true; enaDiv = true; enaComp = true}
+          case _ => {enaMul = false; enaDiv = false; enaComp = false}
+        }
+        println("enaMul " + enaMul)
+        println("enaDiv " + enaDiv)
+        println("enaComp " + enaComp)
+      }
     }
+    
+    var hexFilePath = args(0)
+    var memSize = Source.fromFile(hexFilePath).getLines.size
+    
     var simPC : BigInt = 0
     var simEndTime : BigInt = 0
     var cpuHalted = false
@@ -45,14 +72,21 @@ object MicroRV32TopSim {
           defaultClockDomainFrequency=FixedFrequency(12 MHz)
         )
       )
-      .withWave
+      // .withWave
+      .withFstWave
       .compile{
-        val top = new MicroRV32Top(args(0))
+        val top = new MicroRV32Top(hexFilePath, memSize, RV32CoreConfig(
+                                                          generateMultiply   = enaMul,
+                                                          generateDivide     = enaDiv,
+                                                          generateCompressed = enaComp
+                                                          )
+                                    )
         //make signals public in simulation scope
         top.cpu.cpu.programCounter.simPublic()
         top.cpu.cpu.CSRLogic.newFetch.simPublic()
         // top.cpu.io.halted.simPublic()
-        // top.ram.memRam.simPublic()
+        top.ram.memBank0.simPublic()
+        top.ram.memBank1.simPublic()
         // top.clockDomain.reset.simPublic()
         // top.uartPeriph.io.uart.rxd.simPublic()
         top
@@ -81,13 +115,13 @@ object MicroRV32TopSim {
           }
         }
 
-        def readRam(ram : Memory, beginAddr : Int, endAddr : Int) : Array[BigInt] = {
-          var ramBytes = new ArrayBuffer[BigInt]
-          for(idx <- beginAddr to endAddr){
-            ramBytes.append(ram.memRam.getBigInt(idx))
-          }
-          ramBytes.toArray
-        }
+        // def readRam(ram : Memory, beginAddr : Int, endAddr : Int) : Array[BigInt] = {
+        //   var ramBytes = new ArrayBuffer[BigInt]
+        //   for(idx <- beginAddr to endAddr){
+        //     ramBytes.append(ram.memRam.getBigInt(idx))
+        //   }
+        //   ramBytes.toArray
+        // }
 
         println("Starting simulation")
         //Fork a process to generate the reset and the clock on the dut
@@ -101,10 +135,10 @@ object MicroRV32TopSim {
 
         // reading ram is fairly new addition to spinalhdl and still needs some debugging
         // dut.clockDomain.waitRisingEdge()
-        var ramC = dut.ram
-        dut.clockDomain.waitRisingEdge()
-        // println("memory before 2nd reset at 0x80000000")
-        // readRam(ramC,0,158).toList.foreach{ printf("%8x ",_)}
+        // var ramC = dut.ram
+        // dut.clockDomain.waitRisingEdge()
+        // println("memory before 2nd reset at 0x80002000")
+        // readRam(ramC,0x00001ffc,0x00002000+8).toList.foreach{ printf("%8x ",_)}
         // print("\n")
 
         // uart rxd
@@ -181,6 +215,10 @@ object MicroRV32TopSim {
           // println(readRam(ramC,0,5).toList)
           printf("dut halted: %b\n", dutRunning)
           printf("simulation steps reached: %d\n",simSteps)
+          // readRam(ramC,0x4000/4,0x4b04/4).toList.foreach{ 
+          //   printf("%8x\n",_)
+          // }
+
         }
     }
     // log the rv32ui-p test results

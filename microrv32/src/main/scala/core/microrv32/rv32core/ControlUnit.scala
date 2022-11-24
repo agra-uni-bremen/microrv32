@@ -3,26 +3,25 @@ package core.microrv32.rv32core
 import spinal.core._
 import spinal.lib.fsm._
 import core.microrv32.InstructionType
-// import core.microrv32.InstructionType._
 import core.microrv32.CSRAccessType
 import core.microrv32.CSRAccessType._
 import core.microrv32.RVOpcode._
 import core.microrv32.CSROpcode._
-// import core.microrv32.rv32core.DecodeUnit
-//import core.microrv32.rv32core.DecodeUnit._
+import core.microrv32.RV32CoreConfig
+import core.microrv32.MULDIVOpcode._
 
 object PCSelect extends SpinalEnum{
-  val incrementPC, jalTarget, jalrTarget, branchTarget, 
-  trapEntryTarget, trapExitTarget = newElement()
+    val incrementPC, jalTarget, jalrTarget, branchTarget, 
+    trapEntryTarget, trapExitTarget = newElement()
 }
 
 case class PCControl() extends Bundle{
-    val enablePC = out Bool
+    val enablePC = out Bool()
     val pcValSel = out(PCSelect())
 }
 
 case class FetchControl() extends Bundle{
-    val sample = out Bool
+    val sample = out Bool()
 }
 
 object OpASelect extends SpinalEnum{
@@ -30,21 +29,31 @@ object OpASelect extends SpinalEnum{
 }
 
 object OpBSelect extends SpinalEnum{
-    val opReg2Data, opImmediate, opZero = newElement()
+    val opReg2Data, opImmediate, opPCInc, opZero = newElement()
 }
 
 case class ALUCtrl() extends Bundle{
     val opA = out(OpASelect())
     val opB = out(OpBSelect())
-    val aluBranch = in Bool
+    val aluBranch = in Bool()
+}
+
+case class MulDivCtrl() extends Bundle{
+    val valid = out Bool()
+    val ready = in Bool()
+    val busy = in Bool()
 }
 
 object DestDataSelect extends SpinalEnum{
-    val aluRes, aluBool, memReadData, csrReadData = newElement()
+    val aluRes, aluBool, memReadData, 
+    // csr
+    csrReadData, 
+    // mul div rem
+    muldivData = newElement()
 }
 
 case class RegFileControl() extends Bundle{
-    val regFileWR = out Bool
+    val regFileWR = out Bool()
     val regDestSel = out(DestDataSelect())
 }
 
@@ -58,9 +67,9 @@ object MCauseSelect extends SpinalEnum{
 
 case class CSRControl() extends Bundle{
     val writeSelect = out(CSRDataSelect())
-    val enable = out Bool
-    val newFetch = out Bool
-    val illegalAccess = in Bool
+    val enable = out Bool()
+    val newFetch = out Bool()
+    val illegalAccess = in Bool()
     val mcauseSelect = out(MCauseSelect())
 }
 
@@ -70,24 +79,24 @@ object MemoryStrobeSelect extends SpinalEnum{
 
 case class MemoryControl() extends Bundle{
     // I-Memory
-    val fetchEna = out Bool
-    val instrRdy = in Bool
+    val fetchEna = out Bool()
+    val instrRdy = in Bool()
     // D-Memory
-    val readWriteData = out Bool
-    val dataEna = out Bool
-    val dataRdy = in Bool
+    val readWriteData = out Bool()
+    val dataEna = out Bool()
+    val dataRdy = in Bool()
     val strobeSelect = out(MemoryStrobeSelect())
 }
 
 case class ExceptionControl() extends Bundle{
-    val misalignedJumpTarget = in Bool
-    val misalignedJumpLinkTarget = in Bool
-    val misalignedBranchTarget = in Bool
+    val misalignedJumpTarget = in Bool()
+    val misalignedJumpLinkTarget = in Bool()
+    val misalignedBranchTarget = in Bool()
 }
 
-case class ControlBundle() extends Bundle{
+case class ControlBundle(cfg : RV32CoreConfig) extends Bundle{
     // decoder
-    val validDecode = in Bool
+    val validDecode = in Bool()
     val instrType = in(InstructionType())
     val instrFields = in(DecodedFields())
     // program counter
@@ -96,6 +105,8 @@ case class ControlBundle() extends Bundle{
     val fetchCtrl = out(FetchControl())
     // alu
     val aluCtrl = ALUCtrl()
+    // muldiv
+    val muldivCtrl = if(cfg.hasMULDIV) MulDivCtrl() else null
     // registerfile
     val regCtrl = out(RegFileControl())
     // csr
@@ -103,21 +114,21 @@ case class ControlBundle() extends Bundle{
     // memory
     val memCtrl = MemoryControl()
     // exception handling
-    val irqPending = in Bool
-    val trapEntry = out Bool
-    val trapExit = out Bool
-    val irqEntry = out Bool
+    val irqPending = in Bool()
+    val trapEntry = out Bool()
+    val trapExit = out Bool()
+    val irqEntry = out Bool()
     val exceptions = in(ExceptionControl())
     // 
-    val halt = in Bool
-    val halted = out Bool
-    val fetchSync = out Bool
+    val halt = in Bool()
+    val halted = out Bool()
+    val fetchSync = out Bool()
     // debug output
     val dbgState = out Bits(4 bits)
 }
 
-class ControlUnit(dbg : Boolean) extends Component{
-    val io = new ControlBundle()
+class ControlUnit(cfg : RV32CoreConfig) extends Component{
+    val io = new ControlBundle(cfg)
     
     // default values
     // PC
@@ -148,6 +159,9 @@ class ControlUnit(dbg : Boolean) extends Component{
     // IO
     io.halted := False
     io.fetchSync := False
+    if(cfg.hasMULDIV){
+        io.muldivCtrl.valid := False
+    }
     
     val fsm = new StateMachine{
         import InstructionType._
@@ -157,20 +171,11 @@ class ControlUnit(dbg : Boolean) extends Component{
             }
         }
         val stateFetch : State = new State{
-            // onEntry{
-            //     when(io.irqPending){
-            //         // dont fetch
-            //     }.otherwise{
-            //         //io.memCtrl.fetchEna := True
-            //     }
-            // }
             whenIsActive{
                 when(io.irqPending){
                     goto(stateInterrupt)
                 }.elsewhen(io.memCtrl.instrRdy){
                     io.csrCtrl.newFetch := True
-                    io.pcCtrl.enablePC := True
-                    io.pcCtrl.pcValSel := PCSelect.incrementPC
                     io.fetchCtrl.sample := True
                     goto(stateDecode)
                 }.otherwise{
@@ -195,6 +200,10 @@ class ControlUnit(dbg : Boolean) extends Component{
         }
         val stateExecute : State  = new State{
             whenIsActive{
+                // default: we increment the program counter, if some instruction chooses a different value it be like that
+                // last assignment wins anyway, lets be lazy
+                io.pcCtrl.enablePC := True
+                io.pcCtrl.pcValSel := PCSelect.incrementPC
                 switch(io.instrType){ 
                     is(isRegReg){
                         // reg[dest] = reg[rs1] {OP} reg[rs2]
@@ -202,7 +211,29 @@ class ControlUnit(dbg : Boolean) extends Component{
                         io.aluCtrl.opB := OpBSelect.opReg2Data
                         io.regCtrl.regFileWR := True
                         io.regCtrl.regDestSel := DestDataSelect.aluRes
-                        goto(stateFetch)
+                        if(cfg.hasMULDIV){
+                            // check for muldiv first, then for rv32i reg reg operation, then default case
+                            when(io.instrFields.funct7 === F7_MULDIV){
+                                io.regCtrl.regFileWR := False
+                                io.regCtrl.regDestSel := DestDataSelect.muldivData
+                                io.aluCtrl.opA := OpASelect.opReg1Data
+                                io.aluCtrl.opB := OpBSelect.opReg2Data
+                                io.muldivCtrl.valid := True
+                                goto(stateWriteBack)
+                            }.elsewhen(io.instrFields.funct7 === F7_Z | io.instrFields.funct7 === F7_O){
+                                goto(stateFetch)
+                            }.otherwise{
+                                io.regCtrl.regFileWR := False
+                                goto(stateTrap)
+                            }
+                        }else{
+                            when(io.instrFields.funct7 === F7_Z | io.instrFields.funct7 === F7_O){
+                                goto(stateFetch)
+                            }.otherwise{
+                                io.regCtrl.regFileWR := False
+                                goto(stateTrap)
+                            }
+                        }
                     }
                     is(isRegImm){
                         // reg[dest] = reg[rs1] {OP} IMM
@@ -229,10 +260,9 @@ class ControlUnit(dbg : Boolean) extends Component{
                         goto(stateFetch)
                     }
                     is(isCT_JAL){
-                        // when(!io.exceptions.misalignedJumpTarget){
                             // reg[dest] = pc
                             io.aluCtrl.opA := OpASelect.opPC
-                            io.aluCtrl.opB := OpBSelect.opZero
+                            io.aluCtrl.opB := OpBSelect.opPCInc
                             io.regCtrl.regDestSel := DestDataSelect.aluRes
                             // pc = pc + IMM
                             io.pcCtrl.pcValSel := PCSelect.jalTarget
@@ -244,15 +274,11 @@ class ControlUnit(dbg : Boolean) extends Component{
                                 io.regCtrl.regFileWR := True
                                 goto(stateFetch)
                             }
-                        // }.otherwise{
-                        //     goto(stateTrap)
-                        // }
                     }
                     is(isCT_JALR){
-                        // TODO: check for misalignment and jump to other state
                         // reg[dest] = pc
                         io.aluCtrl.opA := OpASelect.opPC
-                        io.aluCtrl.opB := OpBSelect.opZero
+                        io.aluCtrl.opB := OpBSelect.opPCInc
                         io.regCtrl.regDestSel := DestDataSelect.aluRes
                         // pc = (reg[rs1] + IMM) & ~0x1
                         io.pcCtrl.pcValSel := PCSelect.jalrTarget
@@ -380,8 +406,8 @@ class ControlUnit(dbg : Boolean) extends Component{
                 switch(io.instrType){
                     io.aluCtrl.opA := OpASelect.opReg1Data
                     io.aluCtrl.opB := OpBSelect.opImmediate
-                    io.memCtrl.dataEna := True
                     is(isLoad){
+                        io.memCtrl.dataEna := True
                         switch(io.instrFields.funct3){
                             is(F3_LB, F3_LBU){ 
                                 io.memCtrl.strobeSelect := MemoryStrobeSelect.byte
@@ -399,6 +425,7 @@ class ControlUnit(dbg : Boolean) extends Component{
                     }
                     is(isStore){
                         io.memCtrl.readWriteData := True
+                        io.memCtrl.dataEna := True
                         switch(io.instrFields.funct3){
                             is(F3_SB){ 
                                 io.memCtrl.strobeSelect := MemoryStrobeSelect.byte
@@ -423,7 +450,15 @@ class ControlUnit(dbg : Boolean) extends Component{
                         }
                     }
                     goto(stateFetch)
-                }.elsewhen(io.halt){
+                }
+                if(cfg.hasMULDIV){
+                when(io.muldivCtrl.ready & !io.halt){
+                    io.regCtrl.regFileWR := True
+                    io.regCtrl.regDestSel := DestDataSelect.muldivData
+                    goto(stateFetch)
+                }
+                }
+                when(io.halt){
                     goto(stateHalt)
                 }
             }
@@ -435,6 +470,11 @@ class ControlUnit(dbg : Boolean) extends Component{
                 switch(io.instrType){
                     is(isCT_JAL, isCT_JALR, isBranch){
                         io.csrCtrl.mcauseSelect := MCauseSelect.trapInstrAddrMisalign
+                    }
+                    is(isRegReg){
+                        when(!(io.instrFields.funct7 === F7_Z | io.instrFields.funct7 === F7_O)){
+                            io.csrCtrl.mcauseSelect := MCauseSelect.trapIllegalInstr
+                        }
                     }
                     // difference between illegal and undefined?
                     is(isIllegal,isUndef){
@@ -477,28 +517,26 @@ class ControlUnit(dbg : Boolean) extends Component{
     }
 
     // debug logic for testing and debugging purposes on the fpga board
-    // TODO: extend for irq state
-    val dbgLogic = (dbg) generate new Area{
-        // import ControlUnit.fsm._
+    val dbgLogic = (cfg.debug) generate new Area{
         io.dbgState := B"0000"
         when(fsm.isActive(fsm.stateInit)){
-        io.dbgState := B"0000"
+            io.dbgState := B"0000"
         }.elsewhen(fsm.isActive(fsm.stateFetch)){
-          io.dbgState := B"0001"
+            io.dbgState := B"0001"
         }.elsewhen(fsm.isActive(fsm.stateDecode)){
-          io.dbgState := B"0010"
+            io.dbgState := B"0010"
         }.elsewhen(fsm.isActive(fsm.stateExecute)){
-          io.dbgState := B"0011"
+            io.dbgState := B"0011"
         }.elsewhen(fsm.isActive(fsm.stateWriteBack)){
-          io.dbgState := B"0100"
+            io.dbgState := B"0100"
         }.elsewhen(fsm.isActive(fsm.stateCSR)){
-          io.dbgState := B"0101"
+            io.dbgState := B"0101"
         }.elsewhen(fsm.isActive(fsm.stateTrap)){
-          io.dbgState := B"0110"
+            io.dbgState := B"0110"
         }.elsewhen(fsm.isActive(fsm.stateHalt)){
-          io.dbgState := B"0111"
+            io.dbgState := B"0111"
         }.elsewhen(fsm.isActive(fsm.stateInterrupt)){
-          io.dbgState := B"1001"
+            io.dbgState := B"1001"
         }
   }
 }

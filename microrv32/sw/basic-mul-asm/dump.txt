@@ -1,0 +1,35 @@
+riscv32-unknown-elf-ld mul.o -o main -T link.ld
+riscv32-unknown-elf-objdump -D main
+
+main:     Dateiformat elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	00300513          	li	a0,3
+80000004:	00400593          	li	a1,4
+80000008:	02b502b3          	mul	t0,a0,a1
+8000000c:	05d00893          	li	a7,93
+80000010:	00000513          	li	a0,0
+80000014:	020102b7          	lui	t0,0x2010
+80000018:	0112a023          	sw	a7,0(t0) # 2010000 <SYSCALL_ADDR>
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	1e41                	addi	t3,t3,-16
+   2:	0000                	unimp
+   4:	7200                	flw	fs0,32(a2)
+   6:	7369                	lui	t1,0xffffa
+   8:	01007663          	bgeu	zero,a6,14 <SYSCALL_ADDR-0x200ffec>
+   c:	0014                	0x14
+   e:	0000                	unimp
+  10:	7205                	lui	tp,0xfffe1
+  12:	3376                	fld	ft6,376(sp)
+  14:	6932                	flw	fs2,12(sp)
+  16:	7032                	flw	ft0,44(sp)
+  18:	5f30                	lw	a2,120(a4)
+  1a:	326d                	jal	fffff9c4 <_end+0x7fffe9c4>
+  1c:	3070                	fld	fa2,224(s0)
+	...
