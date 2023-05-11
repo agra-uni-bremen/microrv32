@@ -22,7 +22,6 @@ class FetchUnit(cfg : RV32CoreConfig) extends Component {
         val sample = in Bool()
         val instruction = out Bits(32 bits)
         val pc = in(UInt(32 bits))
-        val fetchAddr = out(UInt(32 bits))
         val pcIncrement = out(UInt(3 bits))
         val compressedFlags = cfg.supportCompressed generate(CompressedFlags())
     }

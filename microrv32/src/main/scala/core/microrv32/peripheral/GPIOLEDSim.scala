@@ -15,15 +15,36 @@ object GPIOLEDSim {
       .doSim{dut =>
         //Fork a process to generate the reset and the clock on the dut
         dut.clockDomain.forkStimulus(period = 10)
+        // def read(addr : Int):Bits = {
+        //   dut.io.sb.SBaddress #= addr
+        //   dut.io.sb.SBvalid #= true
+        //   dut.io.sb.SBwdata #= 0
+        //   dut.io.sb.SBwrite #= false
+
+        //   dut.clockDomain.waitRisingEdge()
+        //   dut.io.sb.SBaddress #= 0
+        //   dut.io.sb.SBvalid #= false
+        //   dut.io.sb.SBrdata
+        // }
+        // def write(addr : Int, value : Int){
+        //   dut.io.sb.SBaddress #= addr
+        //   dut.io.sb.SBvalid #= true
+        //   dut.io.sb.SBwdata #= value
+        //   dut.io.sb.SBwrite #= true
+        //   dut.clockDomain.waitRisingEdge()
+        //   dut.io.sb.SBvalid #= false
+        // }
         def read(addr : Int):Bits = {
           dut.io.sb.SBaddress #= addr
           dut.io.sb.SBvalid #= true
           dut.io.sb.SBwdata #= 0
           dut.io.sb.SBwrite #= false
-
+          dut.io.sel #= true
           dut.clockDomain.waitRisingEdge()
           dut.io.sb.SBaddress #= 0
           dut.io.sb.SBvalid #= true
+          dut.io.sel #= false
+          dut.clockDomain.waitRisingEdge()
           dut.io.sb.SBrdata
         }
         def write(addr : Int, value : Int){
@@ -31,8 +52,13 @@ object GPIOLEDSim {
           dut.io.sb.SBvalid #= true
           dut.io.sb.SBwdata #= value
           dut.io.sb.SBwrite #= true
+          dut.io.sel #= true
+          dut.clockDomain.waitRisingEdge()
+          dut.io.sb.SBvalid #= false
+          dut.io.sel #= false
           dut.clockDomain.waitRisingEdge()
         }
+
 
         // starting values
         dut.io.sb.SBaddress #= 0
@@ -48,6 +74,7 @@ object GPIOLEDSim {
         val a = read(0)
         println(a)
         write(0, 0x12340123)
+        dut.clockDomain.waitRisingEdge()
         val b = read(0)
         println(b)
         dut.clockDomain.waitRisingEdge()

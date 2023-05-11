@@ -462,6 +462,9 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                     goto(stateHalt)
                 }
             }
+            // onExit{
+            //     io.memCtrl.dataEna := False
+            // }
         }
         val stateTrap : State = new State{
             whenIsActive{
