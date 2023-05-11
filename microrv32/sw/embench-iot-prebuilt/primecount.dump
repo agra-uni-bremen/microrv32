@@ -1,0 +1,424 @@
+
+primecount.elf:     Dateiformat elf32-littleriscv
+
+
+Disassembly of section .text.init:
+
+80000000 <initSection>:
+80000000:	000070b3          	and	x1,x0,x0
+80000004:	00007133          	and	x2,x0,x0
+80000008:	000071b3          	and	x3,x0,x0
+8000000c:	00007233          	and	x4,x0,x0
+80000010:	000072b3          	and	x5,x0,x0
+80000014:	00007333          	and	x6,x0,x0
+80000018:	000073b3          	and	x7,x0,x0
+8000001c:	00007433          	and	x8,x0,x0
+80000020:	000074b3          	and	x9,x0,x0
+80000024:	00007533          	and	x10,x0,x0
+80000028:	000075b3          	and	x11,x0,x0
+8000002c:	00007633          	and	x12,x0,x0
+80000030:	000076b3          	and	x13,x0,x0
+80000034:	00007733          	and	x14,x0,x0
+80000038:	000077b3          	and	x15,x0,x0
+8000003c:	00007833          	and	x16,x0,x0
+80000040:	000078b3          	and	x17,x0,x0
+80000044:	00007933          	and	x18,x0,x0
+80000048:	000079b3          	and	x19,x0,x0
+8000004c:	00007a33          	and	x20,x0,x0
+80000050:	00007ab3          	and	x21,x0,x0
+80000054:	00007b33          	and	x22,x0,x0
+80000058:	00007bb3          	and	x23,x0,x0
+8000005c:	00007c33          	and	x24,x0,x0
+80000060:	00007cb3          	and	x25,x0,x0
+80000064:	00007d33          	and	x26,x0,x0
+80000068:	00007db3          	and	x27,x0,x0
+8000006c:	00007e33          	and	x28,x0,x0
+80000070:	00007eb3          	and	x29,x0,x0
+80000074:	00007f33          	and	x30,x0,x0
+80000078:	00007fb3          	and	x31,x0,x0
+8000007c:	00002117          	auipc	x2,0x2
+80000080:	03410113          	addi	x2,x2,52 # 800020b0 <stack_end>
+80000084:	1ec020ef          	jal	x1,80002270 <main>
+
+80000088 <sys_end>:
+80000088:	05d00893          	addi	x17,x0,93
+8000008c:	00000513          	addi	x10,x0,0
+80000090:	002012b7          	lui	x5,0x201
+80000094:	f1402873          	csrrs	x16,mhartid,x0
+80000098:	0102a023          	sw	x16,0(x5) # 201000 <SYSCALL_ADDR>
+8000009c:	0112a023          	sw	x17,0(x5)
+800000a0:	fe9ff06f          	jal	x0,80000088 <sys_end>
+800000a4:	00000013          	addi	x0,x0,0
+800000a8:	00000013          	addi	x0,x0,0
+800000ac:	00000013          	addi	x0,x0,0
+
+800000b0 <stack_begin>:
+	...
+
+800020b0 <stack_end>:
+800020b0:	0000                	c.unimp
+	...
+
+Disassembly of section .text:
+
+800020b4 <countPrimes>:
+800020b4:	e9010113          	addi	x2,x2,-368
+800020b8:	00200793          	addi	x15,x0,2
+800020bc:	00f12023          	sw	x15,0(x2)
+800020c0:	00400793          	addi	x15,x0,4
+800020c4:	16812423          	sw	x8,360(x2)
+800020c8:	16912223          	sw	x9,356(x2)
+800020cc:	17212023          	sw	x18,352(x2)
+800020d0:	15412c23          	sw	x20,344(x2)
+800020d4:	15512a23          	sw	x21,340(x2)
+800020d8:	16112623          	sw	x1,364(x2)
+800020dc:	15312e23          	sw	x19,348(x2)
+800020e0:	0af12423          	sw	x15,168(x2)
+800020e4:	00200493          	addi	x9,x0,2
+800020e8:	00300413          	addi	x8,x0,3
+800020ec:	00100a13          	addi	x20,x0,1
+800020f0:	00100913          	addi	x18,x0,1
+800020f4:	02900a93          	addi	x21,x0,41
+800020f8:	00048593          	addi	x11,x9,0
+800020fc:	00048513          	addi	x10,x9,0
+80002100:	14c000ef          	jal	x1,8000224c <__mulsi3>
+80002104:	02a45663          	bge	x8,x10,80002130 <countPrimes+0x7c>
+80002108:	fff48493          	addi	x9,x9,-1
+8000210c:	00010613          	addi	x12,x2,0
+80002110:	0a810713          	addi	x14,x2,168
+80002114:	00000693          	addi	x13,x0,0
+80002118:	00062583          	lw	x11,0(x12)
+8000211c:	02b4d263          	bge	x9,x11,80002140 <countPrimes+0x8c>
+80002120:	072ad263          	bge	x21,x18,80002184 <countPrimes+0xd0>
+80002124:	001a0a13          	addi	x20,x20,1
+80002128:	00140413          	addi	x8,x8,1
+8000212c:	fcdff06f          	jal	x0,800020f8 <countPrimes+0x44>
+80002130:	00148493          	addi	x9,x9,1
+80002134:	fc5ff06f          	jal	x0,800020f8 <countPrimes+0x44>
+80002138:	00f587b3          	add	x15,x11,x15
+8000213c:	00f72023          	sw	x15,0(x14)
+80002140:	00072783          	lw	x15,0(x14)
+80002144:	fe87cae3          	blt	x15,x8,80002138 <countPrimes+0x84>
+80002148:	fe8780e3          	beq	x15,x8,80002128 <countPrimes+0x74>
+8000214c:	00168693          	addi	x13,x13,1
+80002150:	00460613          	addi	x12,x12,4
+80002154:	00470713          	addi	x14,x14,4
+80002158:	fcd910e3          	bne	x18,x13,80002118 <countPrimes+0x64>
+8000215c:	16c12083          	lw	x1,364(x2)
+80002160:	16812403          	lw	x8,360(x2)
+80002164:	16412483          	lw	x9,356(x2)
+80002168:	16012903          	lw	x18,352(x2)
+8000216c:	15c12983          	lw	x19,348(x2)
+80002170:	15412a83          	lw	x21,340(x2)
+80002174:	000a0513          	addi	x10,x20,0
+80002178:	15812a03          	lw	x20,344(x2)
+8000217c:	17010113          	addi	x2,x2,368
+80002180:	00008067          	jalr	x0,0(x1)
+80002184:	00291993          	slli	x19,x18,0x2
+80002188:	15010793          	addi	x15,x2,336
+8000218c:	013789b3          	add	x19,x15,x19
+80002190:	ea89a823          	sw	x8,-336(x19)
+80002194:	00040593          	addi	x11,x8,0
+80002198:	00040513          	addi	x10,x8,0
+8000219c:	0b0000ef          	jal	x1,8000224c <__mulsi3>
+800021a0:	f4a9ac23          	sw	x10,-168(x19)
+800021a4:	00190913          	addi	x18,x18,1
+800021a8:	f7dff06f          	jal	x0,80002124 <countPrimes+0x70>
+
+800021ac <benchmark_body>:
+800021ac:	ff010113          	addi	x2,x2,-16
+800021b0:	00812423          	sw	x8,8(x2)
+800021b4:	00912223          	sw	x9,4(x2)
+800021b8:	00050413          	addi	x8,x10,0
+800021bc:	00112623          	sw	x1,12(x2)
+800021c0:	00000513          	addi	x10,x0,0
+800021c4:	00000493          	addi	x9,x0,0
+800021c8:	0084cc63          	blt	x9,x8,800021e0 <benchmark_body+0x34>
+800021cc:	00c12083          	lw	x1,12(x2)
+800021d0:	00812403          	lw	x8,8(x2)
+800021d4:	00412483          	lw	x9,4(x2)
+800021d8:	01010113          	addi	x2,x2,16
+800021dc:	00008067          	jalr	x0,0(x1)
+800021e0:	ed5ff0ef          	jal	x1,800020b4 <countPrimes>
+800021e4:	00148493          	addi	x9,x9,1
+800021e8:	fe1ff06f          	jal	x0,800021c8 <benchmark_body+0x1c>
+
+800021ec <warm_caches>:
+800021ec:	fc1ff06f          	jal	x0,800021ac <benchmark_body>
+
+800021f0 <benchmark>:
+800021f0:	00100513          	addi	x10,x0,1
+800021f4:	fb9ff06f          	jal	x0,800021ac <benchmark_body>
+
+800021f8 <initialise_benchmark>:
+800021f8:	00008067          	jalr	x0,0(x1)
+
+800021fc <verify_benchmark>:
+800021fc:	fffff7b7          	lui	x15,0xfffff
+80002200:	24878793          	addi	x15,x15,584 # fffff248 <_end+0x7fffcf98>
+80002204:	00f50533          	add	x10,x10,x15
+80002208:	00153513          	sltiu	x10,x10,1
+8000220c:	00008067          	jalr	x0,0(x1)
+
+80002210 <initialise_board>:
+80002210:	00000513          	addi	x10,x0,0
+80002214:	00008067          	jalr	x0,0(x1)
+
+80002218 <start_trigger>:
+80002218:	00000513          	addi	x10,x0,0
+8000221c:	deadc2b7          	lui	x5,0xdeadc
+80002220:	eef28293          	addi	x5,x5,-273 # deadbeef <_end+0x5ead9c3f>
+80002224:	00008067          	jalr	x0,0(x1)
+
+80002228 <stop_trigger>:
+80002228:	beefe2b7          	lui	x5,0xbeefe
+8000222c:	ead28293          	addi	x5,x5,-339 # beefdead <_end+0x3eefbbfd>
+80002230:	05d00893          	addi	x17,x0,93
+80002234:	00000513          	addi	x10,x0,0
+80002238:	020102b7          	lui	x5,0x2010
+8000223c:	f1402873          	csrrs	x16,mhartid,x0
+80002240:	0102a023          	sw	x16,0(x5) # 2010000 <SYSCALL_ADDR+0x1e0f000>
+80002244:	0112a023          	sw	x17,0(x5)
+80002248:	00008067          	jalr	x0,0(x1)
+
+8000224c <__mulsi3>:
+8000224c:	00050613          	addi	x12,x10,0
+80002250:	00000513          	addi	x10,x0,0
+80002254:	0015f693          	andi	x13,x11,1
+80002258:	00068463          	beq	x13,x0,80002260 <__mulsi3+0x14>
+8000225c:	00c50533          	add	x10,x10,x12
+80002260:	0015d593          	srli	x11,x11,0x1
+80002264:	00161613          	slli	x12,x12,0x1
+80002268:	fe0596e3          	bne	x11,x0,80002254 <__mulsi3+0x8>
+8000226c:	00008067          	jalr	x0,0(x1)
+
+Disassembly of section .text.startup:
+
+80002270 <main>:
+80002270:	fe010113          	addi	x2,x2,-32
+80002274:	00112e23          	sw	x1,28(x2)
+80002278:	f99ff0ef          	jal	x1,80002210 <initialise_board>
+8000227c:	f7dff0ef          	jal	x1,800021f8 <initialise_benchmark>
+80002280:	00100513          	addi	x10,x0,1
+80002284:	f69ff0ef          	jal	x1,800021ec <warm_caches>
+80002288:	f91ff0ef          	jal	x1,80002218 <start_trigger>
+8000228c:	f65ff0ef          	jal	x1,800021f0 <benchmark>
+80002290:	00a12623          	sw	x10,12(x2)
+80002294:	f95ff0ef          	jal	x1,80002228 <stop_trigger>
+80002298:	00c12503          	lw	x10,12(x2)
+8000229c:	f61ff0ef          	jal	x1,800021fc <verify_benchmark>
+800022a0:	01c12083          	lw	x1,28(x2)
+800022a4:	00153513          	sltiu	x10,x10,1
+800022a8:	02010113          	addi	x2,x2,32
+800022ac:	00008067          	jalr	x0,0(x1)
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	3a434347          	fmsub.d	f6,f6,f4,f7,rmm
+   4:	2820                	c.fld	f8,80(x8)
+   6:	39336367          	0x39336367
+   a:	3131                	c.jal	fffffc16 <_end+0x7fffd966>
+   c:	3665                	c.jal	fffffbb4 <_end+0x7fffd904>
+   e:	3234                	c.fld	f13,96(x12)
+  10:	6635                	c.lui	x12,0xd
+  12:	2029                	c.jal	1c <SYSCALL_ADDR-0x200fe4>
+  14:	3031                	c.jal	fffff820 <_end+0x7fffd570>
+  16:	322e                	c.fldsp	f4,232(x2)
+  18:	302e                	c.fldsp	f0,232(x2)
+	...
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	1f41                	c.addi	x30,-16
+   2:	0000                	c.unimp
+   4:	7200                	c.flw	f8,32(x12)
+   6:	7369                	c.lui	x6,0xffffa
+   8:	01007663          	bgeu	x0,x16,14 <SYSCALL_ADDR-0x200fec>
+   c:	0015                	c.addi	x0,5
+   e:	0000                	c.unimp
+  10:	1004                	c.addi4spn	x9,x2,32
+  12:	7205                	c.lui	x4,0xfffe1
+  14:	3376                	c.fldsp	f6,376(x2)
+  16:	6932                	c.flwsp	f18,12(x2)
+  18:	7032                	c.flwsp	f0,44(x2)
+  1a:	0030                	c.addi4spn	x12,x2,8
+  1c:	0108                	c.addi4spn	x10,x2,128
+  1e:	0b0a                	c.slli	x22,0x2
+
+Disassembly of section .debug_line:
+
+00000000 <.debug_line>:
+   0:	0094                	c.addi4spn	x13,x2,64
+   2:	0000                	c.unimp
+   4:	004e0003          	lb	x0,4(x28)
+   8:	0000                	c.unimp
+   a:	0101                	c.addi	x2,0
+   c:	000d0efb          	0xd0efb
+  10:	0101                	c.addi	x2,0
+  12:	0101                	c.addi	x2,0
+  14:	0000                	c.unimp
+  16:	0100                	c.addi4spn	x8,x2,128
+  18:	0000                	c.unimp
+  1a:	2e01                	c.jal	32a <SYSCALL_ADDR-0x200cd6>
+  1c:	2f2e                	c.fldsp	f30,200(x2)
+  1e:	2e2e                	c.fldsp	f28,200(x2)
+  20:	2f2e2e2f          	0x2f2e2e2f
+  24:	2e2e                	c.fldsp	f28,200(x2)
+  26:	2f2e2e2f          	0x2f2e2e2f
+  2a:	2f2e                	c.fldsp	f30,200(x2)
+  2c:	6972                	c.flwsp	f18,28(x2)
+  2e:	2d766373          	csrrsi	x6,0x2d7,12
+  32:	2f636367          	0x2f636367
+  36:	696c                	c.flw	f11,84(x10)
+  38:	6762                	c.flwsp	f14,24(x2)
+  3a:	632f6363          	bltu	x30,x18,660 <SYSCALL_ADDR-0x2009a0>
+  3e:	69666e6f          	jal	x28,666d4 <SYSCALL_ADDR-0x19a92c>
+  42:	69722f67          	0x69722f67
+  46:	00766373          	csrrsi	x6,0x7,12
+  4a:	6d00                	c.flw	f8,24(x10)
+  4c:	6c75                	c.lui	x24,0x1d
+  4e:	6964                	c.flw	f9,84(x10)
+  50:	00532e33          	slt	x28,x6,x5
+  54:	0001                	c.addi	x0,0
+  56:	0000                	c.unimp
+  58:	0500                	c.addi4spn	x8,x2,640
+  5a:	4c02                	c.lwsp	x24,0(x2)
+  5c:	0022                	c.slli	x0,0x8
+  5e:	0380                	c.addi4spn	x8,x2,448
+  60:	0124                	c.addi4spn	x9,x2,136
+  62:	04090103          	lb	x2,64(x18)
+  66:	0100                	c.addi4spn	x8,x2,128
+  68:	04090203          	lb	x4,64(x18)
+  6c:	0100                	c.addi4spn	x8,x2,128
+  6e:	04090103          	lb	x2,64(x18)
+  72:	0100                	c.addi4spn	x8,x2,128
+  74:	04090103          	lb	x2,64(x18)
+  78:	0100                	c.addi4spn	x8,x2,128
+  7a:	04090203          	lb	x4,64(x18)
+  7e:	0100                	c.addi4spn	x8,x2,128
+  80:	04090103          	lb	x2,64(x18)
+  84:	0100                	c.addi4spn	x8,x2,128
+  86:	04090103          	lb	x2,64(x18)
+  8a:	0100                	c.addi4spn	x8,x2,128
+  8c:	04090103          	lb	x2,64(x18)
+  90:	0100                	c.addi4spn	x8,x2,128
+  92:	0409                	c.addi	x8,2
+  94:	0000                	c.unimp
+  96:	0101                	c.addi	x2,0
+
+Disassembly of section .debug_info:
+
+00000000 <.debug_info>:
+   0:	0022                	c.slli	x0,0x8
+   2:	0000                	c.unimp
+   4:	0002                	c.slli64	x0
+   6:	0000                	c.unimp
+   8:	0000                	c.unimp
+   a:	0104                	c.addi4spn	x9,x2,128
+   c:	0000                	c.unimp
+   e:	0000                	c.unimp
+  10:	224c                	c.fld	f11,128(x12)
+  12:	8000                	0x8000
+  14:	2270                	c.fld	f12,192(x12)
+  16:	8000                	0x8000
+  18:	0000                	c.unimp
+  1a:	0000                	c.unimp
+  1c:	0038                	c.addi4spn	x14,x2,8
+  1e:	0000                	c.unimp
+  20:	009e                	c.slli	x1,0x7
+  22:	0000                	c.unimp
+  24:	8001                	c.srli64	x8
+
+Disassembly of section .debug_abbrev:
+
+00000000 <.debug_abbrev>:
+   0:	1101                	c.addi	x2,-32
+   2:	1000                	c.addi4spn	x8,x2,32
+   4:	1106                	c.slli	x2,0x21
+   6:	1201                	c.addi	x4,-32
+   8:	0301                	c.addi	x6,0
+   a:	1b0e                	c.slli	x22,0x23
+   c:	250e                	c.fldsp	f10,192(x2)
+   e:	130e                	c.slli	x6,0x23
+  10:	0005                	c.addi	x0,1
+	...
+
+Disassembly of section .debug_aranges:
+
+00000000 <.debug_aranges>:
+   0:	001c                	0x1c
+   2:	0000                	c.unimp
+   4:	0002                	c.slli64	x0
+   6:	0000                	c.unimp
+   8:	0000                	c.unimp
+   a:	0004                	0x4
+   c:	0000                	c.unimp
+   e:	0000                	c.unimp
+  10:	224c                	c.fld	f11,128(x12)
+  12:	8000                	0x8000
+  14:	0024                	c.addi4spn	x9,x2,8
+	...
+
+Disassembly of section .debug_str:
+
+00000000 <.debug_str>:
+   0:	2e2e                	c.fldsp	f28,200(x2)
+   2:	2f2e2e2f          	0x2f2e2e2f
+   6:	2e2e                	c.fldsp	f28,200(x2)
+   8:	2f2e2e2f          	0x2f2e2e2f
+   c:	2e2e                	c.fldsp	f28,200(x2)
+   e:	722f2e2f          	0x722f2e2f
+  12:	7369                	c.lui	x6,0xffffa
+  14:	672d7663          	bgeu	x26,x18,680 <SYSCALL_ADDR-0x200980>
+  18:	6c2f6363          	bltu	x30,x2,6de <SYSCALL_ADDR-0x200922>
+  1c:	6269                	c.lui	x4,0x1a
+  1e:	2f636367          	0x2f636367
+  22:	666e6f63          	bltu	x28,x6,6a0 <SYSCALL_ADDR-0x200960>
+  26:	6769                	c.lui	x14,0x1a
+  28:	7369722f          	0x7369722f
+  2c:	6d2f7663          	bgeu	x30,x18,6f8 <SYSCALL_ADDR-0x200908>
+  30:	6c75                	c.lui	x24,0x1d
+  32:	6964                	c.flw	f9,84(x10)
+  34:	00532e33          	slt	x28,x6,x5
+  38:	6d6f682f          	0x6d6f682f
+  3c:	2f65                	c.jal	7f4 <SYSCALL_ADDR-0x20080c>
+  3e:	6c6c6173          	csrrsi	x2,0x6c6,24
+  42:	7261                	c.lui	x4,0xffff8
+  44:	6f6f742f          	0x6f6f742f
+  48:	736c                	c.flw	f11,100(x14)
+  4a:	7369722f          	0x7369722f
+  4e:	672d7663          	bgeu	x26,x18,6ba <SYSCALL_ADDR-0x200946>
+  52:	756e                	c.flwsp	f10,248(x2)
+  54:	742d                	c.lui	x8,0xfffeb
+  56:	636c6f6f          	jal	x30,c668c <SYSCALL_ADDR-0x13a974>
+  5a:	6168                	c.flw	f10,68(x10)
+  5c:	6e69                	c.lui	x28,0x1a
+  5e:	6975622f          	0x6975622f
+  62:	646c                	c.flw	f11,76(x8)
+  64:	672d                	c.lui	x14,0xb
+  66:	6e2d6363          	bltu	x26,x2,74c <SYSCALL_ADDR-0x2008b4>
+  6a:	7765                	c.lui	x14,0xffff9
+  6c:	696c                	c.flw	f11,84(x10)
+  6e:	2d62                	c.fldsp	f26,24(x2)
+  70:	67617473          	csrrci	x8,0x676,2
+  74:	3265                	c.jal	fffffa1c <_end+0x7fffd76c>
+  76:	7369722f          	0x7369722f
+  7a:	34367663          	bgeu	x12,x3,3c6 <SYSCALL_ADDR-0x200c3a>
+  7e:	752d                	c.lui	x10,0xfffeb
+  80:	6b6e                	c.flwsp	f22,216(x2)
+  82:	6f6e                	c.flwsp	f30,216(x2)
+  84:	652d6e77          	0x652d6e77
+  88:	666c                	c.flw	f11,76(x12)
+  8a:	3376722f          	0x3376722f
+  8e:	6932                	c.flwsp	f18,12(x2)
+  90:	706c692f          	0x706c692f
+  94:	6c2f3233          	0x6c2f3233
+  98:	6269                	c.lui	x4,0x1a
+  9a:	00636367          	0x636367
+  9e:	20554e47          	fmsub.s	f28,f10,f5,f4,rmm
+  a2:	5341                	c.li	x6,-16
+  a4:	3220                	c.fld	f8,96(x12)
+  a6:	332e                	c.fldsp	f6,232(x2)
+  a8:	0035                	c.addi	x0,13
