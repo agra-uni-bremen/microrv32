@@ -1,5 +1,11 @@
 µRV32 - MicroRV32
 ===
+
+<p align="center">
+  <img src="./img/mrv32_logo.png" alt="µRV32 - MicroRV32" width="250"/>
+</p>
+
+
 ## Key features of our µRV32
 * VP based co-design and co-simulation tool flow
 * RV32IMC core support with CSR Registers for SW traps and timer IRQ
@@ -190,4 +196,3 @@ author = {Sallar Ahmadi-Pour and Vladimir Herdt and Rolf Drechsler},
 
 ## Acknowledgements
 This work was supported in part by the German Federal Ministry of Education and Research (BMBF) within the project Scale4Edge under contract no. 16ME0127 and within the project VerSys under contract no. 01IW19001 and within the project ECXL under contract no. 01IW22002.
-
