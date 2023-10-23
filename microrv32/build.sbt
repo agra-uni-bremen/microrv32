@@ -1,4 +1,4 @@
-name := "RV32"
+name := "microrv32"
 
 version := "1.0"
 
@@ -15,6 +15,7 @@ libraryDependencies ++= Seq(
   "com.github.spinalhdl" % "spinalhdl-lib_2.11" % spinalHDLVersion,
   compilerPlugin("com.github.spinalhdl" % "spinalhdl-idsl-plugin_2.11" % spinalHDLVersion)
 )
+libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.10"
 
 // for stable, master branch of spinalhdl
 // libraryDependencies ++= Seq(
