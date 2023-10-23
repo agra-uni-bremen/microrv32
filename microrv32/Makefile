@@ -1,5 +1,7 @@
-simROM = sw/basic-led-blink/blink.hex
-synthROM = sw/basic-led-blink/blink.hex
+# simROM = sw/basic-led-blink/blink.hex
+# synthROM = sw/basic-led-blink/blink.hex
+simROM = sw/crc8/crc.hex
+synthROM = sw/crc8/crc.hex
 variant ?= rv32imc
 
 sim_spinal:
@@ -21,7 +23,7 @@ sim_spinal_freeRTOS-standard-demo:
 	sbt "runMain core.microrv32.MicroRV32TopSim sw/freeRTOS-prebuilt/standard-demo/riscv-main.hex"
 
 rtl: 
-	sbt "runMain core.microrv32.MicroRV32TopVerilog $(synthROM)"
+	sbt "runMain core.microrv32.MicroRV32TopVerilog $(synthROM) $(variant)"
 
 rtl_hx8k: 
 	sbt "runMain core.microrv32.MicroRV32TopHX8KVerilog $(synthROM)"
