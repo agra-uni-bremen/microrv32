@@ -4,7 +4,7 @@ import spinal.core._
 import spinal.lib.slave
 import spinal.lib._
 import spinal.lib.io.{InOutWrapper, TriStateArray}
-import core.microrv32.SimpleBus
+import core.microrv32.bus._
 
 /**
  * This GPIO  peripheral supplies a 8 bit wide I/O bank

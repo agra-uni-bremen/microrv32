@@ -5,7 +5,6 @@ import spinal.sim._
 import spinal.core.sim._
 import scala.math._
 import core.microrv32.ByteAddressableMemory
-import core.microrv32.SimpleBus
 
 object BAMemSim {
 

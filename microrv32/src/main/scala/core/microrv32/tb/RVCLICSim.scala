@@ -5,7 +5,6 @@ import spinal.sim._
 import spinal.core.sim._
 import scala.math._
 import core.microrv32.RVCLIC
-import core.microrv32.SimpleBus
 
 object RVCLICTopSim {
 

@@ -1,8 +1,8 @@
 package core.microrv32
 
 import spinal.core._
-// import core.microrv32.SimpleBus
 import spinal.lib.slave
+import core.microrv32.bus._
 
 /*
 * Implements a Core Local Interrupt Controller

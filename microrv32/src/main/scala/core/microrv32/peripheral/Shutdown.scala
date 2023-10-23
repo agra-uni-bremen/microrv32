@@ -1,8 +1,8 @@
 package core.microrv32
 
 import spinal.core._
-//import spinal.lib.fsm.{EntryPoint, State, StateMachine}
 import spinal.lib.slave
+import core.microrv32.bus._
 
 //Hardware definition
 class Shutdown() extends Component{

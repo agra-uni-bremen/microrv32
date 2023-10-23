@@ -3,6 +3,8 @@ package core.microrv32
 import spinal.core._
 import spinal.lib.slave
 import spinal.lib._
+import core.microrv32.bus._
+
 /*
  * Wrapper for byte addressable memory on simple bus interface
  * Parameters

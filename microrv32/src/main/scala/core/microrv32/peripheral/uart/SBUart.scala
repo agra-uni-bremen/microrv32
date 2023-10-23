@@ -4,8 +4,7 @@ import spinal.core._
 import spinal.lib.slave
 import spinal.lib._
 import spinal.lib.com.uart._
-import core.microrv32.SimpleBus
-import java.awt.geom.Area
+import core.microrv32.bus._
 
 class SBUart() extends Component{
     val io = new Bundle{

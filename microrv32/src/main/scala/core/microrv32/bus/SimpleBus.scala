@@ -1,5 +1,4 @@
-
-package core.microrv32
+package core.microrv32.bus
 
 import spinal.core._
 import spinal.lib.IMasterSlave

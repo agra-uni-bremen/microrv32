@@ -2,6 +2,7 @@ package core.microrv32
 
 import spinal.core._
 import spinal.lib.slave
+import core.microrv32.bus._
 
 /*
  * Wrapper for memory on simple bus interface

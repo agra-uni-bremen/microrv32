@@ -4,9 +4,11 @@ import spinal.core._
 import spinal.lib.master
 import scala.annotation.switch
 import core.microrv32.rv32core._
+import core.microrv32.bus._
 
 case class SBCoreIO() extends Bundle{
     val sb = master(SimpleBus(32,32))
+    val unmapped = in Bool()
     // cpu halted through ecall
     val halted = out Bool()
     // sync signal, asserted when core is in fetch state
@@ -47,6 +49,8 @@ class SBRV32Core(val cfg : RV32CoreConfig) extends Component{
         // in
         val sbReadyMux = Bool
         val sbRDataMux = Bits(32 bits)
+
+        val busCtrl = new SimpleBusMasterController()
 
         val transactionSrc = Reg(TransactionSource()) init(TransactionSource.none)
         val wrSize = UInt(4 bits)
@@ -140,10 +144,17 @@ class SBRV32Core(val cfg : RV32CoreConfig) extends Component{
         cpu.io.memIF.DMem.readData := sbRDataMux
         cpu.io.memIF.IMem.instruction := sbRDataMux
         io.sb.SBaddress := U(sbAddrMux, 32 bits)
-        io.sb.SBvalid := sbValidMux
+        // io.sb.SBvalid := sbValidMux
         io.sb.SBwdata := sbWDataMux
         io.sb.SBwrite := sbWriteMux
         io.sb.SBsize := sbSizeMux
+        
+        busCtrl.io.ctrl.enable := cpu.io.memIF.IMem.fetchEnable ^ cpu.io.memIF.DMem.enable
+        busCtrl.io.ctrl.write := sbWriteMux
+        io.sb.SBvalid := busCtrl.io.bus.valid
+        busCtrl.io.bus.ready := sbReadyMux
+        busCtrl.io.bus.unmapped := io.unmapped
+
     }
 }
 

@@ -1,6 +1,6 @@
 package core.microrv32.peripheral
 
-import core.microrv32.SimpleBus
+import core.microrv32.bus._
 import spinal.core._
 import spinal.lib.slave
 
