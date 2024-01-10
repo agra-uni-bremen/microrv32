@@ -32,7 +32,7 @@ class CSRUnit(val cfg : RV32CoreConfig) extends Area {
     // CSR registers
     // Machine Information Registers
     val mvendorid = Reg(Bits(32 bits)) init(0) //RO - Vendor ID 
-    val marchid = Reg(Bits(32 bits)) init(0) // RO - Architecture ID
+    val marchid = Reg(Bits(32 bits)) init(MARCHID_MICRORV32) // RO - Architecture ID
     val mimpid = Reg(Bits(32 bits)) init(0) // RO - Implementation ID
     val mhartid = Reg(Bits(32 bits)) init(0) // RO - Hardware thread ID
     // Machine Trap Setup

@@ -23,6 +23,7 @@ object CSROpcode{
 }
 
 object RVCSR{
+  def MARCHID_MICRORV32 = 41 // see https://github.com/riscv/riscv-isa-manual/blob/main/marchid.md for MicroRV32
   // default values and encodings for "Zicsr", CSR Extension
   def MISA_DEFAULT = B(32 bits, (31 downto 30) -> B"01", 8 -> true, default -> false)
   def MSTATUS_DEFAULT = B(32 bits, (12 downto 11) -> B"11", default -> false)
