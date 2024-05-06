@@ -1,27 +1,21 @@
-name := "microrv32"
+ThisBuild / version := "1.0"
+ThisBuild / scalaVersion := "2.12.18"
+ThisBuild / organization := "org.example"
 
+val spinalVersion = "1.10.1"
+val spinalCore = "com.github.spinalhdl" %% "spinalhdl-core" % spinalVersion
+val spinalLib = "com.github.spinalhdl" %% "spinalhdl-lib" % spinalVersion
+val spinalIdslPlugin = compilerPlugin("com.github.spinalhdl" %% "spinalhdl-idsl-plugin" % spinalVersion)
+
+
+name := "microrv32"
 version := "1.0"
 
-scalaVersion := "2.11.12"
-
-// val spinalHDLVersion = "latest.release"
-val spinalHDLVersion = "1.7.3"
-
-EclipseKeys.withSource := true
-
-// for dev branch with workaround features that will be in next releases
-libraryDependencies ++= Seq(
-  "com.github.spinalhdl" % "spinalhdl-core_2.11" % spinalHDLVersion,
-  "com.github.spinalhdl" % "spinalhdl-lib_2.11" % spinalHDLVersion,
-  compilerPlugin("com.github.spinalhdl" % "spinalhdl-idsl-plugin_2.11" % spinalHDLVersion)
-)
-libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.10"
-
-// for stable, master branch of spinalhdl
-// libraryDependencies ++= Seq(
-//   "com.github.spinalhdl" % "spinalhdl-core_2.11" % "1.3.8",
-//   "com.github.spinalhdl" % "spinalhdl-lib_2.11" % "1.3.8",
-//   //compilerPlugin("com.github.spinalhdl" % "spinalhdl-idsl-plugin_2.11" % "1.3.8")
-// )
+lazy val projectname = (project in file("."))
+  .settings(
+    Compile / scalaSource := baseDirectory.value / "src" ,
+    libraryDependencies ++= Seq(spinalCore, spinalLib, spinalIdslPlugin)
+  )
 
 fork := true
+
