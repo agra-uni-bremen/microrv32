@@ -18,12 +18,6 @@ authors:
     email: drechsler@uni-bremen.de
     affiliation: University of Bremen
     orcid: 'https://orcid.org/0000-0002-9872-1740'
-  - name: 'Institute of Computer Science, University of Bremen'
-    address: Bibliothekstrasse 5
-    city: Bremen
-    post-code: '28359'
-    website: 'https://agra.informatik.uni-bremen.de'
-    country: DE
 identifiers:
   - type: doi
     value: 10.1016/j.sysarc.2022.102757
