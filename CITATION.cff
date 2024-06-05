@@ -1,0 +1,38 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: MicroRV32
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Sallar
+    family-names: Ahmadi-Pour
+    email: sallar@uni-bremen.de
+    affiliation: University of Bremen
+    orcid: 'https://orcid.org/0000-0003-4000-6207'
+  - given-names: Rolf
+    family-names: Drechsler
+    email: drechsler@uni-bremen.de
+    affiliation: University of Bremen
+    orcid: 'https://orcid.org/0000-0002-9872-1740'
+  - name: 'Institute of Computer Science, University of Bremen'
+    address: Bibliothekstrasse 5
+    city: Bremen
+    post-code: '28359'
+    website: 'https://agra.informatik.uni-bremen.de'
+    country: DE
+identifiers:
+  - type: doi
+    value: 10.1016/j.sysarc.2022.102757
+    description: >-
+      The MicroRV32 framework: An accessible and
+      configurable open source RISC-V cross-level platform
+      for education and research
+repository-code: 'https://github.com/agra-uni-bremen/microrv32/'
+abstract: >-
+  MicroRV32 is an open-source available RISC-V platform for
+  education and research. 
+license: MIT
