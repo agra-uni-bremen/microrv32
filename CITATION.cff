@@ -4,8 +4,7 @@
 cff-version: 1.2.0
 title: MicroRV32
 message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
+  If you want to cite this software, please use the metadata from this file.
 type: software
 authors:
   - given-names: Sallar
