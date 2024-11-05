@@ -204,7 +204,7 @@ object MicroRV32TopSim {
 
         def printRegFile() = {
           for(i <- 0 to 31) {
-            printf("%-5s(x%2d) = %8x\n",regname(i),i,dut.cpu.cpu.regs.regFile.getBigInt(i))
+            printf("%-5s(x%2d) = %8x\n",regname(i),i,dut.cpu.cpu.regs.regFile.getBigInt(i)) //'.getBigInt' is use to 'Mem' donly
           }
         }
 
@@ -226,7 +226,7 @@ object MicroRV32TopSim {
         // readRam(ramC,0x00001ffc,0x00002000+8).toList.foreach{ printf("%8x ",_)}
         // print("\n")
 
-        // uart rxd
+        // uart rxd 
         val rxdSim: Boolean = true
         dut.io.uart.rxd #= rxdSim
         val t1 = System.nanoTime
@@ -311,6 +311,7 @@ object MicroRV32TopSim {
       printf("pc = %08x\n", dut.cpu.cpu.programCounter.toBigInt)
       printf("num-instr = %d\n", dut.cpu.cpu.CSRLogic.minstret.toBigInt)
       printf("num-clk-cycle = %d\n", dut.cpu.cpu.CSRLogic.mcycle.toBigInt)
+      printf("CPI = %f\n", dut.cpu.cpu.CSRLogic.mcycle.toBigInt.toFloat / dut.cpu.cpu.CSRLogic.minstret.toBigInt.toFloat)
       }
 
     // log the rv32ui-p test results
