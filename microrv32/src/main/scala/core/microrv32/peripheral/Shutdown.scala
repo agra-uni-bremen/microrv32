@@ -21,9 +21,9 @@ class Shutdown() extends Component{
     val internalHalt = Reg(Bool) init(False)
     val internalHaltErr = Reg(Bool) init(False)
 
-    val haltCnd = io.sb.SBsize === 4 & io.sb.SBwdata.asUInt === 93
+    val haltCnd = (io.sb.SBsize === 4) & (io.sb.SBwdata.asUInt === 93)
 
-    when(write){
+    when(write){ //Once the conditions are fulfilled, the outputs will be True forever
         when(intAddr === 0 & haltCnd){
             internalHalt := True
         }.elsewhen(intAddr === 4 & haltCnd){
@@ -33,7 +33,7 @@ class Shutdown() extends Component{
 
     // bus ready signal
     rdy := False
-    when((read | write) & io.sel){
+    when((read | write) & io.sel){ //whenever it's read or write, and whatever the output signals is True or False
         rdy := True
     }
     io.sb.SBready := rdy

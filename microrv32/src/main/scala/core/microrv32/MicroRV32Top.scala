@@ -28,7 +28,7 @@ class MicroRV32Top(initHexfile:String, sizeHexfile:Int, rv32config : RV32CoreCon
     // clock and reset through spinalhdl
     val gpioLed = out Bits(8 bits)
     val cpuFetch = out Bool()
-    val cpuHalted = out Bool()
+    val cpuHalted = out Bool() 
     val cpuDbgState = out Bits(4 bits)
     val dbgBus = out Bits(16 bits)
     // val dbgClk = out Bool
@@ -45,7 +45,13 @@ class MicroRV32Top(initHexfile:String, sizeHexfile:Int, rv32config : RV32CoreCon
   io.dbgBus := cpu.io.sb.SBaddress(15 downto 0).asBits
   
   // ******** Peripherals *********
+
+  //ArrayBuffer is an ordered collection, also mutable(add, remove, modify)
+  //Each element in ArrayBuffer is a tuple where:
+  //The first element is 'SimpleBus'
+  //The second element is another tuple, containing 'Bool' and a 'MaskMapping'
   val busMappings = new ArrayBuffer[(SimpleBus,(Bool, MaskMapping))]
+  
   /**
    * memory mapping platform peripherals
    * peripheral | address (from-to)
@@ -59,6 +65,12 @@ class MicroRV32Top(initHexfile:String, sizeHexfile:Int, rv32config : RV32CoreCon
    */
 
   val rvCLIC = new RVCLIC()
+  //rvCLIC.io.sb: Represents a signal or port of type SimpleBus from the rvCLIC component.
+  //MaskMapping(0x02000000L, 0xFFFF0000L): Creates an instance of MaskMapping with two parameters:
+  //0x02000000L: The base address, indicating the starting address.
+  //0xFFFF0000L: The mask, used to specify the address range.
+  //This MaskMapping defines an address range from 0x02000000 to 0x0200FFFF.
+  //The -> operator is used to create a tuple. '()' also creates a tuple with 'Bool' and 'MaskMapping' instance.
   busMappings += rvCLIC.io.sb -> (rvCLIC.io.sel, MaskMapping(0x02000000l,0xFFFF0000l)) // 0x02000000 - 0x0200FFFF
   cpu.io.irqTimer := rvCLIC.io.irq
 
@@ -85,6 +97,7 @@ class MicroRV32Top(initHexfile:String, sizeHexfile:Int, rv32config : RV32CoreCon
   )
   cpu.io.unmapped := busDecoder.io.unmapped.fired
   busDecoder.io.unmapped.clear := True // TODO: change this and add support in the core to handle error on bus - i.e. cause a trap with custom reason?
+  //The clear is active all the time, so once the 'not hit' happened, the decoder will eliminate the abnormal state and default to 'hit' state in the close next clock.
 
 }
 

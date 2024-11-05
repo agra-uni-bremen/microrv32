@@ -191,7 +191,9 @@ class DecodeUnit(val cfg : RV32CoreConfig) extends Component{
               }
             }
         }
-        is(OP_ZEROS){
+        // 'OP_ZEROS' refers to the instruction in which the opcode field is all 0. 
+        // This should be treated as illegal instruction
+        is(OP_ZEROS){ 
             decoded := False
             iType := InstructionType.isIllegal
         }

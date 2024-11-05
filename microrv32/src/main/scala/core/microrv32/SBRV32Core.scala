@@ -9,12 +9,12 @@ import core.microrv32.bus._
 case class SBCoreIO() extends Bundle{
     val sb = master(SimpleBus(32,32))
     val unmapped = in Bool()
-    // cpu halted through ecall
+    // cpu halted through ecall, pls notice the different from the 'halting signals' below
     val halted = out Bool()
     // sync signal, asserted when core is in fetch state
     val fetchSync = out Bool()
     // halting signals for external, memory mapped shutdown
-    val halt = in Bool()
+    val halt = in Bool() 
     val haltErr = in Bool()
     val dbgState = out Bits(4 bits)
     // interrupt timer

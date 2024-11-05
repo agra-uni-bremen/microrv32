@@ -1,0 +1,43 @@
+package SC_RV32I.Mem
+
+import spinal.core._
+import spinal.lib._
+import SC_RV32I.Bus._
+import SC_RV32I._
+
+//Instantiate the byte-addressable ROM for instruction memory, the MemWidth is 8-bit actually
+//The judge for 'unmapped' is not included in this memory
+case class OriginalInstMem (WordWidth:Int, InstSize:Int, ContentInst:String) extends Component {
+    val io = new Bundle {
+        val ib = slave(InstBus(32,32))
+    }
+
+    //Initializing ROM of the file
+    val romInst = new Mem(Bits(WordWidth bits), InstSize) init(Seq.fill(InstSize)(B(0, 32 bits)))
+    romInst.init(Tools.readmemh(ContentInst)) //'Tools.readmemh()' will return am Array type data
+    
+    //Translating the address to internal one
+    //In addition to turn the byte-addressable value into "word-addressable", 
+    //the 'log2Up' method also extract the concerned bit, 
+    //this will exclude the 'prefix' of the memory range, achieving the translating from the external address to the internal address.
+    val InternalAdd = io.ib.IBaddress(log2Up(InstSize)-1 downto 0) / 4
+
+    //'ready' signal generation and assignment
+    val ready = Reg(Bool()) init(False)
+    //The artificial reg for ready signal aim to prosponed the ready for 1 cycle, asynchrounous to the readData
+    val memEnable = io.ib.IBvalid
+    when (memEnable){ 
+        ready := True
+    } otherwise {
+        ready := False
+    }
+    io.ib.IBready := ready
+
+    //The data logic
+    //If the enable signal is not valid, the data will keep the former value.
+    io.ib.IBrdata := romInst.readSync(
+        address = InternalAdd,
+        enable = memEnable //Only when valid that InstMem can be read
+    ) 
+    
+}

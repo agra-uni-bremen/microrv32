@@ -120,8 +120,8 @@ case class ControlBundle(cfg : RV32CoreConfig) extends Bundle{
     val irqEntry = out Bool()
     val exceptions = in(ExceptionControl())
     // 
-    val halt = in Bool()
-    val halted = out Bool()
+    val halt = in Bool() //It's related to Shutdown System. It's from outside(shutdown peripherals).
+    val halted = out Bool() // It's true when 'halt' upward is true.
     val fetchSync = out Bool()
     // debug output
     val dbgState = out Bits(4 bits)
@@ -388,7 +388,7 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
                             }
                             goto(stateCSR)
                         }
-                    }
+                    } 
                     is(isFence){
                         goto(stateFetch)
                     }
@@ -515,7 +515,7 @@ class ControlUnit(cfg : RV32CoreConfig) extends Component{
         val stateHalt : State = new State{
             whenIsActive{
                 io.halted := True
-            }
+            } //Please take care that the fsm will stay at this state and won't go to fetch the next instruction.
         }
     }
 

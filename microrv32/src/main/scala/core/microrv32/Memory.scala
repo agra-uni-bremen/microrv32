@@ -34,7 +34,7 @@ class Memory(memoryWidth : Bits, wordCount : Int, initFile : String) extends Com
   }
 
   val rdy = Reg(Bool) init(False)
-  val read = io.sb.SBvalid && io.sel && !io.sb.SBwrite
+  val read = io.sb.SBvalid && io.sel && !io.sb.SBwrite //0 is read, 1 is write
   val write = io.sb.SBvalid && io.sel && io.sb.SBwrite
 
   /*
@@ -45,11 +45,13 @@ class Memory(memoryWidth : Bits, wordCount : Int, initFile : String) extends Com
    * We could have easily taken an existing memory implementation (in Verilog/VHDL) with a similar bus interface as the SimpleBus,
    * add and bind it to SpinalHDL for usage purpose. This way we could have had a byte-addessable memory. 
    * E.g. see the existing AGRA riscv-core (verilog) or the picorv32 + picosoc from Clifford Wolf
+   * 
    * The states examples show two different approaches to implementing a memory: 8-bit width, 32-bit width memory
    * The 8-bit width shows an advantage when it comes to addressing the memory space, simply because you can 
    * directly use the asserted address from the bus. It similarly comes with a disadvantage (especially
    * when writing the memory in a language like SpinalHDL which generates HDL code for you) that it
    * is not very predictable if the memory can be synthesized or not.
+   * 
    * The 32-bit width shows an advantage at first when it comes to implementing: you write it down as is.
    * One write and one read statement, some masks and the enable. It leaves you with a disadvantage aswell:
    * Making the memory byte-addressable is not trivial. You have to take care about the granularities yourself,
@@ -88,8 +90,8 @@ class Memory(memoryWidth : Bits, wordCount : Int, initFile : String) extends Com
   val byteRD = rdVal.subdivideIn(8 bits)(alignment(1 downto 0))
   val halfRD = rdVal.subdivideIn(16 bits)(alignment(1 downto 1))
   val wordRD = rdVal
-  io.sb.SBrdata := tSize.mux[Bits](
-      1 -> byteRD.resized,
+  io.sb.SBrdata := tSize.mux[Bits]( //Bits here means the result of mutiplexer must be Bits type
+      1 -> byteRD.resized, 
       2 -> halfRD.resized,
       4 -> wordRD.resized,
       default -> wordRD
@@ -105,7 +107,7 @@ class Memory(memoryWidth : Bits, wordCount : Int, initFile : String) extends Com
    * 
    */
   import MemoryMasks._
-  val bytemask = ramAddr(1 downto 0).mux[Bits](
+  val bytemask = ramAddr(1 downto 0).mux[Bits]( //The mux function will return the Bits type 
     0 -> W_BYTEMASK_0,
     1 -> W_BYTEMASK_1,
     2 -> W_BYTEMASK_2,
