@@ -4,7 +4,7 @@ import spinal.core._
 import spinal.lib._
 
 import SC_RV32I.Core.pcSrc
-import SC_RV32I.Bus._
+// import SC_RV32I.Bus._
 
 class PCIncrement(incValue: Int) extends Component {
     val io = new Bundle {
