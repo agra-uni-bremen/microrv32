@@ -252,7 +252,7 @@ object PP_MicroRV32TopSim {
             println("SimSteps: " + simSteps)
             println("CPU time: " + (t2 - t1) + " ns")
             printf("SIMPC : %8x\n", simPC)
-
+            logfileStringBuilder.append(f"Halted @ time = ${simEndTime} ns\nSimSteps = ${simSteps}\nCPU time = ${(t2 - t1)} ns\nsimPC = ${simPC}%8x\n")
           }
           // if(simSteps >= resetRiEdge && simSteps <= resetFaEdge){
           //   dut.clockDomain.assertReset()

@@ -8,7 +8,7 @@ sim_spinal:
 	sbt "runMain core.microrv32.MicroRV32TopSim $(simROM) $(variant)" 
 
 sim_split:
-	sbt "runMain SC_RV32I.SC_MicroRV32TopSim  $(simROM)_imem.hex $(simROM)_dmem.hex" 
+	sbt "runMain PP_RV32I.PP_MicroRV32TopSim  $(simROM)_imem.hex $(simROM)_dmem.hex" 
 
 sim_spinal_freeRTOS-tasks-1:
 	sbt "runMain core.microrv32.MicroRV32TopSim sw/freeRTOS-prebuilt/simple-tasks/riscv-main.hex"
