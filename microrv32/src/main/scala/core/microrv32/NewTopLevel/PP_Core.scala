@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 //Configuration
 case class PP_RV32CoreConfig (
     startVector : Long = 0x80000000l, //start pc value
-    fifoDepth : Int = 32 
+    fifoDepth : Int = 16
 )
 
 
