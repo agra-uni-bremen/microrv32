@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 //Configuration
 case class PP_RV32CoreConfig (
     startVector : Long = 0x80000000l, //start pc value
-    fifoDepth : Int = 16
+    fifoDepth : Int = 128 //please take care that the log2up(1) would return 0 instead of 1
 )
 
 
@@ -209,7 +209,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     val StallFifoOp = Bool()
     StallFifoOp := False
     val Stall = Bool()
-    Stall := StallMem | StallFifoCtrl | StallFifoOp
+    Stall := StallMem | StallFifoCtrl | StallFifoOp //one of them is valid, then the stall would take place
     case class stageEna() extends Bundle {
         val ifEna, idEna, exeEna, memPushEna, memPopEna, wbEna = Bool()
     }
@@ -293,7 +293,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
 
         //for forwarding and stall from mem
         val Fifo = out Vec(emControl(), cfg.fifoDepth) 
-        val Occupancy = out UInt(log2Up(cfg.fifoDepth) bits)
+        val Occupancy = out UInt(log2Up(cfg.fifoDepth + 1) bits)
         val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)
         val Full = out Bool()
         val Empty = out Bool()
@@ -303,13 +303,15 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
       val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
       val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
       io.ReadPtr := readPtr
-      val occupancy = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0) //an extra bit
+      val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
+    //   val occupancy = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0) //original one
       io.Occupancy := occupancy
       val full = Bool()
       io.Full := full
       val empty = Bool()
       io.Empty := empty
-      full := occupancy === (cfg.fifoDepth - 1)
+    //   full := occupancy === (cfg.fifoDepth - 1)
+      full := occupancy === cfg.fifoDepth
       empty := occupancy === 0
       val tmpDataOut = Reg(emControl()) init(io.defaults)
       io.dataOut := tmpDataOut
@@ -352,25 +354,23 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
 
         //for forwarding and stall from mem
         val Fifo = out Vec(emData(), cfg.fifoDepth) 
-        val Occupancy = out UInt(log2Up(cfg.fifoDepth) bits)
+        val Occupancy = out UInt(log2Up(cfg.fifoDepth + 1) bits)
         val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)
-        val WritePtr = out UInt(log2Up(cfg.fifoDepth) bits) //FLAG ONLY
         val Full = out Bool()
-        val Empty = out Bool() //FLAG ONLY
+        val Empty = out Bool() 
       }
       val fifo = Vec(Reg(emData()) init(io.defaults), cfg.fifoDepth) //depth better be a exponential of 2
       io.Fifo := Vec(fifo.map(element => element))
       val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
-      io.WritePtr := writePtr
       val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
       io.ReadPtr := readPtr
-      val occupancy = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0) //an extra bit
+      val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
       io.Occupancy := occupancy
       val full = Bool()
       io.Full := full
       val empty = Bool()
       io.Empty := empty
-      full := occupancy === (cfg.fifoDepth - 1)
+      full := occupancy === cfg.fifoDepth
       empty := occupancy === 0
       val tmpDataOut = Reg(emData()) init(io.defaults)
       io.dataOut := tmpDataOut
@@ -566,7 +566,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
                 }
             }
         }
-        when(!BufferEMControl.io.Empty) { //check FIFO
+        when(!BufferEMControl.io.Empty & !BufferEMOperand.io.Empty) { //check FIFO
             for(i <- 0 until cfg.fifoDepth) { //From the earliest to latest.
                 when(i < BufferEMControl.io.Occupancy) {
                     val Index = (i + BufferEMControl.io.ReadPtr) % cfg.fifoDepth
@@ -626,7 +626,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
                 }
             }
         }
-        when(!BufferEMControl.io.Empty) { //check FIFO
+        when(!BufferEMControl.io.Empty & !BufferEMOperand.io.Empty) { //check FIFO
             for(i <- 0 until cfg.fifoDepth) { //From the earliest to latest. No need for break{}
                 when(i < BufferEMControl.io.Occupancy) {
                     val Index = (i + BufferEMControl.io.ReadPtr) % cfg.fifoDepth
