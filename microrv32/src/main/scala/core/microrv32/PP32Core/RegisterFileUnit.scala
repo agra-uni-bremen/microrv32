@@ -29,7 +29,7 @@ class RV32RegisterFile(addressWidth : Int, dataWidth : Int, wordCount : Int) ext
     //Synchronously write 
     //when x0 is chosen, the write won't be executed. 
     when(io.rd =/= 0 && io.wrEna) {
-        RegisterArray(io.rd) := io.rdData        
+        RegisterArray(io.rd) := io.rdData
     }
     // } otherwise { //Including 'rd = 0', '(rd =/= 0) and (wrEna = False)'
         // RegisterArray(0) := B(0, dataWidth bits)
