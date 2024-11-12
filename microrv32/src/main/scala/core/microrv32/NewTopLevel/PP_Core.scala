@@ -522,7 +522,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         // RD2 := EXEOperand.Rs2Data
         RD2 := registerFile.io.rs2Data
         val RS1 = EXEOperand.fields.rs1 //where RD1 come from
-        val RS2 = EXEOperand.fields.rs2 //whereRD2 come from
+        val RS2 = EXEOperand.fields.rs2 //where RD2 come from
         val Op1 = Bits(32 bits)
         // Op1 := RD1
         val Op2 = Bits(32 bits)
@@ -537,7 +537,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         // FlagDefault := False
 
         //data hazard processing: forwarding and stall from mem
-        //check if the operand needed is from RF and if the RS match the elements in the following modules(fifo, mem, wb). 
+        //check if the operand needed is\diagram{} from RF and if the RS match the elements in the following modules(fifo, mem, wb). 
         //seems like the 'when' modules to check WB, MEM, and FIFO are parallel, but it actually follows the sequence
         //For combinatorial signals, the last module is determination
         when((RS1 === WBOperand.Rd) & WBControl.RFControl.WriteEna & (RS1 =/= B(0, 5 bits))) { //check WB

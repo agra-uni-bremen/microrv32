@@ -186,6 +186,7 @@ class ControlUnit() extends Component {
             //pcSrc: 
             //The final outcome will wait until the EXE stage.
             PCSrc := pcSrc.PCIncrement //Default operation is not jumping
+            
             // when (ALUBranch) { //Always assume the branch will happen
             //     PCSrc := pcSrc.PCTarget
             // } otherwise {
