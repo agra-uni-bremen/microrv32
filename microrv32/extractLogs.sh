@@ -9,7 +9,7 @@ extractLogsToCSV() {
 		if [ "${benchmarkName}" != "summary.log" ]; then
 			echo $benchmarkName
 			data=$(awk -f extractLogs.awk ${benchmarkPath}/simulation.log)
-			echo "${benchmarkName}; ${data}" >> sw/embench-split-prebuilt/summary.log
+			echo "${benchmarkName}; ${data}" >> sw/embench-split-prebuilt/summary.csv
 		fi
 	done;
 }
