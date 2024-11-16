@@ -266,7 +266,7 @@ object PP_MicroRV32TopSim {
           if(!dut.io.cpuHalted.toBoolean) {
             noClk += 1
           }
-          if(dut.io.cpuFetch.toBoolean) {
+          if(dut.io.cpuWb.toBoolean) {
             noInstr += 1
           }
         }

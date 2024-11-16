@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 //Configuration
 case class PP_RV32CoreConfig (
     startVector : Long = 0x80000000l, //start pc value
-    fifoDepth : Int = 128 //please take care that the log2up(1) would return 0 instead of 1
+    fifoDepth : Int = 8 //please take care that the log2up(1) would return 0 instead of 1
 )
 
 
@@ -38,8 +38,9 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     val io = new Bundle {
         val InstMemIF = InstMemoryIF()
         val DataMemIF = DataMemoryIF()
-        // sync signal, asserted when core is in fetch state
+        // sync signal, once there is a new instruction in the IF stage
         val fetchSync = out Bool()
+        val wbSync = out Bool()
         // cpu halted through ecall. The 'halted' signal is true when 'halt' and 'haltErr' is True
         val halted = out Bool()
         // Shutdown halting signals(two possible methods)
@@ -50,6 +51,11 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
 
 
     //Define all components
+    //Stage registers' enable signals
+    case class stageEna() extends Bundle {
+        val ifEna, idEna, exeEna, fifoEna, memEna, wbEna = Bool()
+    }
+    val StageEna = new stageEna()
     //Initial value of the PC has been set up, the cpu start running once the clock is set up
     val programCounter = Reg(UInt(32 bits)) init(U(cfg.startVector, 32 bits))
     //Define fetch Unit
@@ -66,6 +72,128 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     // val aluSrcSelection = new ALUSrcSelection()
     val alu = new ALU() //Including the regularALU and PCTarget
     val pcTarget = new PCTarget()
+    //Circular EMFifo
+    class bufferEMControl() extends Component {
+      val io = new Bundle {
+        val push = in Bool()
+        val pop = in Bool()
+        val dataIn = in (emControl())
+        val defaults = in (emControl())
+        val dataOut = out (emControl()) //data that chosen for mem
+
+        //for forwarding and stall from mem
+        val Fifo = out Vec(emControl(), cfg.fifoDepth) 
+        val Occupancy = out UInt(log2Up(cfg.fifoDepth + 1) bits)
+        val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)
+        val Full = out Bool()
+        val Empty = out Bool()
+      }
+      val fifo = Vec(Reg(emControl()) init(io.defaults), cfg.fifoDepth) //depth better be a exponential of 2
+      io.Fifo := Vec(fifo.map(element => element))
+      val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
+      val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
+      io.ReadPtr := readPtr
+      val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
+    //   val occupancy = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0) //original one
+      io.Occupancy := occupancy
+      val full = Bool()
+      io.Full := full
+      val empty = Bool()
+      io.Empty := empty
+    //   full := occupancy === (cfg.fifoDepth - 1)
+      full := occupancy === cfg.fifoDepth
+      empty := occupancy === 0
+      val tmpDataOut = Reg(emControl()) init(io.defaults)
+      io.dataOut := tmpDataOut
+
+      //read/write/occupancy
+      //primary condition would not be occupancy. It's much dangerous to take occupancy as primary condition.
+      //conditions are combinatorial signal
+      when(io.push && io.pop) { //read and write request at the same time
+        when(!empty) { //fifo is not empty (including full). Both read and write can be excuted.
+            fifo(writePtr) := io.dataIn
+            writePtr := writePtr + 1
+            tmpDataOut := fifo(readPtr)
+            readPtr := readPtr + 1
+        }otherwise { //fifo is empty. Only write is allowed.
+            fifo(writePtr) := io.dataIn
+            writePtr := writePtr + 1
+            occupancy := occupancy + 1
+        }
+      }.elsewhen(io.push) { //only write request
+        when(!full) { //fifo is not full, write excuted
+            fifo(writePtr) := io.dataIn
+            writePtr := writePtr + 1
+            occupancy := occupancy + 1
+        }
+      }.elsewhen(io.pop) { //only read request
+        when(!empty) { //fifo is not empty, read excuted. Otherwise the DataOut keeps the original value.
+            tmpDataOut := fifo(readPtr)
+            readPtr := readPtr + 1
+            occupancy := occupancy - 1
+        }
+      }
+    }
+    class bufferEMOperand() extends Component {
+      val io = new Bundle {
+        val push = in Bool()
+        val pop = in Bool()
+        val dataIn = in (emData())
+        val defaults = in (emData())
+        val dataOut = out (emData())
+
+        //for forwarding and stall from mem
+        val Fifo = out Vec(emData(), cfg.fifoDepth) 
+        val Occupancy = out UInt(log2Up(cfg.fifoDepth + 1) bits)
+        val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)
+        val Full = out Bool()
+        val Empty = out Bool() 
+      }
+      val fifo = Vec(Reg(emData()) init(io.defaults), cfg.fifoDepth) //depth better be a exponential of 2
+      io.Fifo := Vec(fifo.map(element => element))
+      val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
+      val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
+      io.ReadPtr := readPtr
+      val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
+      io.Occupancy := occupancy
+      val full = Bool()
+      io.Full := full
+      val empty = Bool()
+      io.Empty := empty
+      full := occupancy === cfg.fifoDepth
+      empty := occupancy === 0
+      val tmpDataOut = Reg(emData()) init(io.defaults)
+      io.dataOut := tmpDataOut
+
+      //read/write/occupancy
+      //primary condition would not be occupancy. It's much dangerous to take occupancy as primary condition.
+      when(io.push && io.pop) { //read and write request at the same time
+        when(!empty) { //fifo is not empty (including full). Both read and write can be excuted.
+            fifo(writePtr) := io.dataIn
+            writePtr := writePtr + 1
+            tmpDataOut := fifo(readPtr)
+            readPtr := readPtr + 1
+        }otherwise { //fifo is empty. Only write is allowed.
+            fifo(writePtr) := io.dataIn
+            writePtr := writePtr + 1
+            occupancy := occupancy + 1
+        }
+      }.elsewhen(io.push) { //only write request
+        when(!full) { //fifo is not full, write excuted
+            fifo(writePtr) := io.dataIn
+            writePtr := writePtr + 1
+            occupancy := occupancy + 1
+        }
+      }.elsewhen(io.pop) { //only read request
+        when(!empty) { //fifo is not empty, read excuted
+            tmpDataOut := fifo(readPtr)
+            readPtr := readPtr + 1
+            occupancy := occupancy - 1
+        }
+      }
+    }
+    val BufferEMControl = new bufferEMControl()
+    val BufferEMOperand = new bufferEMOperand()
 
 
     //Data and Control signals bundle
@@ -200,65 +328,6 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     mwDataDefaults.PcIncrement := B(0, 32 bits)
     mwDataDefaults.PcTarget := B(0, 32 bits)
 
-    //Enable signals
-    //When they are active, means that each stage(including fifo) would receive new instruction.
-    val StallMem = Bool() 
-    StallMem := False
-    val StallFifoCtrl = Bool()
-    StallFifoCtrl := False
-    val StallFifoOp = Bool()
-    StallFifoOp := False
-    val Stall = Bool()
-    Stall := StallMem | StallFifoCtrl | StallFifoOp //one of them is valid, then the stall would take place
-    case class stageEna() extends Bundle {
-        val ifEna, idEna, exeEna, memPushEna, memPopEna, wbEna = Bool()
-    }
-    val StageEna = new stageEna()
-    when(!(io.halt | io.haltErr)) {
-        when(Stall) {
-            StageEna.ifEna := False
-            StageEna.idEna := False
-            StageEna.exeEna := False
-            StageEna.memPushEna := False
-        } otherwise {
-            StageEna.ifEna := True
-            StageEna.idEna := True
-            StageEna.exeEna := True
-            StageEna.memPushEna := True
-        }
-    } otherwise {
-        StageEna.ifEna := False
-        StageEna.idEna := False
-        StageEna.exeEna := False
-        StageEna.memPushEna := False
-    }
-    
-    //Take care that ensuring LOAD/STORE and non-LOAD/STORE both can be finished 
-    val memLSFinish = Reg(Bool()) init(False) //Deal with the LOAD/STORE instruction
-    when(io.DataMemIF.request & io.DataMemIF.ctrlBusy & io.DataMemIF.dataReady) {
-        memLSFinish := True
-    } otherwise {
-        memLSFinish := False
-    }
-    val memNLSFinish = Bool() //Deal with the non-LOAD/STORE instruction
-    when(!io.DataMemIF.request) {
-        memNLSFinish := True
-    } otherwise {
-        memNLSFinish := False
-    }
-    when(memLSFinish | memNLSFinish) {
-        when(!(io.halt | io.haltErr)) {
-            StageEna.memPopEna := True
-            StageEna.wbEna := True
-        } otherwise {
-            StageEna.memPopEna := False
-            StageEna.wbEna := False
-        }
-    } otherwise {
-        StageEna.memPopEna := False
-        StageEna.wbEna := False
-    }
-
 
     // Define registers and fifo
     val IDOperand = Reg(fdData()) init(fdDataDefaults) 
@@ -273,7 +342,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     val EXEControl = Reg(deControl()) init(deControlDefaults) 
     val EXEOperand = Reg(deData()) init(deDataDefaults)
     when(StageEna.exeEna) {
-        when(!pcNextSelection.io.flush) { ////adding flushing
+        when(!pcNextSelection.io.flush) { //adding flushing
             EXEControl := IDControl
             EXEOperand := IDResult    
         } otherwise {
@@ -282,148 +351,8 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         }
     }
 
-    //Circular EMFifo
-    class bufferEMControl() extends Component {
-      val io = new Bundle {
-        val push = in Bool()
-        val pop = in Bool()
-        val dataIn = in (emControl())
-        val defaults = in (emControl())
-        val dataOut = out (emControl()) //data that chosen for mem
-
-        //for forwarding and stall from mem
-        val Fifo = out Vec(emControl(), cfg.fifoDepth) 
-        val Occupancy = out UInt(log2Up(cfg.fifoDepth + 1) bits)
-        val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)
-        val Full = out Bool()
-        val Empty = out Bool()
-      }
-      val fifo = Vec(Reg(emControl()) init(io.defaults), cfg.fifoDepth) //depth better be a exponential of 2
-      io.Fifo := Vec(fifo.map(element => element))
-      val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
-      val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
-      io.ReadPtr := readPtr
-      val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
-    //   val occupancy = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0) //original one
-      io.Occupancy := occupancy
-      val full = Bool()
-      io.Full := full
-      val empty = Bool()
-      io.Empty := empty
-    //   full := occupancy === (cfg.fifoDepth - 1)
-      full := occupancy === cfg.fifoDepth
-      empty := occupancy === 0
-      val tmpDataOut = Reg(emControl()) init(io.defaults)
-      io.dataOut := tmpDataOut
-
-      //read/write/occupancy
-      //primary condition would not be occupancy. It's much dangerous to take occupancy as primary condition.
-      //conditions are combinatorial signal
-      when(io.push && io.pop) { //read and write request at the same time
-        when(!empty) { //fifo is not empty (including full). Both read and write can be excuted.
-            fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
-            tmpDataOut := fifo(readPtr)
-            readPtr := readPtr + 1
-        }otherwise { //fifo is empty. Only write is allowed.
-            fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
-            occupancy := occupancy + 1
-        }
-      }.elsewhen(io.push) { //only write request
-        when(!full) { //fifo is not full, write excuted
-            fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
-            occupancy := occupancy + 1
-        }
-      }.elsewhen(io.pop) { //only read request
-        when(!empty) { //fifo is not empty, read excuted
-            tmpDataOut := fifo(readPtr)
-            readPtr := readPtr + 1
-            occupancy := occupancy - 1
-        }
-      }
-    }
-    class bufferEMOperand() extends Component {
-      val io = new Bundle {
-        val push = in Bool()
-        val pop = in Bool()
-        val dataIn = in (emData())
-        val defaults = in (emData())
-        val dataOut = out (emData())
-
-        //for forwarding and stall from mem
-        val Fifo = out Vec(emData(), cfg.fifoDepth) 
-        val Occupancy = out UInt(log2Up(cfg.fifoDepth + 1) bits)
-        val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)
-        val Full = out Bool()
-        val Empty = out Bool() 
-      }
-      val fifo = Vec(Reg(emData()) init(io.defaults), cfg.fifoDepth) //depth better be a exponential of 2
-      io.Fifo := Vec(fifo.map(element => element))
-      val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
-      val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
-      io.ReadPtr := readPtr
-      val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
-      io.Occupancy := occupancy
-      val full = Bool()
-      io.Full := full
-      val empty = Bool()
-      io.Empty := empty
-      full := occupancy === cfg.fifoDepth
-      empty := occupancy === 0
-      val tmpDataOut = Reg(emData()) init(io.defaults)
-      io.dataOut := tmpDataOut
-
-      //read/write/occupancy
-      //primary condition would not be occupancy. It's much dangerous to take occupancy as primary condition.
-      when(io.push && io.pop) { //read and write request at the same time
-        when(!empty) { //fifo is not empty (including full). Both read and write can be excuted.
-            fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
-            tmpDataOut := fifo(readPtr)
-            readPtr := readPtr + 1
-        }otherwise { //fifo is empty. Only write is allowed.
-            fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
-            occupancy := occupancy + 1
-        }
-      }.elsewhen(io.push) { //only write request
-        when(!full) { //fifo is not full, write excuted
-            fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
-            occupancy := occupancy + 1
-        }
-      }.elsewhen(io.pop) { //only read request
-        when(!empty) { //fifo is not empty, read excuted
-            tmpDataOut := fifo(readPtr)
-            readPtr := readPtr + 1
-            occupancy := occupancy - 1
-        }
-      }
-    }
-    val BufferEMControl = new bufferEMControl()
-    val BufferEMOperand = new bufferEMOperand()
-    //connection
-    val MEMControl = new emControl()
+    val MEMControl = new emControl() //fifo conneciton are descripted further
     val MEMOperand = new emData()
-    BufferEMControl.io.push := StageEna.memPushEna
-    BufferEMControl.io.pop := StageEna.memPopEna
-    BufferEMControl.io.dataIn.RFControl := EXEControl.RFControl
-    BufferEMControl.io.dataIn.MemDataControl := EXEControl.MemDataControl
-    BufferEMControl.io.defaults := emControlDefaults
-    MEMControl := BufferEMControl.io.dataOut
-    BufferEMOperand.io.push := StageEna.memPushEna
-    BufferEMOperand.io.pop := StageEna.memPopEna
-    BufferEMOperand.io.dataIn := EXEResult
-    BufferEMOperand.io.defaults := emDataDefaults
-    MEMOperand := BufferEMOperand.io.dataOut
-    when(BufferEMControl.io.Full) { //Once the fifo is full, the StallFifo would play a role
-        StallFifoCtrl := True
-    }
-    when(BufferEMOperand.io.Full) { //Once the fifo is full, the StallFifo would play a role
-        StallFifoOp := True
-    }
 
     val WBControl = Reg(mwControl()) init(mwControlDefaults)
     val WBOperand = Reg(mwData()) init(mwDataDefaults)
@@ -431,7 +360,93 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         WBControl.RFControl := MEMControl.RFControl
         WBOperand := MEMResult
     }
-    
+
+
+    //Enable signals
+    //When they are active, means that each stage(including fifo) would receive new instruction.
+    val StallMem = Bool() 
+    StallMem := False
+    val StallFifoCtrl = Bool()
+    StallFifoCtrl := False
+    val StallFifoOp = Bool()
+    StallFifoOp := False
+    val Stall = Bool()
+    Stall := StallMem | StallFifoCtrl | StallFifoOp //one of them is valid, then the stall would take place
+    //ifEna, idEna, exeEna
+    when(!(io.halt | io.haltErr)) {
+        when(!Stall) {
+            StageEna.ifEna := True
+            StageEna.idEna := True
+            StageEna.exeEna := True
+        } otherwise { //when stall
+            StageEna.ifEna := False
+            StageEna.idEna := False
+            StageEna.exeEna := False
+        }
+    } otherwise { //when halt
+        StageEna.ifEna := False
+        StageEna.idEna := False
+        StageEna.exeEna := False
+    }
+    //fifoEna
+    val flushCount = Reg(UInt(2 bits)) init(U(0))
+    when(!Stall) {
+        when(pcNextSelection.io.flush) {
+            flushCount := U(2)    
+        }
+        when(flushCount =/= 0) {
+            flushCount := flushCount - 1
+        }
+    }
+    when(!(io.halt | io.haltErr)) { 
+        when(Stall) { //when stall
+            StageEna.fifoEna := False
+        }otherwise { 
+            StageEna.fifoEna := flushCount === 0
+        }
+    } otherwise { //when halt
+        StageEna.fifoEna := False
+    }
+    //memEna
+    //'Finish' is a flag signal to show that the mem stage is finished
+    val memLSFinish = Reg(Bool()) init(False) //Deal with the LOAD/STORE instruction
+    when(io.DataMemIF.request & io.DataMemIF.ctrlBusy & io.DataMemIF.dataReady) {
+        memLSFinish := True
+    } otherwise {
+        memLSFinish := False
+    }
+    val memNLSFinish = Bool() //Deal with the non-LOAD/STORE instruction
+    when(!io.DataMemIF.request) {
+        memNLSFinish := True
+    } otherwise {
+        memNLSFinish := False
+    }
+    val memFinish = memLSFinish | memNLSFinish
+    when(!(io.halt | io.haltErr)) {
+        when(memFinish & !BufferEMControl.io.Empty & !BufferEMOperand.io.Empty) {
+            StageEna.memEna := True
+        } otherwise {
+            StageEna.memEna := False
+        }
+    } otherwise {
+        StageEna.memEna := False
+    }
+    //wbEna
+    when(!(io.halt | io.haltErr)) {
+        when(memFinish) {
+            when(WBOperand.Pc === MEMOperand.Pc) {
+                StageEna.wbEna := False
+            } otherwise {
+                StageEna.wbEna := True
+            }
+        } otherwise {
+            StageEna.wbEna := False
+        }
+    } otherwise {
+        StageEna.wbEna := False
+    }
+
+
     //The extension module for signed load from DataMem
     //Defined before the connecting
     val extMemData = Bits(32 bits)
@@ -557,7 +572,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
                     RD1 := MEMOperand.PcIncrement
                 }
                 is(isLOAD) {
-                    when(StageEna.memPopEna) {
+                    when(StageEna.memEna | StageEna.wbEna) {
                         RD1 := extMemData
                     } otherwise {
                         StallMem := True
@@ -617,7 +632,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
                     RD2 := MEMOperand.PcIncrement
                 }
                 is(isLOAD) {
-                    when(StageEna.memPopEna) {
+                    when(StageEna.memEna | StageEna.wbEna) {
                         RD2 := extMemData
                     } otherwise {
                         StallMem := True
@@ -690,6 +705,24 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     EXEResult.PcIncrement := EXEOperand.PcIncrement
     EXEResult.PcTarget := pcTarget.io.PCTarget.asBits
     //EMFIfo has been defined and connected as above
+    //FIFO
+    BufferEMControl.io.push := StageEna.fifoEna
+    BufferEMControl.io.pop := StageEna.memEna
+    BufferEMControl.io.dataIn.RFControl := EXEControl.RFControl
+    BufferEMControl.io.dataIn.MemDataControl := EXEControl.MemDataControl
+    BufferEMControl.io.defaults := emControlDefaults
+    MEMControl := BufferEMControl.io.dataOut
+    BufferEMOperand.io.push := StageEna.fifoEna
+    BufferEMOperand.io.pop := StageEna.memEna
+    BufferEMOperand.io.dataIn := EXEResult
+    BufferEMOperand.io.defaults := emDataDefaults
+    MEMOperand := BufferEMOperand.io.dataOut
+    when(BufferEMControl.io.Full) { //Once the fifo is full, the StallFifo would play a role
+        StallFifoCtrl := True
+    }
+    when(BufferEMOperand.io.Full) { //Once the fifo is full, the StallFifo would play a role
+        StallFifoOp := True
+    }
     //MEM
     io.DataMemIF.request := MEMControl.MemDataControl.request
     io.DataMemIF.readWrite := MEMControl.MemDataControl.MemWrite
@@ -721,6 +754,8 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     io.halted := io.halt | io.haltErr
     //io.fetchSync
     io.fetchSync := RegNext(StageEna.ifEna) init(False)
+    //io.wbSync
+    io.wbSync := RegNext(StageEna.wbEna) init(False)
 }
 
 //Generate the Top Verilog

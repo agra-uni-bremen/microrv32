@@ -12,6 +12,7 @@ case class SBCoreIO() extends Bundle {
     val DB = master(DataBus(32, 32))
     val unmapped = in Bool()
     val fetchSync = out Bool()
+    val wbSync = out Bool()
     // cpu halted through ecall, pls notice the different from the 'halting signals' below
     val halted = out Bool()
     // halting signals for external, memory mapped shutdown
@@ -53,6 +54,8 @@ class SBRV32Core(val cfg : PP_RV32CoreConfig) extends Component{
     io.DB.DBsize := cpu.io.DataMemIF.size
     //io.fetchSync
     io.fetchSync := cpu.io.fetchSync
+    //
+    io.wbSync := cpu.io.wbSync
     //io.halted
     io.halted := cpu.io.halted
 }

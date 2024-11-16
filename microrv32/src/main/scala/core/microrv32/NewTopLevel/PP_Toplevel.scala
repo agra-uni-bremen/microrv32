@@ -20,6 +20,7 @@ class PP_MicroRV32Top(InitInstHexFile:String, InstHexFileSize:Int, InitDataHexFi
         // val gpioLed = out Bits(8 bits)
         // val gpioA = inout(Analog(Vec.fill(8)(Bool)))
         val cpuFetch = out Bool()
+        val cpuWb = out Bool()
         val cpuHalted = out Bool()
         // val numInst = out UInt()
         // val numClk = out UInt()
@@ -84,6 +85,7 @@ class PP_MicroRV32Top(InitInstHexFile:String, InstHexFileSize:Int, InitDataHexFi
     //output
     //io
     io.cpuFetch := cpu.io.fetchSync
+    io.cpuWb := cpu.io.wbSync
     io.cpuHalted := cpu.io.halted
     io.uart <> uartPeriph.io.uart
     //the counter for #instruction and #clk
