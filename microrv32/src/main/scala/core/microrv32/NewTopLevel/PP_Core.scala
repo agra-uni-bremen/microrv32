@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 //Configuration
 case class PP_RV32CoreConfig (
     startVector : Long = 0x80000000l, //start pc value
-    fifoDepth : Int = 8 //please take care that the log2up(1) would return 0 instead of 1
+    fifoDepth : Int = 4 //please take care that the log2up(1) would return 0 instead of 1
 )
 
 
