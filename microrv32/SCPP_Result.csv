@@ -1,4 +1,4 @@
-benchmark; host-cpu-time-ns; instruction-count; cycle-count; cpi; ipc; ips; Date; Configuration
+benchmark; host-cpu-time-ns; instruction-count; cycle-count; cpi; ipc; ips
 aha-mont64; 486563; 1042778; 1307533; 1.254; 0.797; 972580.033
 crc32; 687350; 2275716; 3436062; 1.510; 0.662; 807687.235
 cubic; 244077291481; 7835906; 11422519; 1.458; 0.686; 836591.554
