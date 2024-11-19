@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 //Configuration
 case class PP_RV32CoreConfig (
     startVector : Long = 0x80000000l, //start pc value
-    fifoDepth : Int = 4 //please take care that the log2up(1) would return 0 instead of 1
+    fifoDepth : Int = 8 //please take care that the log2up(1) would return 0 instead of 1
 )
 
 
@@ -376,21 +376,6 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         flushCount := flushCount - 1
     }
     //ifEna, idEna, exeEna
-    // when(!(io.halt | io.haltErr)) {
-    //     when(!Stall) {
-    //         StageEna.ifEna := True
-    //         StageEna.idEna := True
-    //         StageEna.exeEna := True
-    //     } otherwise { //when stall
-    //         StageEna.ifEna := False
-    //         StageEna.idEna := False
-    //         StageEna.exeEna := False
-    //     }
-    // } otherwise { //when halt
-    //     StageEna.ifEna := False
-    //     StageEna.idEna := False
-    //     StageEna.exeEna := False
-    // }
     when(!(io.halt | io.haltErr)) {
         when(flushCount === 0) {
             when(!Stall) {
@@ -412,19 +397,52 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         StageEna.idEna := False
         StageEna.exeEna := False
     }
-    //fifoEna
-    // when(!(io.halt | io.haltErr)) { 
-    //     when(Stall) { //when stall
-    //         StageEna.fifoEna := False
-    //     }otherwise { 
-    //         StageEna.fifoEna := flushCount === 0
+    // //ifEna
+    // when(!(io.halt | io.haltErr)) {
+    //     when(flushCount === 0) {
+    //         when(!Stall & (EXEOperand.Pc =/= pcNextSelection.io.pcNext.asBits)) { //Normal. The condition avoid the conflict of jump inst..
+    //             StageEna.ifEna := True
+    //         } otherwise {
+    //             StageEna.ifEna := False
+    //         }
+    //     } otherwise { //Flush
+    //         StageEna.ifEna := True
     //     }
-    // } otherwise { //when halt
-    //     StageEna.fifoEna := False
+    // } otherwise { //Halt
+    //     StageEna.ifEna := False
     // }
+    // //idEna
+    // when(!(io.halt | io.haltErr)) {
+    //     when(flushCount === 0) {
+    //         when(!Stall & (IDOperand.Pc =/= IFResult.Pc)) { //Normal
+    //             StageEna.idEna := True
+    //         } otherwise {
+    //             StageEna.idEna := False
+    //         }
+    //     } otherwise { //Flush
+    //         StageEna.idEna := True
+    //     }
+    // } otherwise { //Halt
+    //     StageEna.idEna := False
+    // }
+    // //exeEna
+    // when(!(io.halt | io.haltErr)) {
+    //     when(flushCount === 0) {
+    //         when(!Stall & (EXEOperand.Pc =/= IDResult.Pc)) { //Normal
+    //             StageEna.exeEna := True
+    //         } otherwise {
+    //             StageEna.exeEna := False
+    //         }
+    //     } otherwise { //Flush
+    //         StageEna.exeEna := True
+    //     }
+    // } otherwise { //Halt
+    //     StageEna.exeEna := False
+    // }
+    //fifoEna
     when(!(io.halt | io.haltErr)) { 
         when(flushCount === 0) {
-            when(!Stall) {
+            when(!Stall & (EXEResult.Pc =/= B(0, 32 bits))) { //Normal: fifo push-in request only happened at when fifo is not full (no stall) and the instruction are valid.
                 StageEna.fifoEna := True
             } otherwise {
                 StageEna.fifoEna := False
@@ -476,6 +494,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
 
 
     //connection: stage-by-stage
+    //extension of read data from LOAD instruction at first.
     extMemData := B(0, 32 bits)
     switch(MEMOperand.instType) {
         is(isLOAD) {
