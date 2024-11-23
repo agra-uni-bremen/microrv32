@@ -1,5 +1,5 @@
 
-bd/src/statemate/statemate:     file format elf32-littleriscv
+bd/src/statemate/statemate:     Dateiformat elf32-littleriscv
 
 
 Disassembly of section .text:
@@ -1575,12 +1575,12 @@ Disassembly of section .text:
 80001800 <start_trigger>:
 80001800:	00000513          	addi	x10,x0,0
 80001804:	deadc2b7          	lui	x5,0xdeadc
-80001808:	eef28293          	addi	x5,x5,-273 # deadbeef <_end+0x5e9d6cef>
+80001808:	eef28293          	addi	x5,x5,-273 # deadbeef <_end+0x5e9d9def>
 8000180c:	00008067          	jalr	x0,0(x1)
 
 80001810 <stop_trigger>:
 80001810:	beefe2b7          	lui	x5,0xbeefe
-80001814:	ead28293          	addi	x5,x5,-339 # beefdead <_end+0x3edf8cad>
+80001814:	ead28293          	addi	x5,x5,-339 # beefdead <_end+0x3edfbdad>
 80001818:	00008067          	jalr	x0,0(x1)
 
 8000181c <memset>:
@@ -1648,6 +1648,347 @@ Disassembly of section .data:
 80101000 <Bitlist>:
 	...
 
+80101040 <BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state>:
+	...
+
+80101041 <BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state>:
+	...
+
+80101042 <EINKLEMMSCHUTZ_CTRL_EINKLEMMSCHUTZ_CTRL_next_state>:
+	...
+
+80101043 <FH_STEUERUNG_DUMMY_FH_STEUERUNG_DUMMY_next_state>:
+	...
+
+80101044 <SCHLIESSEN_FH_TUERMODUL_CTRL_next_state>:
+	...
+
+80101045 <OEFFNEN_FH_TUERMODUL_CTRL_next_state>:
+	...
+
+80101046 <MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state>:
+	...
+
+80101047 <TIPP_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state>:
+	...
+
+80101048 <INITIALISIERT_FH_TUERMODUL_CTRL_next_state>:
+	...
+
+80101049 <WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state>:
+	...
+
+8010104a <A_FH_TUERMODUL_CTRL_next_state>:
+	...
+
+8010104b <B_FH_TUERMODUL_CTRL_next_state>:
+	...
+
+8010104c <KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state>:
+	...
+
+8010104d <MEC_KINDERSICHERUNG_CTRL_next_state>:
+	...
+
+8010104e <ZENTRAL_KINDERSICHERUNG_CTRL_next_state>:
+	...
+
+8010104f <NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state>:
+	...
+
+80101050 <step>:
+	...
+
+80101051 <stable>:
+80101051:	0000                	.insn	2, 0x
+	...
+
+80101054 <time>:
+80101054:	0000                	.insn	2, 0x
+	...
+
+80101058 <FH_DU__MFHA_old>:
+	...
+
+80101059 <FH_DU__MFHA_copy>:
+	...
+
+8010105a <FH_DU__MFHA>:
+	...
+
+8010105b <FH_DU__MFHZ_old>:
+	...
+
+8010105c <FH_DU__MFHZ_copy>:
+	...
+
+8010105d <FH_DU__MFHZ>:
+	...
+
+8010105e <FH_DU__BLOCK_old>:
+	...
+
+8010105f <FH_DU__BLOCK_copy>:
+	...
+
+80101060 <FH_DU__BLOCK>:
+	...
+
+80101061 <FH_DU__DOOR_ID>:
+	...
+
+80101062 <FH_DU__S_FH_AUFDISC>:
+	...
+
+80101063 <FH_DU__S_FH_ZUDISC>:
+	...
+
+80101064 <FH_DU__S_FH_TMBFAUFDISC_old>:
+	...
+
+80101065 <FH_DU__S_FH_TMBFAUFDISC>:
+	...
+
+80101066 <FH_DU__S_FH_TMBFZUDISC_old>:
+	...
+
+80101067 <FH_DU__S_FH_TMBFZUDISC>:
+	...
+
+80101068 <FH_DU__S_FH_TMBFZUCAN_old>:
+	...
+
+80101069 <FH_DU__S_FH_TMBFZUCAN_copy>:
+	...
+
+8010106a <FH_DU__S_FH_TMBFZUCAN>:
+	...
+
+8010106b <FH_DU__S_FH_TMBFAUFCAN_old>:
+	...
+
+8010106c <FH_DU__S_FH_TMBFAUFCAN_copy>:
+	...
+
+8010106d <FH_DU__S_FH_TMBFAUFCAN>:
+	...
+
+8010106e <FH_DU__EKS_LEISTE_AKTIV_old>:
+	...
+
+8010106f <FH_DU__EKS_LEISTE_AKTIV>:
+	...
+
+80101070 <FH_DU__FT>:
+	...
+
+80101071 <FH_DU__S_FH_FTAUF>:
+	...
+
+80101072 <FH_DU__S_FH_FTZU>:
+	...
+
+80101073 <FH_DU__KL_50>:
+	...
+
+80101074 <FH_TUERMODUL__COM_CLOSE>:
+	...
+
+80101075 <FH_TUERMODUL__COM_OPEN>:
+	...
+
+80101076 <FH_TUERMODUL__EKS_LEISTE_AKTIV_old>:
+	...
+
+80101077 <FH_TUERMODUL__EKS_LEISTE_AKTIV>:
+	...
+
+80101078 <FH_TUERMODUL__MFHA_old>:
+	...
+
+80101079 <FH_TUERMODUL__MFHA_copy>:
+	...
+
+8010107a <FH_TUERMODUL__MFHA>:
+	...
+
+8010107b <FH_TUERMODUL__MFHZ_old>:
+	...
+
+8010107c <FH_TUERMODUL__MFHZ_copy>:
+	...
+
+8010107d <FH_TUERMODUL__MFHZ>:
+	...
+
+8010107e <FH_TUERMODUL__SFHA_old>:
+	...
+
+8010107f <FH_TUERMODUL__SFHA_copy>:
+	...
+
+80101080 <FH_TUERMODUL__SFHA>:
+	...
+
+80101081 <FH_TUERMODUL__SFHZ_old>:
+	...
+
+80101082 <FH_TUERMODUL__SFHZ_copy>:
+	...
+
+80101083 <FH_TUERMODUL__SFHZ>:
+	...
+
+80101084 <FH_TUERMODUL__FT>:
+	...
+
+80101085 <FH_TUERMODUL__BLOCK_old>:
+	...
+
+80101086 <FH_TUERMODUL__BLOCK_copy>:
+	...
+
+80101087 <FH_TUERMODUL__BLOCK>:
+	...
+
+80101088 <FH_TUERMODUL__KL_50>:
+	...
+
+80101089 <FH_TUERMODUL__SFHA_MEC_old>:
+	...
+
+8010108a <FH_TUERMODUL__SFHA_MEC>:
+	...
+
+8010108b <FH_TUERMODUL__SFHA_ZENTRAL_old>:
+	...
+
+8010108c <FH_TUERMODUL__SFHA_ZENTRAL>:
+	...
+
+8010108d <FH_TUERMODUL__SFHZ_MEC_old>:
+	...
+
+8010108e <FH_TUERMODUL__SFHZ_MEC>:
+	...
+
+8010108f <FH_TUERMODUL__SFHZ_ZENTRAL_old>:
+	...
+
+80101090 <FH_TUERMODUL__SFHZ_ZENTRAL>:
+	...
+
+80101091 <FH_TUERMODUL_CTRL__FT>:
+	...
+
+80101092 <FH_TUERMODUL_CTRL__INREVERS1_copy>:
+	...
+
+80101093 <FH_TUERMODUL_CTRL__INREVERS1>:
+	...
+
+80101094 <FH_TUERMODUL_CTRL__INREVERS2_copy>:
+	...
+
+80101095 <FH_TUERMODUL_CTRL__INREVERS2>:
+80101095:	0000                	.insn	2, 0x
+	...
+
+80101098 <BLOCK_ERKENNUNG_CTRL__N_old>:
+80101098:	0000                	.insn	2, 0x
+	...
+
+8010109c <BLOCK_ERKENNUNG_CTRL__N_copy>:
+8010109c:	0000                	.insn	2, 0x
+	...
+
+801010a0 <BLOCK_ERKENNUNG_CTRL__N>:
+801010a0:	0000                	.insn	2, 0x
+	...
+
+801010a4 <BLOCK_ERKENNUNG_CTRL__I_EIN_MAX_copy>:
+801010a4:	0000                	.insn	2, 0x
+	...
+
+801010a8 <BLOCK_ERKENNUNG_CTRL__I_EIN_MAX>:
+801010a8:	0000                	.insn	2, 0x
+	...
+
+801010ac <FH_DU__I_EIN_old>:
+801010ac:	0000                	.insn	2, 0x
+	...
+
+801010b0 <FH_DU__I_EIN>:
+801010b0:	0000                	.insn	2, 0x
+	...
+
+801010b4 <FH_DU__POSITION>:
+801010b4:	0000                	.insn	2, 0x
+	...
+
+801010b8 <FH_DU__MFH_copy>:
+801010b8:	0000                	.insn	2, 0x
+	...
+
+801010bc <FH_DU__MFH>:
+801010bc:	0000                	.insn	2, 0x
+	...
+
+801010c0 <FH_TUERMODUL__I_EIN_old>:
+801010c0:	0000                	.insn	2, 0x
+	...
+
+801010c4 <FH_TUERMODUL__I_EIN>:
+801010c4:	0000                	.insn	2, 0x
+	...
+
+801010c8 <FH_TUERMODUL__POSITION>:
+801010c8:	0000                	.insn	2, 0x
+	...
+
+801010cc <sc_FH_TUERMODUL_CTRL_1739_10>:
+801010cc:	0000                	.insn	2, 0x
+	...
+
+801010d0 <sc_FH_TUERMODUL_CTRL_1781_10>:
+801010d0:	0000                	.insn	2, 0x
+	...
+
+801010d4 <FH_TUERMODUL_CTRL__N_old>:
+801010d4:	0000                	.insn	2, 0x
+	...
+
+801010d8 <FH_TUERMODUL_CTRL__N_copy>:
+801010d8:	0000                	.insn	2, 0x
+	...
+
+801010dc <FH_TUERMODUL_CTRL__N>:
+801010dc:	0000                	.insn	2, 0x
+	...
+
+801010e0 <sc_FH_TUERMODUL_CTRL_2329_1>:
+801010e0:	0000                	.insn	2, 0x
+	...
+
+801010e4 <sc_FH_TUERMODUL_CTRL_2352_1>:
+801010e4:	0000                	.insn	2, 0x
+	...
+
+801010e8 <sc_FH_TUERMODUL_CTRL_2375_2>:
+801010e8:	0000                	.insn	2, 0x
+	...
+
+801010ec <tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRL>:
+801010ec:	0000                	.insn	2, 0x
+	...
+
+801010f0 <tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRLexited_BEREIT_FH_TUERMODUL_CTRL>:
+801010f0:	0000                	.insn	2, 0x
+	...
+
+801010f4 <tm_entered_EINSCHALTSTROM_MESSEN_BLOCK_ERKENNUNG_CTRLch_BLOCK_ERKENNUNG_CTRL__N_copy>:
+	...
+
 Disassembly of section .comment:
 
 00000000 <.comment>:
@@ -1666,7 +2007,7 @@ Disassembly of section .riscv.attributes:
    2:	0000                	.insn	2, 0x
    4:	7200                	.insn	2, 0x7200
    6:	7369                	.insn	2, 0x7369
-   8:	01007663          	bgeu	x0,x16,14 <_stack_size-0xec>
+   8:	01007663          	bgeu	x0,x16,14 <_heap_size+0x14>
    c:	001e                	.insn	2, 0x001e
    e:	0000                	.insn	2, 0x
   10:	1004                	.insn	2, 0x1004
@@ -1676,7 +2017,7 @@ Disassembly of section .riscv.attributes:
   18:	7032                	.insn	2, 0x7032
   1a:	5f31                	.insn	2, 0x5f31
   1c:	697a                	.insn	2, 0x697a
-  1e:	32727363          	bgeu	x4,x7,344 <_stack_size+0x244>
+  1e:	32727363          	bgeu	x4,x7,344 <_heap_size+0x344>
   22:	3070                	.insn	2, 0x3070
   24:	0800                	.insn	2, 0x0800
   26:	0a01                	.insn	2, 0x0a01

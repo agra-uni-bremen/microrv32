@@ -1,5 +1,5 @@
 
-bd/src/slre/slre:     file format elf32-littleriscv
+bd/src/slre/slre:     Dateiformat elf32-littleriscv
 
 
 Disassembly of section .text:
@@ -414,7 +414,7 @@ Disassembly of section .text:
 80000628:	00812603          	lw	x12,8(x2)
 8000062c:	000017b7          	lui	x15,0x1
 80000630:	00f607b3          	add	x15,x12,x15
-80000634:	9707a603          	lw	x12,-1680(x15) # 970 <_stack_size+0x870>
+80000634:	9707a603          	lw	x12,-1680(x15) # 970 <_heap_size+0x970>
 80000638:	0005c783          	lbu	x15,0(x11)
 8000063c:	02060c63          	beq	x12,x0,80000674 <bar+0x32c>
 80000640:	00000613          	addi	x12,x0,0
@@ -519,7 +519,7 @@ Disassembly of section .text:
 800007cc:	00812703          	lw	x14,8(x2)
 800007d0:	000017b7          	lui	x15,0x1
 800007d4:	00f707b3          	add	x15,x14,x15
-800007d8:	9687a783          	lw	x15,-1688(x15) # 968 <_stack_size+0x868>
+800007d8:	9687a783          	lw	x15,-1688(x15) # 968 <_heap_size+0x968>
 800007dc:	00078c63          	beq	x15,x0,800007f4 <bar+0x4ac>
 800007e0:	00391913          	slli	x18,x18,0x3
 800007e4:	01278933          	add	x18,x15,x18
@@ -630,7 +630,7 @@ Disassembly of section .text:
 80000978:	00001437          	lui	x8,0x1
 8000097c:	e2010113          	addi	x2,x2,-480
 80000980:	00070913          	addi	x18,x14,0
-80000984:	97040793          	addi	x15,x8,-1680 # 970 <_stack_size+0x870>
+80000984:	97040793          	addi	x15,x8,-1680 # 970 <_heap_size+0x970>
 80000988:	01010713          	addi	x14,x2,16
 8000098c:	00e787b3          	add	x15,x15,x14
 80000990:	0007a023          	sw	x0,0(x15)
@@ -661,12 +661,12 @@ Disassembly of section .text:
 800009f4:	664000ef          	jal	x1,80001058 <strlen>
 800009f8:	00001737          	lui	x14,0x1
 800009fc:	fffff7b7          	lui	x15,0xfffff
-80000a00:	98070713          	addi	x14,x14,-1664 # 980 <_stack_size+0x880>
+80000a00:	98070713          	addi	x14,x14,-1664 # 980 <_heap_size+0x980>
 80000a04:	00f70733          	add	x14,x14,x15
 80000a08:	01010793          	addi	x15,x2,16
 80000a0c:	00f707b3          	add	x15,x14,x15
 80000a10:	00f12223          	sw	x15,4(x2)
-80000a14:	6897a623          	sw	x9,1676(x15) # fffff68c <_end+0x7fefa3fc>
+80000a14:	6897a623          	sw	x9,1676(x15) # fffff68c <_end+0x7fefd4fc>
 80000a18:	68a7a823          	sw	x10,1680(x15)
 80000a1c:	80101a37          	lui	x20,0x80101
 80000a20:	00100793          	addi	x15,x0,1
@@ -682,12 +682,12 @@ Disassembly of section .text:
 80000a48:	0d5d4a63          	blt	x26,x21,80000b1c <slre_match+0x1dc>
 80000a4c:	26041263          	bne	x8,x0,80000cb0 <slre_match+0x370>
 80000a50:	00001737          	lui	x14,0x1
-80000a54:	97070793          	addi	x15,x14,-1680 # 970 <_stack_size+0x870>
+80000a54:	97070793          	addi	x15,x14,-1680 # 970 <_heap_size+0x970>
 80000a58:	01010693          	addi	x13,x2,16
 80000a5c:	00d787b3          	add	x15,x15,x13
 80000a60:	0007a583          	lw	x11,0(x15)
 80000a64:	fffff7b7          	lui	x15,0xfffff
-80000a68:	68c78793          	addi	x15,x15,1676 # fffff68c <_end+0x7fefa3fc>
+80000a68:	68c78793          	addi	x15,x15,1676 # fffff68c <_end+0x7fefd4fc>
 80000a6c:	98070713          	addi	x14,x14,-1664
 80000a70:	00f70733          	add	x14,x14,x15
 80000a74:	00d707b3          	add	x15,x14,x13
@@ -696,8 +696,8 @@ Disassembly of section .text:
 80000a80:	28b64663          	blt	x12,x11,80000d0c <slre_match+0x3cc>
 80000a84:	fffff6b7          	lui	x13,0xfffff
 80000a88:	00001537          	lui	x10,0x1
-80000a8c:	68c68693          	addi	x13,x13,1676 # fffff68c <_end+0x7fefa3fc>
-80000a90:	98050513          	addi	x10,x10,-1664 # 980 <_stack_size+0x880>
+80000a8c:	68c68693          	addi	x13,x13,1676 # fffff68c <_end+0x7fefd4fc>
+80000a90:	98050513          	addi	x10,x10,-1664 # 980 <_heap_size+0x980>
 80000a94:	65c12803          	lw	x16,1628(x2)
 80000a98:	00d50533          	add	x10,x10,x13
 80000a9c:	01010693          	addi	x13,x2,16
@@ -707,14 +707,14 @@ Disassembly of section .text:
 80000aac:	2b064463          	blt	x12,x16,80000d54 <slre_match+0x414>
 80000ab0:	000016b7          	lui	x13,0x1
 80000ab4:	fffff7b7          	lui	x15,0xfffff
-80000ab8:	98068713          	addi	x14,x13,-1664 # 980 <_stack_size+0x880>
+80000ab8:	98068713          	addi	x14,x13,-1664 # 980 <_heap_size+0x980>
 80000abc:	00f70733          	add	x14,x14,x15
 80000ac0:	01010793          	addi	x15,x2,16
 80000ac4:	00f707b3          	add	x15,x14,x15
 80000ac8:	00f12223          	sw	x15,4(x2)
-80000acc:	68c7a783          	lw	x15,1676(x15) # fffff68c <_end+0x7fefa3fc>
+80000acc:	68c7a783          	lw	x15,1676(x15) # fffff68c <_end+0x7fefd4fc>
 80000ad0:	fffff637          	lui	x12,0xfffff
-80000ad4:	68c60613          	addi	x12,x12,1676 # fffff68c <_end+0x7fefa3fc>
+80000ad4:	68c60613          	addi	x12,x12,1676 # fffff68c <_end+0x7fefd4fc>
 80000ad8:	0007c903          	lbu	x18,0(x15)
 80000adc:	98068793          	addi	x15,x13,-1664
 80000ae0:	00c787b3          	add	x15,x15,x12
@@ -740,7 +740,7 @@ Disassembly of section .text:
 80000b30:	00050813          	addi	x16,x10,0
 80000b34:	07679e63          	bne	x15,x22,80000bb0 <slre_match+0x270>
 80000b38:	000017b7          	lui	x15,0x1
-80000b3c:	97078793          	addi	x15,x15,-1680 # 970 <_stack_size+0x870>
+80000b3c:	97078793          	addi	x15,x15,-1680 # 970 <_heap_size+0x970>
 80000b40:	01010713          	addi	x14,x2,16
 80000b44:	00e787b3          	add	x15,x15,x14
 80000b48:	0007a683          	lw	x13,0(x15)
@@ -762,7 +762,7 @@ Disassembly of section .text:
 80000b88:	68c7a823          	sw	x12,1680(x15)
 80000b8c:	69b7aa23          	sw	x27,1684(x15)
 80000b90:	000017b7          	lui	x15,0x1
-80000b94:	97078793          	addi	x15,x15,-1680 # 970 <_stack_size+0x870>
+80000b94:	97078793          	addi	x15,x15,-1680 # 970 <_heap_size+0x970>
 80000b98:	01010713          	addi	x14,x2,16
 80000b9c:	00168693          	addi	x13,x13,1
 80000ba0:	00e787b3          	add	x15,x15,x14
@@ -965,12 +965,12 @@ Disassembly of section .text:
 80000e80 <start_trigger>:
 80000e80:	00000513          	addi	x10,x0,0
 80000e84:	deadc2b7          	lui	x5,0xdeadc
-80000e88:	eef28293          	addi	x5,x5,-273 # deadbeef <_end+0x5e9d6c5f>
+80000e88:	eef28293          	addi	x5,x5,-273 # deadbeef <_end+0x5e9d9d5f>
 80000e8c:	00008067          	jalr	x0,0(x1)
 
 80000e90 <stop_trigger>:
 80000e90:	beefe2b7          	lui	x5,0xbeefe
-80000e94:	ead28293          	addi	x5,x5,-339 # beefdead <_end+0x3edf8c1d>
+80000e94:	ead28293          	addi	x5,x5,-339 # beefdead <_end+0x3edfbd1d>
 80000e98:	00008067          	jalr	x0,0(x1)
 
 80000e9c <memcmp>:
@@ -1025,7 +1025,7 @@ Disassembly of section .text:
 80000f54:	00f888b3          	add	x17,x17,x15
 80000f58:	feff0837          	lui	x16,0xfeff0
 80000f5c:	00e8c633          	xor	x12,x17,x14
-80000f60:	eff80813          	addi	x16,x16,-257 # fefefeff <_end+0x7eeeac6f>
+80000f60:	eff80813          	addi	x16,x16,-257 # fefefeff <_end+0x7eeedd6f>
 80000f64:	010707b3          	add	x15,x14,x16
 80000f68:	010605b3          	add	x11,x12,x16
 80000f6c:	fff74713          	xori	x14,x14,-1
@@ -1034,7 +1034,7 @@ Disassembly of section .text:
 80000f78:	80808337          	lui	x6,0x80808
 80000f7c:	00c5f733          	and	x14,x11,x12
 80000f80:	00e7e7b3          	or	x15,x15,x14
-80000f84:	08030313          	addi	x6,x6,128 # 80808080 <_end+0x702df0>
+80000f84:	08030313          	addi	x6,x6,128 # 80808080 <_end+0x705ef0>
 80000f88:	0067f7b3          	and	x15,x15,x6
 80000f8c:	02079a63          	bne	x15,x0,80000fc0 <strchr+0xa8>
 80000f90:	00452703          	lw	x14,4(x10)
@@ -1065,12 +1065,12 @@ Disassembly of section .text:
 80000ff4:	fe0798e3          	bne	x15,x0,80000fe4 <strchr+0xcc>
 80000ff8:	00052703          	lw	x14,0(x10)
 80000ffc:	feff0637          	lui	x12,0xfeff0
-80001000:	eff60613          	addi	x12,x12,-257 # fefefeff <_end+0x7eeeac6f>
+80001000:	eff60613          	addi	x12,x12,-257 # fefefeff <_end+0x7eeedd6f>
 80001004:	00c707b3          	add	x15,x14,x12
 80001008:	808086b7          	lui	x13,0x80808
 8000100c:	fff74713          	xori	x14,x14,-1
 80001010:	00e7f7b3          	and	x15,x15,x14
-80001014:	08068693          	addi	x13,x13,128 # 80808080 <_end+0x702df0>
+80001014:	08068693          	addi	x13,x13,128 # 80808080 <_end+0x705ef0>
 80001018:	00d7f7b3          	and	x15,x15,x13
 8000101c:	02079063          	bne	x15,x0,8000103c <strchr+0x124>
 80001020:	00452703          	lw	x14,4(x10)
@@ -1286,7 +1286,7 @@ Disassembly of section .riscv.attributes:
    2:	0000                	.insn	2, 0x
    4:	7200                	.insn	2, 0x7200
    6:	7369                	.insn	2, 0x7369
-   8:	01007663          	bgeu	x0,x16,14 <_stack_size-0xec>
+   8:	01007663          	bgeu	x0,x16,14 <_heap_size+0x14>
    c:	001e                	.insn	2, 0x001e
    e:	0000                	.insn	2, 0x
   10:	1004                	.insn	2, 0x1004
@@ -1296,7 +1296,7 @@ Disassembly of section .riscv.attributes:
   18:	7032                	.insn	2, 0x7032
   1a:	5f31                	.insn	2, 0x5f31
   1c:	697a                	.insn	2, 0x697a
-  1e:	32727363          	bgeu	x4,x7,344 <_stack_size+0x244>
+  1e:	32727363          	bgeu	x4,x7,344 <_heap_size+0x344>
   22:	3070                	.insn	2, 0x3070
   24:	0800                	.insn	2, 0x0800
   26:	0a01                	.insn	2, 0x0a01

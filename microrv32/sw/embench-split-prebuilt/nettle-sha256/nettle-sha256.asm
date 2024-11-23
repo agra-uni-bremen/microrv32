@@ -1,5 +1,5 @@
 
-bd/src/nettle-sha256/nettle-sha256:     file format elf32-littleriscv
+bd/src/nettle-sha256/nettle-sha256:     Dateiformat elf32-littleriscv
 
 
 Disassembly of section .text:
@@ -1743,12 +1743,12 @@ Disassembly of section .text:
 80001ab0 <start_trigger>:
 80001ab0:	00000513          	addi	x10,x0,0
 80001ab4:	deadc2b7          	lui	x5,0xdeadc
-80001ab8:	eef28293          	addi	x5,x5,-273 # deadbeef <_end+0x5e9d69cf>
+80001ab8:	eef28293          	addi	x5,x5,-273 # deadbeef <_end+0x5e9d9acf>
 80001abc:	00008067          	jalr	x0,0(x1)
 
 80001ac0 <stop_trigger>:
 80001ac0:	beefe2b7          	lui	x5,0xbeefe
-80001ac4:	ead28293          	addi	x5,x5,-339 # beefdead <_end+0x3edf898d>
+80001ac4:	ead28293          	addi	x5,x5,-339 # beefdead <_end+0x3edfba8d>
 80001ac8:	00008067          	jalr	x0,0(x1)
 
 80001acc <exit>:
@@ -2050,7 +2050,7 @@ Disassembly of section .data:
 8010002c:	6d6c                	.insn	2, 0x6d6c
 8010002e:	6f6e                	.insn	2, 0x6f6e
 80100030:	6e6d                	.insn	2, 0x6e6d
-80100032:	6f6e706f          	jal	x0,801e7728 <_end+0xe2208>
+80100032:	6f6e706f          	jal	x0,801e7728 <_end+0xe5308>
 80100036:	7170                	.insn	2, 0x7170
 
 80100038 <hash>:
@@ -2147,7 +2147,7 @@ Disassembly of section .data:
 801011ee:	0fc1                	.insn	2, 0x0fc1
 801011f0:	a1cc                	.insn	2, 0xa1cc
 801011f2:	240c                	.insn	2, 0x240c
-801011f4:	2de92c6f          	jal	x24,801934d2 <_end+0x8dfb2>
+801011f4:	2de92c6f          	jal	x24,801934d2 <_end+0x910b2>
 801011f8:	84aa                	.insn	2, 0x84aa
 801011fa:	4a74                	.insn	2, 0x4a74
 801011fc:	a9dc                	.insn	2, 0xa9dc
@@ -2237,6 +2237,13 @@ Disassembly of section .data:
 801012e0 <__sf>:
 	...
 
+80101418 <__stdio_exit_handler>:
+80101418:	0000                	.insn	2, 0x
+	...
+
+8010141c <__atexit>:
+	...
+
 Disassembly of section .comment:
 
 00000000 <.comment>:
@@ -2263,7 +2270,7 @@ Disassembly of section .riscv.attributes:
    2:	0000                	.insn	2, 0x
    4:	7200                	.insn	2, 0x7200
    6:	7369                	.insn	2, 0x7369
-   8:	01007663          	bgeu	x0,x16,14 <_stack_size-0xec>
+   8:	01007663          	bgeu	x0,x16,14 <_heap_size+0x14>
    c:	001e                	.insn	2, 0x001e
    e:	0000                	.insn	2, 0x
   10:	1004                	.insn	2, 0x1004
@@ -2273,7 +2280,7 @@ Disassembly of section .riscv.attributes:
   18:	7032                	.insn	2, 0x7032
   1a:	5f31                	.insn	2, 0x5f31
   1c:	697a                	.insn	2, 0x697a
-  1e:	32727363          	bgeu	x4,x7,344 <_stack_size+0x244>
+  1e:	32727363          	bgeu	x4,x7,344 <_heap_size+0x344>
   22:	3070                	.insn	2, 0x3070
   24:	0800                	.insn	2, 0x0800
   26:	0a01                	.insn	2, 0x0a01

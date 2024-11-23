@@ -293,28 +293,6 @@ object PP_MicroRV32TopSim {
         logfileStringBuilder.append(f"IPC = ${noInstr.toFloat / noClk.toFloat}%3.4f\n")
         logfileStringBuilder.append(f"IPS = ${BigDecimal(noInstr) /(BigDecimal(noClk)*BigDecimal(clockPeriodNS*10e-9))}%.4f\n")
     
-    // log the rv32ui-p test results
-    // if (logFileEnabled) {
-    //   val fileName = "./log/rv32ui-p-tests.log"
-    //   val currentTest = org.apache.commons.io.FilenameUtils.getName(args(0))
-    //   val logWriter = new FileWriter(fileName, true)
-    //   try {
-    //     logWriter.append(currentTest + " :\t")
-    //     if (reachedEnd && simPC == passPC) {
-    //       logWriter.append("Passed test @\t" + simEndTime + "ns")
-    //     } else if (reachedEnd && simPC == failPC) {
-    //       logWriter.append("Failed test @\t" + simEndTime + "ns")
-    //     } else if (reachedEnd && cpuHalted) {
-    //       logWriter.append(("Failed, halted @\t" + simEndTime + "ns"))
-    //     } else {
-    //       logWriter.append("no result")
-    //     }
-    //   } finally {
-    //     logWriter.append(("\n"))
-    //     logWriter.close()
-    //   }
-    // }
-
     if (logFileEnabled) {
             val fileName = "simulation.log"
             val logfilePath = org.apache.commons.io.FilenameUtils.getPath(args(0)) + fileName

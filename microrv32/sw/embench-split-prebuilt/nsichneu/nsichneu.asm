@@ -1,5 +1,5 @@
 
-bd/src/nsichneu/nsichneu:     file format elf32-littleriscv
+bd/src/nsichneu/nsichneu:     Dateiformat elf32-littleriscv
 
 
 Disassembly of section .text:
@@ -4577,12 +4577,12 @@ Disassembly of section .text:
 80004720 <start_trigger>:
 80004720:	00000513          	addi	x10,x0,0
 80004724:	deadc2b7          	lui	x5,0xdeadc
-80004728:	eef28293          	addi	x5,x5,-273 # deadbeef <_end+0x5e9d6d9f>
+80004728:	eef28293          	addi	x5,x5,-273 # deadbeef <_end+0x5e9d9e9f>
 8000472c:	00008067          	jalr	x0,0(x1)
 
 80004730 <stop_trigger>:
 80004730:	beefe2b7          	lui	x5,0xbeefe
-80004734:	ead28293          	addi	x5,x5,-339 # beefdead <_end+0x3edf8d5d>
+80004734:	ead28293          	addi	x5,x5,-339 # beefdead <_end+0x3edfbe5d>
 80004738:	00008067          	jalr	x0,0(x1)
 
 Disassembly of section .data:
@@ -4595,7 +4595,7 @@ Disassembly of section .data:
 	...
 
 80101004 <P1_is_marked>:
-80101004:	00000003          	lb	x0,0(x0) # 0 <_stack_size-0x100>
+80101004:	00000003          	lb	x0,0(x0) # 0 <_heap_size>
 
 80101008 <P1_marking_member_0>:
 	...
@@ -4604,6 +4604,9 @@ Disassembly of section .data:
 	...
 
 8010102c <P2_marking_member_0>:
+	...
+
+80101040 <P3_is_marked>:
 	...
 
 Disassembly of section .comment:
@@ -4624,7 +4627,7 @@ Disassembly of section .riscv.attributes:
    2:	0000                	.insn	2, 0x
    4:	7200                	.insn	2, 0x7200
    6:	7369                	.insn	2, 0x7369
-   8:	01007663          	bgeu	x0,x16,14 <_stack_size-0xec>
+   8:	01007663          	bgeu	x0,x16,14 <_heap_size+0x14>
    c:	001e                	.insn	2, 0x001e
    e:	0000                	.insn	2, 0x
   10:	1004                	.insn	2, 0x1004
@@ -4634,7 +4637,7 @@ Disassembly of section .riscv.attributes:
   18:	7032                	.insn	2, 0x7032
   1a:	5f31                	.insn	2, 0x5f31
   1c:	697a                	.insn	2, 0x697a
-  1e:	32727363          	bgeu	x4,x7,344 <_stack_size+0x244>
+  1e:	32727363          	bgeu	x4,x7,344 <_heap_size+0x344>
   22:	3070                	.insn	2, 0x3070
   24:	0800                	.insn	2, 0x0800
   26:	0a01                	.insn	2, 0x0a01
