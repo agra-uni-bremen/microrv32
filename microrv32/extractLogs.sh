@@ -6,7 +6,7 @@ extractLogsToCSV() {
 	# echo "benchmark; host-cpu-time-ns; instruction-count; cycle-count; cpi; ipc; ips; Date; Configuration" > sw/embench-split-prebuilt/summary.log
 	echo "benchmark; host-cpu-time-ns; instruction-count; cycle-count; cpi; ipc; ips; Date; Configuration" > sw/embench-split-prebuilt/summary.csv
 	for benchmarkPath in sw/embench-split-prebuilt/!(huffbench|md5sum|qrduino|picojpeg|sglib-combined|tarfind|wikisort); do
-	# for benchmarkPath in sw/embench-split-prebuilt; do
+	# for benchmarkPath in sw/embench-split-prebuilt/(); do
 		benchmarkName=$(basename $benchmarkPath)
 		# if [ "${benchmarkName}" != "summary.log" ]; then
 		if [ "${benchmarkName}" != "summary.csv" ]; then

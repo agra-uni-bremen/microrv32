@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 //Configuration
 case class PP_RV32CoreConfig (
     startVector : Long = 0x80000000l, //start pc value
-    fifoDepth : Int = 4 //please take care that the log2up(1) would return 0 instead of 1
+    fifoDepth : Int = 32 //please take care that the log2up(1) would return 0 instead of 1
 )
 
 
@@ -479,12 +479,8 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     }
     //wbEna
     when(!(io.halt | io.haltErr)) {
-        when(memFinish) {
-            when(WBOperand.Pc === MEMOperand.Pc) {
-                StageEna.wbEna := False
-            } otherwise {
-                StageEna.wbEna := True
-            }
+        when(memFinish & (WBOperand.Pc =/= MEMOperand.Pc)) {
+            StageEna.wbEna := True
         } otherwise {
             StageEna.wbEna := False
         }

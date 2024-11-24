@@ -1,7 +1,6 @@
 Executing one specific benchmark:
 
 $ make sim_split simROM="sw/embench-split-prebuilt/slre/slre"
-// $ 4 simulation for single test: aha-mont64, matmult-int, minver, st
 
 
 1. Execute all benchmarks (takes some time!):
