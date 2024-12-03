@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 //Configuration
 case class PP_RV32CoreConfig (
     startVector : Long = 0x80000000l, //start pc value
-    fifoDepth : Int = 32 //please take care that the log2up(1) would return 0 instead of 1
+    fifoDepth : Int = 3 //please take care that the log2up(1) would return 0 instead of 1
 )
 
 
@@ -91,8 +91,10 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
       }
       val fifo = Vec(Reg(emControl()) init(io.defaults), cfg.fifoDepth) //depth better be a exponential of 2
       io.Fifo := Vec(fifo.map(element => element))
-      val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
-      val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
+    //   val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
+    //   val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
+      val writePtr = Counter(0 to (cfg.fifoDepth-1))
+      val readPtr = Counter(0 to (cfg.fifoDepth-1))
       io.ReadPtr := readPtr
       val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
       io.Occupancy := occupancy
@@ -109,24 +111,29 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
       when(io.push && io.pop) { //read and write request at the same time
         when(!empty) { //fifo is not empty (including full). Both read and write can be excuted.
             fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
+            // writePtr := writePtr + 1
+            writePtr.increment() //synthezed with clock
             tmpDataOut := fifo(readPtr)
-            readPtr := readPtr + 1
+            // readPtr := readPtr + 1
+            readPtr.increment()
         }otherwise { //fifo is empty. Only write is allowed.
             fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
+            // writePtr := writePtr + 1
+            writePtr.increment()
             occupancy := occupancy + 1
         }
       }.elsewhen(io.push) { //only write request
         when(!full) { //fifo is not full, write excuted
             fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
+            // writePtr := writePtr + 1
+            writePtr.increment()
             occupancy := occupancy + 1
         }
       }.elsewhen(io.pop) { //only read request
         when(!empty) { //fifo is not empty, read excuted. Otherwise the DataOut keeps the original value.
             tmpDataOut := fifo(readPtr)
-            readPtr := readPtr + 1
+            // readPtr := readPtr + 1
+            readPtr.increment()
             occupancy := occupancy - 1
         }
       }
@@ -148,8 +155,10 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
       }
       val fifo = Vec(Reg(emData()) init(io.defaults), cfg.fifoDepth) //depth better be a exponential of 2
       io.Fifo := Vec(fifo.map(element => element))
-      val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
-      val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
+    //   val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
+    //   val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
+      val writePtr = Counter(0 to (cfg.fifoDepth-1))
+      val readPtr = Counter(0 to (cfg.fifoDepth-1))
       io.ReadPtr := readPtr
       val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
       io.Occupancy := occupancy
@@ -166,24 +175,29 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
       when(io.push && io.pop) { //read and write request at the same time
         when(!empty) { //fifo is not empty (including full). Both read and write can be excuted.
             fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
+            // writePtr := writePtr + 1
+            writePtr.increment() //synthezed with clock
             tmpDataOut := fifo(readPtr)
-            readPtr := readPtr + 1
+            // readPtr := readPtr + 1
+            readPtr.increment()
         }otherwise { //fifo is empty. Only write is allowed.
             fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
+            // writePtr := writePtr + 1
+            writePtr.increment() //synthezed with clock
             occupancy := occupancy + 1
         }
       }.elsewhen(io.push) { //only write request
         when(!full) { //fifo is not full, write excuted
             fifo(writePtr) := io.dataIn
-            writePtr := writePtr + 1
+            // writePtr := writePtr + 1
+            writePtr.increment() //synthezed with clock
             occupancy := occupancy + 1
         }
       }.elsewhen(io.pop) { //only read request
         when(!empty) { //fifo is not empty, read excuted
             tmpDataOut := fifo(readPtr)
-            readPtr := readPtr + 1
+            // readPtr := readPtr + 1
+            readPtr.increment()
             occupancy := occupancy - 1
         }
       }
