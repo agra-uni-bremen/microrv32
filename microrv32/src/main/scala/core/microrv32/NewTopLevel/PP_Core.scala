@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 //Configuration
 case class PP_RV32CoreConfig (
     startVector : Long = 0x80000000l, //start pc value
-    fifoDepth : Int = 3 //please take care that the log2up(1) would return 0 instead of 1
+    fifoDepth : Int = 6 //please take care that the log2up(1) would return 0 instead of 1
 )
 
 
@@ -95,7 +95,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     //   val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
       val writePtr = Counter(0 to (cfg.fifoDepth-1))
       val readPtr = Counter(0 to (cfg.fifoDepth-1))
-      io.ReadPtr := readPtr
+      io.ReadPtr := readPtr.value
       val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
       io.Occupancy := occupancy
       val full = Bool()
@@ -159,7 +159,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     //   val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
       val writePtr = Counter(0 to (cfg.fifoDepth-1))
       val readPtr = Counter(0 to (cfg.fifoDepth-1))
-      io.ReadPtr := readPtr
+      io.ReadPtr := readPtr.value
       val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
       io.Occupancy := occupancy
       val full = Bool()
@@ -573,7 +573,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     IDResult.PcIncrement := IDOperand.PcIncrement
     //EXE
     //RF is moved into EXE stage instead of ID stage.
-   // The RD1 and RD2 are read in the EXE stage instead of ID stage
+    //The RD1 and RD2 are read in the EXE stage instead of ID stage
     registerFile.io.rs1 := EXEOperand.fields.rs1.asUInt
     registerFile.io.rs2 := EXEOperand.fields.rs2.asUInt
     //ALUSrcSelection will be completed in this file instead of ALU Unit. Due to ArrayBuffer and data hazard.
@@ -620,7 +620,10 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         when(!BufferEMControl.io.Empty & !BufferEMOperand.io.Empty) { //check FIFO
             for(i <- 0 until cfg.fifoDepth) { //From the earliest to latest.
                 when(i < BufferEMControl.io.Occupancy) {
-                    val Index = (i + BufferEMControl.io.ReadPtr) % cfg.fifoDepth
+                    val Index = UInt((log2Up(cfg.fifoDepth)) bits)
+                    val overflowIndex = UInt((log2Up(cfg.fifoDepth)+1) bits) //must add this signal to deal with the overflow issue of Index
+                    overflowIndex := i +^ BufferEMControl.io.ReadPtr
+                    Index := overflowIndex % cfg.fifoDepth
                     when((RS1 === BufferEMOperand.io.Fifo(Index).Rd) & BufferEMControl.io.Fifo(Index).RFControl.WriteEna & (RS1 =/= B(0, 5 bits))) {
                         switch(BufferEMOperand.io.Fifo(Index).instType, strict = false) {
                             is(isLUI, isRegImm, isRegReg) {
@@ -674,12 +677,17 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
                 }
             }
         }
+        // val FIFOcheck2 = Vec.fill(cfg.fifoDepth)(Bool())
+        // FIFOcheck2.foreach(_ := False)
         when(!BufferEMControl.io.Empty & !BufferEMOperand.io.Empty) { //check FIFO
             for(i <- 0 until cfg.fifoDepth) { //From the earliest to latest. No need for break{}
                 when(i < BufferEMControl.io.Occupancy) {
-                    val Index = (i + BufferEMControl.io.ReadPtr) % cfg.fifoDepth
+                    val Index = UInt((log2Up(cfg.fifoDepth)) bits)
+                    val overflowIndex = UInt((log2Up(cfg.fifoDepth)+1) bits)
+                    overflowIndex := i +^ BufferEMControl.io.ReadPtr
+                    Index := overflowIndex % cfg.fifoDepth
+                    // FIFOcheck2(Index) := True
                     when((RS2 === BufferEMOperand.io.Fifo(Index).Rd) & BufferEMControl.io.Fifo(Index).RFControl.WriteEna & (RS2 =/= B(0, 5 bits))) {
-                        // FlagFifo := True
                         switch(BufferEMOperand.io.Fifo(Index).instType, strict = false) {
                             is(isLUI, isRegImm, isRegReg) {
                                 RD2 := BufferEMOperand.io.Fifo(Index).ALUResult
