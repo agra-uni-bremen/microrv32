@@ -620,7 +620,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         when(!BufferEMControl.io.Empty & !BufferEMOperand.io.Empty) { //check FIFO
             for(i <- 0 until cfg.fifoDepth) { //From the earliest to latest.
                 when(i < BufferEMControl.io.Occupancy) {
-                    val Index = UInt((log2Up(cfg.fifoDepth)) bits)
+                    val Index = UInt(log2Up(cfg.fifoDepth) bits)
                     val overflowIndex = UInt((log2Up(cfg.fifoDepth)+1) bits) //must add this signal to deal with the overflow issue of Index
                     overflowIndex := i +^ BufferEMControl.io.ReadPtr
                     Index := overflowIndex % cfg.fifoDepth
@@ -682,7 +682,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         when(!BufferEMControl.io.Empty & !BufferEMOperand.io.Empty) { //check FIFO
             for(i <- 0 until cfg.fifoDepth) { //From the earliest to latest. No need for break{}
                 when(i < BufferEMControl.io.Occupancy) {
-                    val Index = UInt((log2Up(cfg.fifoDepth)) bits)
+                    val Index = UInt(log2Up(cfg.fifoDepth) bits)
                     val overflowIndex = UInt((log2Up(cfg.fifoDepth)+1) bits)
                     overflowIndex := i +^ BufferEMControl.io.ReadPtr
                     Index := overflowIndex % cfg.fifoDepth
