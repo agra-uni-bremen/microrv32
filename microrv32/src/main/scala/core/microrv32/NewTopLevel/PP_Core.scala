@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 //Configuration
 case class PP_RV32CoreConfig (
     startVector : Long = 0x80000000l, //start pc value
-    fifoDepth : Int = 6 //please take care that the log2up(1) would return 0 instead of 1
+    fifoDepth : Int = 2 //please take care that the log2up(1) would return 0 instead of 1
 )
 
 
@@ -623,7 +623,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
                     val Index = UInt(log2Up(cfg.fifoDepth) bits)
                     val overflowIndex = UInt((log2Up(cfg.fifoDepth)+1) bits) //must add this signal to deal with the overflow issue of Index
                     overflowIndex := i +^ BufferEMControl.io.ReadPtr
-                    Index := overflowIndex % cfg.fifoDepth
+                    Index := (overflowIndex % cfg.fifoDepth).resize(log2Up(cfg.fifoDepth))
                     when((RS1 === BufferEMOperand.io.Fifo(Index).Rd) & BufferEMControl.io.Fifo(Index).RFControl.WriteEna & (RS1 =/= B(0, 5 bits))) {
                         switch(BufferEMOperand.io.Fifo(Index).instType, strict = false) {
                             is(isLUI, isRegImm, isRegReg) {
@@ -685,7 +685,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
                     val Index = UInt(log2Up(cfg.fifoDepth) bits)
                     val overflowIndex = UInt((log2Up(cfg.fifoDepth)+1) bits)
                     overflowIndex := i +^ BufferEMControl.io.ReadPtr
-                    Index := overflowIndex % cfg.fifoDepth
+                    Index := (overflowIndex % cfg.fifoDepth).resize(log2Up(cfg.fifoDepth))
                     // FIFOcheck2(Index) := True
                     when((RS2 === BufferEMOperand.io.Fifo(Index).Rd) & BufferEMControl.io.Fifo(Index).RFControl.WriteEna & (RS2 =/= B(0, 5 bits))) {
                         switch(BufferEMOperand.io.Fifo(Index).instType, strict = false) {
