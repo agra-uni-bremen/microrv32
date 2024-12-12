@@ -801,8 +801,8 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
 object PPCoreTop {
   def main(args: Array[String]) {
     SpinalConfig(
-      defaultClockDomainFrequency=FixedFrequency(12 MHz)
-    //   targetDirectory = "rtl"
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+        targetDirectory = "rtl"
       ).generateVerilog(new PPCore(PP_RV32CoreConfig()))
       .printPruned()
   }

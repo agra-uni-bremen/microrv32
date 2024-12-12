@@ -109,6 +109,7 @@ object PP_MicroRV32TopVerilog {
     var InstmemSize = Source.fromFile(InsthexFilePath).getLines.size
     var DatamemSize = Source.fromFile(DatahexFilePath).getLines.size
     println("Argument passed: /n" + "Inst:" + InsthexFilePath + ";Data:" + DatahexFilePath)
+    println("Argument passed: /n" + "Inst:" + InstmemSize + ";Data:" + DatamemSize)
 
     SpinalConfig(
       defaultConfigForClockDomains = ClockDomainConfig(
@@ -116,7 +117,7 @@ object PP_MicroRV32TopVerilog {
         resetActiveLevel = spinal.core.HIGH
       ),
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
-    //   targetDirectory = "rtl"
+        targetDirectory = "rtl"
       //).generateVerilog(new MicroRV32Top("sw/basic-led-c/led-c.hex"))
       ).generateVerilog(new PP_MicroRV32Top(InsthexFilePath, InstmemSize, DatahexFilePath, DatamemSize, PP_RV32CoreConfig()))
       .printPruned()
