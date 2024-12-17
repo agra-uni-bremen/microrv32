@@ -1,0 +1,15 @@
+Executing one specific benchmark:
+
+$ make sim_split simROM="sw/embench-split-prebuilt/slre/slre"
+
+
+1. Execute all benchmarks (takes some time!):
+
+$ ./runEmbenchSplit.sh
+
+
+2. Extract all simulation.log for benchmarks into summary.log:
+
+$ ./extractLogs.sh 
+
+3. Then move sw/embench-split-prebuilt/summary.log to a new location and rename it.si

@@ -1,0 +1,50 @@
+// package Core.MC.Bus
+
+// import spinal.core._
+// import spinal.lib._
+// import spinal.lib.IMasterSlave
+// import spinal.lib.bus.misc._
+// import spinal.lib.slave
+// import spinal.lib.master
+
+// class InstLineDecoder (decodingInst:MaskMapping) extends Component {
+//     val io = new Bundle {
+//         val LineIF = slave (InstBus(32, 32))
+//         val fired = out Bool() //Face to the interface
+//         val clear = in Bool() //Face to interface. Help user artificially control the elimination of a abnormal unmapped situation.
+
+//         val LineIM = master (InstBus(32, 32))
+//         val select = out Bool() //Face to the memory
+//     }
+
+//     // Internal connection
+//     // The internal signal can't be connected by master-slave auto connected. It must be connected with := one by one.
+//     // For issue about repetitive connection with LineIM inside the Decoder and the CPUbusmaster outside the Decoder.
+//     io.LineIF.IBready := io.LineIM.IBready
+//     io.LineIF.IBrdata := io.LineIM.IBrdata
+//     io.LineIM.IBvalid := io.LineIF.IBvalid
+//     io.LineIM.IBaddress := io.LineIF.IBaddress
+//     // io.LineIF <> io.LineIM
+
+//     //Select signal generation
+//     io.select := io.LineIF.IBvalid & decodingInst.hit(io.LineIF.IBaddress)
+
+//     //fired signal logic. 
+//     val regfired = Reg(Bool()) init(False)
+//     io.fired := regfired
+//     when (!decodingInst.hit(io.LineIF.IBaddress) & io.LineIF.IBvalid) {
+//         regfired := True
+//     } elsewhen (io.clear) { 
+//         regfired := False
+//     }
+// }
+
+// object InstLineDecoder {
+//     def apply (CPUmasterIF:InstBus, InstMemory:(InstBus, (Bool, MaskMapping))) : InstLineDecoder = {
+//         val decoder = new InstLineDecoder(InstMemory._2._2)
+//         CPUmasterIF <> decoder.io.LineIF
+//         decoder.io.LineIM <> InstMemory._1
+//         InstMemory._2._1 := decoder.io.select
+//         decoder.setPartialName(CPUmasterIF, "decoder")
+//     }
+// }

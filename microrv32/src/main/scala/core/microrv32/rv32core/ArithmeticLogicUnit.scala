@@ -60,8 +60,8 @@ class ArithmeticLogicUnit() extends Component{
     bitXor := io.opA ^ io.opB
     // if shift behaviour is bugged, it might be because the way spinalhdl generated verilog
     // https://github.com/SpinalHDL/SpinalHDL/issues/300 see issue for clarification
-    shiftL := io.opA |<< io.opB(4 downto 0).asUInt
-    shiftR := io.opA |>> io.opB(4 downto 0).asUInt
+    shiftL := io.opA |<< io.opB(4 downto 0).asUInt //'|<<' means logically shift left 
+    shiftR := io.opA |>> io.opB(4 downto 0).asUInt //'|>>' means logically shift right 
     shiftRA := (io.opA.asSInt >> io.opB(4 downto 0).asUInt).asBits
     shiftLI := io.opA |<< io.operation.shamt.asUInt
     shiftRI := io.opA |>> io.operation.shamt.asUInt

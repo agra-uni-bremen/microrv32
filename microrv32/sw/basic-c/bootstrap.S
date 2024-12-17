@@ -3,7 +3,7 @@
 
 .equ SYSCALL_ADDR, 0x02010000
 
-.macro INIT_HW_PLATFORM
+.macro INIT_HW_PLATFORM (total 31 instructions here)
 and x1,x0,x0
 and x2,x0,x0
 and x3,x0,x0

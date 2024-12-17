@@ -38,10 +38,10 @@ and x31,x0,x0
 .macro SYS_EXIT, exit_code
 li   a7, 93
 li   a0, \exit_code
-li   t0, SYSCALL_ADDR
+li   t0, SYSCALL_ADDR(0x02010000)
 csrr a6, mhartid
 sw   a6, 0(t0)
-sw   a7, 0(t0)
+sw   a7, 0(t0)(shutdown)
 .endm
 
 # program entry-point

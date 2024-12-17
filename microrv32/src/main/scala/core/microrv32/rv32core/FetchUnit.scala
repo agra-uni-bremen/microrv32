@@ -16,11 +16,14 @@ case class CompressedFlags() extends Bundle{
 * Fetch Unit
 * With support for compressed instructions
 */
+
+// seems only classify the
+
 class FetchUnit(cfg : RV32CoreConfig) extends Component {
     val io = new Bundle{
-        val data = in Bits(32 bits)
+        val data = in Bits(32 bits) //data that received from outside
         val sample = in Bool()
-        val instruction = out Bits(32 bits)
+        val instruction = out Bits(32 bits) //instruction that should be transfered to the decoder
         val pc = in(UInt(32 bits))
         val pcIncrement = out(UInt(3 bits))
         val compressedFlags = cfg.supportCompressed generate(CompressedFlags())
