@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 //Configuration
 case class PP_RV32CoreConfig (
     startVector : Long = 0x80000000l, //start pc value
-    fifoDepth : Int = 2 //please take care that the log2up(1) would return 0 instead of 1
+    fifoDepth : Int = 1 //please take care that the log2up(1) would return 0 instead of 1
 )
 
 
@@ -86,6 +86,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         val Fifo = out Vec(emControl(), cfg.fifoDepth) 
         val Occupancy = out UInt(log2Up(cfg.fifoDepth + 1) bits)
         val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)
+        // val ReadPtr = out UInt(log2Up(cfg.fifoDepth + 1) bits) //To deal with the circumstance that FIFO contains single element
         val Full = out Bool()
         val Empty = out Bool()
       }
@@ -95,7 +96,11 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     //   val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
       val writePtr = Counter(0 to (cfg.fifoDepth-1))
       val readPtr = Counter(0 to (cfg.fifoDepth-1))
-      io.ReadPtr := readPtr.value
+      if(cfg.fifoDepth != 1) { //fifodepth != 1
+        io.ReadPtr := readPtr.value
+      }else { //fifodepth == 1
+        io.ReadPtr := U(0)
+      }
       val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
       io.Occupancy := occupancy
       val full = Bool()
@@ -108,7 +113,8 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
       io.dataOut := tmpDataOut
 
       //read/write/occupancy
-      when(io.push && io.pop) { //read and write request at the same time
+      if(cfg.fifoDepth != 1) {
+        when(io.push && io.pop) { //read and write request at the same time
         when(!empty) { //fifo is not empty (including full). Both read and write can be excuted.
             fifo(writePtr) := io.dataIn
             // writePtr := writePtr + 1
@@ -137,6 +143,32 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
             occupancy := occupancy - 1
         }
       }
+      }else {
+        when(io.push && io.pop) { //read and write request at the same time
+        when(!empty) { //fifo is not empty (including full). Both read and write can be excuted.
+            fifo(0) := io.dataIn
+            // writePtr.increment() //synthezed with clock
+            tmpDataOut := fifo(0)
+            // readPtr.increment()
+        }otherwise { //fifo is empty. Only write is allowed.
+            fifo(0) := io.dataIn
+            // writePtr.increment()
+            occupancy := occupancy + 1
+        }
+      }.elsewhen(io.push) { //only write request
+        when(!full) { //fifo is not full, write excuted
+            fifo(0) := io.dataIn
+            // writePtr.increment()
+            occupancy := occupancy + 1
+        }
+      }.elsewhen(io.pop) { //only read request
+        when(!empty) { //fifo is not empty, read excuted. Otherwise the DataOut keeps the original value.
+            tmpDataOut := fifo(0)
+            // readPtr.increment()
+            occupancy := occupancy - 1
+        }
+      }
+      }
     }
     class bufferEMOperand() extends Component {
       val io = new Bundle {
@@ -150,6 +182,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         val Fifo = out Vec(emData(), cfg.fifoDepth) 
         val Occupancy = out UInt(log2Up(cfg.fifoDepth + 1) bits)
         val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)
+        // val ReadPtr = out UInt(log2Up(cfg.fifoDepth + 1) bits)
         val Full = out Bool()
         val Empty = out Bool() 
       }
@@ -159,7 +192,11 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
     //   val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
       val writePtr = Counter(0 to (cfg.fifoDepth-1))
       val readPtr = Counter(0 to (cfg.fifoDepth-1))
-      io.ReadPtr := readPtr.value
+      if(cfg.fifoDepth != 1) { //fifodepth != 1
+        io.ReadPtr := readPtr.value
+      }else { //fifodepth == 1
+        io.ReadPtr := U(0)
+      }
       val occupancy = Reg(UInt(log2Up(cfg.fifoDepth + 1) bits)) init(0) //an extra bit
       io.Occupancy := occupancy
       val full = Bool()
@@ -172,7 +209,8 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
       io.dataOut := tmpDataOut
 
       //read/write/occupancy
-      when(io.push && io.pop) { //read and write request at the same time
+      if(cfg.fifoDepth != 1) {
+        when(io.push && io.pop) { //read and write request at the same time
         when(!empty) { //fifo is not empty (including full). Both read and write can be excuted.
             fifo(writePtr) := io.dataIn
             // writePtr := writePtr + 1
@@ -200,6 +238,32 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
             readPtr.increment()
             occupancy := occupancy - 1
         }
+      }
+      }else {
+        when(io.push && io.pop) { //read and write request at the same time
+        when(!empty) { //fifo is not empty (including full). Both read and write can be excuted.
+            fifo(0) := io.dataIn
+            // writePtr.increment() //synthezed with clock
+            tmpDataOut := fifo(0)
+            // readPtr.increment()
+        }otherwise { //fifo is empty. Only write is allowed.
+            fifo(0) := io.dataIn
+            // writePtr.increment()
+            occupancy := occupancy + 1
+        }
+      }.elsewhen(io.push) { //only write request
+        when(!full) { //fifo is not full, write excuted
+            fifo(0) := io.dataIn
+            // writePtr.increment()
+            occupancy := occupancy + 1
+        }
+      }.elsewhen(io.pop) { //only read request
+        when(!empty) { //fifo is not empty, read excuted. Otherwise the DataOut keeps the original value.
+            tmpDataOut := fifo(0)
+            // readPtr.increment()
+            occupancy := occupancy - 1
+        }
+      }
       }
     }
     val BufferEMControl = new bufferEMControl()
@@ -618,7 +682,8 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
             }
         }
         when(!BufferEMControl.io.Empty & !BufferEMOperand.io.Empty) { //check FIFO
-            for(i <- 0 until cfg.fifoDepth) { //From the earliest to latest.
+            if(cfg.fifoDepth != 1) {
+                for(i <- 0 until cfg.fifoDepth) { //From the earliest to latest.
                 when(i < BufferEMControl.io.Occupancy) {
                     val Index = UInt(log2Up(cfg.fifoDepth) bits)
                     val overflowIndex = UInt((log2Up(cfg.fifoDepth)+1) bits) //must add this signal to deal with the overflow issue of Index
@@ -642,6 +707,25 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
                         }
                     }
                 }
+            }
+            }else {
+                when((RS1 === BufferEMOperand.io.Fifo(0).Rd) & BufferEMControl.io.Fifo(0).RFControl.WriteEna & (RS1 =/= B(0, 5 bits))) {
+                        switch(BufferEMOperand.io.Fifo(0).instType, strict = false) {
+                            is(isLUI, isRegImm, isRegReg) {
+                                RD1 := BufferEMOperand.io.Fifo(0).ALUResult
+                            }
+                            is(isAUIPC) {
+                                RD1 := BufferEMOperand.io.Fifo(0).PcTarget
+                            }
+                            is(isJAL, isJALR) {
+                                RD1 := BufferEMOperand.io.Fifo(0).PcIncrement
+                            }
+                            is(isLOAD) { //Stall from mem
+                                StallMem := True
+                                RD1 := B(32 bits, default -> True) //meaningless, set '1' as the FLAG
+                            }
+                        }
+                    }
             }
         }
         switch(Src1Sel) {
@@ -677,16 +761,14 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
                 }
             }
         }
-        // val FIFOcheck2 = Vec.fill(cfg.fifoDepth)(Bool())
-        // FIFOcheck2.foreach(_ := False)
         when(!BufferEMControl.io.Empty & !BufferEMOperand.io.Empty) { //check FIFO
-            for(i <- 0 until cfg.fifoDepth) { //From the earliest to latest. No need for break{}
+            if(cfg.fifoDepth != 1) {
+                for(i <- 0 until cfg.fifoDepth) { //From the earliest to latest. No need for break{}
                 when(i < BufferEMControl.io.Occupancy) {
                     val Index = UInt(log2Up(cfg.fifoDepth) bits)
                     val overflowIndex = UInt((log2Up(cfg.fifoDepth)+1) bits)
                     overflowIndex := i +^ BufferEMControl.io.ReadPtr
                     Index := (overflowIndex % cfg.fifoDepth).resize(log2Up(cfg.fifoDepth))
-                    // FIFOcheck2(Index) := True
                     when((RS2 === BufferEMOperand.io.Fifo(Index).Rd) & BufferEMControl.io.Fifo(Index).RFControl.WriteEna & (RS2 =/= B(0, 5 bits))) {
                         switch(BufferEMOperand.io.Fifo(Index).instType, strict = false) {
                             is(isLUI, isRegImm, isRegReg) {
@@ -705,6 +787,25 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
                         }
                     }
                 }
+            }
+            }else {
+                when((RS2 === BufferEMOperand.io.Fifo(0).Rd) & BufferEMControl.io.Fifo(0).RFControl.WriteEna & (RS2 =/= B(0, 5 bits))) {
+                        switch(BufferEMOperand.io.Fifo(0).instType, strict = false) {
+                            is(isLUI, isRegImm, isRegReg) {
+                                RD2 := BufferEMOperand.io.Fifo(0).ALUResult
+                            }
+                            is(isAUIPC) {
+                                RD2 := BufferEMOperand.io.Fifo(0).PcTarget
+                            }
+                            is(isJAL, isJALR) {
+                                RD2 := BufferEMOperand.io.Fifo(0).PcIncrement
+                            }
+                            is(isLOAD) { //Stall from mem
+                                StallMem := True
+                                RD2 := B(32 bits, default -> True) //meaningless, set '1' as the FLAG
+                            }
+                        }
+                    }
             }
         }
         switch(Src2Sel) {
