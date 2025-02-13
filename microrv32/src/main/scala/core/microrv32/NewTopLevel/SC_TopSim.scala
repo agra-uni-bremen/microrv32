@@ -239,18 +239,18 @@ object SC_MicroRV32TopSim {
            * our information with timestamp to terminal
            */
         //   if (k == failPC && !reachedEnd && i) {
-          if (k == failPC && !reachedEnd) {
-            reachedEnd = true
-            simEndTime = simTime()
-            simPC = k
-            println("Failed test @ " + simEndTime + "ns")
-          }
-          if (k == passPC && !reachedEnd) {
-            reachedEnd = true
-            simEndTime = simTime()
-            simPC = k
-            println("Passed test @ " + simEndTime + "ns")
-          }
+          // if (k == failPC && !reachedEnd) {
+          //   reachedEnd = true
+          //   simEndTime = simTime()
+          //   simPC = k
+          //   println("Failed test @ " + simEndTime + "ns")
+          // }
+          // if (k == passPC && !reachedEnd) {
+          //   reachedEnd = true
+          //   simEndTime = simTime()
+          //   simPC = k
+          //   println("Passed test @ " + simEndTime + "ns")
+          // }
           if (cpuHalt && !reachedEnd) {
             reachedEnd = true
             simEndTime = simTime()

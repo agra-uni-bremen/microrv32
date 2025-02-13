@@ -212,9 +212,10 @@ object PP_MicroRV32TopSim {
         //uart rxd
         val rxdSim: Boolean = true
         dut.io.uart.rxd #= rxdSim
+        
         val t1 = System.nanoTime
         while ((simSteps <= maxsimSteps) || dutRunning) {
-          var k = dut.cpu.cpu.programCounter.toBigInt
+          var k = dut.cpu.cpu.programCounter.toBigInt //k is the pc value
         //   var i = dut.cpu.cpu.CSRLogic.newFetch.toBoolean
           var cpuHalt = dut.io.cpuHalted.toBoolean
 
@@ -230,19 +231,19 @@ object PP_MicroRV32TopSim {
            * our information with timestamp to terminal
            */
         //   if (k == failPC && !reachedEnd && i) {
-          if (k == failPC && !reachedEnd) {
-            reachedEnd = true
-            simEndTime = simTime()
-            simPC = k
-            println("Failed test @ " + simEndTime + "ns")
-          }
-          if (k == passPC && !reachedEnd) {
-            reachedEnd = true
-            simEndTime = simTime()
-            simPC = k
-            println("Passed test @ " + simEndTime + "ns")
-          }
-          if (cpuHalt && !reachedEnd) {
+          // if (k == failPC && !reachedEnd) {
+          //   reachedEnd = true
+          //   simEndTime = simTime()
+          //   simPC = k
+          //   println("Failed test @ " + simEndTime + "ns")
+          // }
+          // if (k == passPC && !reachedEnd) {
+          //   reachedEnd = true
+          //   simEndTime = simTime()
+          //   simPC = k
+          //   println("Passed test @ " + simEndTime + "ns")
+          // }
+          if (cpuHalt && !reachedEnd) { //only this is valid in the SC and PP test
             reachedEnd = true
             simEndTime = simTime()
             simPC = k

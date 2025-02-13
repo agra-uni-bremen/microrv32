@@ -85,7 +85,7 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         //Flag signals
         val Fifo = out Vec(emControl(), cfg.fifoDepth) 
         val Occupancy = out UInt(log2Up(cfg.fifoDepth + 1) bits)
-        val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)
+        val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)//UInt(0 bits) exists, but doesn't store any value
         // val ReadPtr = out UInt(log2Up(cfg.fifoDepth + 1) bits) //To deal with the circumstance that FIFO contains single element
         val Full = out Bool()
         val Empty = out Bool()
@@ -181,12 +181,12 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
         //Flag signals
         val Fifo = out Vec(emData(), cfg.fifoDepth) 
         val Occupancy = out UInt(log2Up(cfg.fifoDepth + 1) bits)
-        val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits)
+        val ReadPtr = out UInt(log2Up(cfg.fifoDepth) bits) 
         // val ReadPtr = out UInt(log2Up(cfg.fifoDepth + 1) bits)
         val Full = out Bool()
         val Empty = out Bool() 
       }
-      val fifo = Vec(Reg(emData()) init(io.defaults), cfg.fifoDepth) //depth better be a exponential of 2
+      val fifo = Vec(Reg(emData()) init(io.defaults), cfg.fifoDepth) 
       io.Fifo := Vec(fifo.map(element => element))
     //   val writePtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
     //   val readPtr = Reg(UInt(log2Up(cfg.fifoDepth) bits)) init(0)
@@ -710,22 +710,22 @@ class PPCore(val cfg : PP_RV32CoreConfig) extends Component {
             }
             }else {
                 when((RS1 === BufferEMOperand.io.Fifo(0).Rd) & BufferEMControl.io.Fifo(0).RFControl.WriteEna & (RS1 =/= B(0, 5 bits))) {
-                        switch(BufferEMOperand.io.Fifo(0).instType, strict = false) {
-                            is(isLUI, isRegImm, isRegReg) {
-                                RD1 := BufferEMOperand.io.Fifo(0).ALUResult
-                            }
-                            is(isAUIPC) {
-                                RD1 := BufferEMOperand.io.Fifo(0).PcTarget
-                            }
-                            is(isJAL, isJALR) {
-                                RD1 := BufferEMOperand.io.Fifo(0).PcIncrement
-                            }
-                            is(isLOAD) { //Stall from mem
-                                StallMem := True
-                                RD1 := B(32 bits, default -> True) //meaningless, set '1' as the FLAG
-                            }
+                    switch(BufferEMOperand.io.Fifo(0).instType, strict = false) {
+                        is(isLUI, isRegImm, isRegReg) {
+                            RD1 := BufferEMOperand.io.Fifo(0).ALUResult
+                        }
+                        is(isAUIPC) {
+                            RD1 := BufferEMOperand.io.Fifo(0).PcTarget
+                        }
+                        is(isJAL, isJALR) {
+                            RD1 := BufferEMOperand.io.Fifo(0).PcIncrement
+                        }
+                        is(isLOAD) { //Stall from mem
+                            StallMem := True
+                            RD1 := B(32 bits, default -> True) //meaningless, set '1' as the FLAG
                         }
                     }
+                }
             }
         }
         switch(Src1Sel) {

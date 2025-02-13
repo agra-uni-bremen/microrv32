@@ -161,8 +161,8 @@ class SCCore(val cfg : SC_RV32CoreConfig) extends Component {
 object SCCoreTop {
   def main(args: Array[String]) {
     SpinalConfig(
-      defaultClockDomainFrequency=FixedFrequency(12 MHz)
-    //   targetDirectory = "rtl"
+      defaultClockDomainFrequency=FixedFrequency(12 MHz),
+      targetDirectory = "rtl"
       ).generateVerilog(new SCCore(SC_RV32CoreConfig()))
       .printPruned()
   }

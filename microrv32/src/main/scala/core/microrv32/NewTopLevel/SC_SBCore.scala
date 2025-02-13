@@ -62,7 +62,7 @@ object SBRV32CoreTop {
   def main(args: Array[String]) {
     SpinalConfig(
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
-    //   targetDirectory = "rtl"
+      targetDirectory = "rtl"
       ).generateVerilog(new SBRV32Core(SC_RV32CoreConfig()))
       .printPruned()
   }

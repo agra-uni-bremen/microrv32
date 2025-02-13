@@ -9,8 +9,8 @@ runBenchmarks() {
         benchmarkName=$(basename $benchmarkPath)
         echo $benchmarkName
         #~ echo "${benchmarkPath}/${benchmarkName}"
-        make sim_split simROM="${benchmarkPath}/${benchmarkName}"
-        # make sim_spinal simROM="${benchmarkPath}/${benchmarkName}" variant="rv32i"
+        # make sim_split simROM="${benchmarkPath}/${benchmarkName}"
+        make sim_spinal simROM="${benchmarkPath}/${benchmarkName}" variant="rv32i"
     done;
 }
 
