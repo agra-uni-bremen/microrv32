@@ -45,18 +45,18 @@ object MicroRV32TopSim {
     //     passPC = BigInt(args(2), 16)
     //   }
     // } else {
-    //   if (args.length > 1) {
-    //     args(1) match {
-    //       case "rv32i"   => { enaMul = false; enaDiv = false; enaComp = false }
-    //       case "rv32im"  => { enaMul = true; enaDiv = true; enaComp = false }
-    //       case "rv32ic"  => { enaMul = false; enaDiv = false; enaComp = true }
-    //       case "rv32imc" => { enaMul = true; enaDiv = true; enaComp = true }
-    //       case _         => { enaMul = false; enaDiv = false; enaComp = false }
-    //     }
-    //     println("enaMul " + enaMul)
-    //     println("enaDiv " + enaDiv)
-    //     println("enaComp " + enaComp)
-    //   }
+      if (args.length > 1) {
+        args(1) match {
+          case "rv32i"   => { enaMul = false; enaDiv = false; enaComp = false }
+          case "rv32im"  => { enaMul = true; enaDiv = true; enaComp = false }
+          case "rv32ic"  => { enaMul = false; enaDiv = false; enaComp = true }
+          case "rv32imc" => { enaMul = true; enaDiv = true; enaComp = true }
+          case _         => { enaMul = false; enaDiv = false; enaComp = false }
+        }
+        println("enaMul " + enaMul)
+        println("enaDiv " + enaDiv)
+        println("enaComp " + enaComp)
+      }
     // }
 
     var hexFilePath = args(0)

@@ -5,7 +5,7 @@ synthROM = sw/crc8/crc.hex
 variant ?= rv32imc
 
 sim_spinal:
-	sbt "runMain core.microrv32.MicroRV32TopSim $(simROM).hex $(variant)" 
+	sbt "runMain core.microrv32.MicroRV32TopSim $(simROM).hex $(variant)"
 
 sim_split:
 	sbt "runMain PP_RV32I.PP_MicroRV32TopSim  $(simROM)_imem.hex $(simROM)_dmem.hex" 
