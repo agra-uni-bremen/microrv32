@@ -32,7 +32,7 @@ class PP_MicroRV32Top(InitInstHexFile:String, InstHexFileSize:Int, InitDataHexFi
 
     // Definition of different components
     //cpu core
-    val cpu = new SBRV32Core(rv32config)
+    val cpu = new PP_SBCore(rv32config)
 
     //InstMem: not included in the peripherals
     // val InstRom = new InstMem(32, HexFileSize, InitHexFile)

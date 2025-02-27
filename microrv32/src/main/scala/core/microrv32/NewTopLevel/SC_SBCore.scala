@@ -20,7 +20,7 @@ case class SBCoreIO() extends Bundle {
 }
 
 //The interface will deal with the problem of LB/LBU and LH/LHU
-class SBRV32Core(val cfg : SC_RV32CoreConfig) extends Component{
+class SC_SBCore(val cfg : SC_RV32CoreConfig) extends Component{
     val io = new SBCoreIO()
 
     val cpu = new SCCore(cfg)
@@ -58,12 +58,12 @@ class SBRV32Core(val cfg : SC_RV32CoreConfig) extends Component{
 }
 
 //Generating Verilog
-object SBRV32CoreTop {
+object SC_SBRV32CoreTop {
   def main(args: Array[String]) {
     SpinalConfig(
       defaultClockDomainFrequency=FixedFrequency(12 MHz),
       targetDirectory = "rtl"
-      ).generateVerilog(new SBRV32Core(SC_RV32CoreConfig()))
+      ).generateVerilog(new SC_SBCore(SC_RV32CoreConfig()))
       .printPruned()
   }
 }

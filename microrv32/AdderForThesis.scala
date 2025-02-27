@@ -370,3 +370,30 @@
 //   StageEna.wbEna := False
 // }
 
+//[***************THis is the supplement logic!!***********]
+// when((RS1 === MEMOperand.Rd) & MEMControl.RFControl.WriteEna & (RS1 =/= B(0, 5 bits))) {
+//     switch(MEMOperand.instType, strict = false) {
+//         //...
+//         is(isLOAD) {
+//             when(StageEna.memEna | StageEna.wbEna) {
+//                 RD1 := extMemData
+//             } otherwise {
+//                 StallMem := True
+//                 RD1 := B(32 bits, default -> True) //Meaningless, set full '1' as the FLAG
+//             }
+//         }
+//     }
+// }
+
+//[***************THis is the supplement logic!!***********]
+// when((RS1 === MEMOperand.Rd) & MEMControl.RFControl.WriteEna & (RS1 =/= B(0, 5 bits))) {
+//     switch(MEMOperand.instType, strict = false) {
+//         //...
+//         is(isLOAD) {
+//             RD1 := extMemData
+//             when(!(memLSFinish)) {
+//                 StallMem := True
+//             }
+//         }
+//     }
+// }
