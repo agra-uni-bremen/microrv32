@@ -152,7 +152,7 @@ case class CoreIO() extends Bundle{
   */
   // memory bus access
   val memIF = MemoryIF()
-  // cpu halted through ecall
+  // cpu halted through ecall. The 'halted' signal is true when 'halt' and 'haltErr' is True
   val halted = out Bool()
   // sync signal, asserted when core is in fetch state
   val fetchSync = out Bool()
@@ -337,7 +337,7 @@ class RiscV32Core(val cfg : RV32CoreConfig) extends Component{
   val trapTarget = UInt(32 bits)
   val mretTarget = UInt(32 bits)
   
-  incrPC := programCounter + fetchUnit.io.pcIncrement
+  incrPC := programCounter + fetchUnit.io.pcIncrement //Until Toplevel that the PCIncrement value is calculatedpcValSel
   
   jalTarget := programCounter + decoder.io.immediate.asUInt
   jalrTarget := ((decoder.io.immediate.asUInt + regs.io.rs1Data.asUInt).asBits & ~B(1, 32 bits)).asUInt

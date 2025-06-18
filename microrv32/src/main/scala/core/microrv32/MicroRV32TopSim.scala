@@ -26,7 +26,7 @@ import scala.collection.mutable.ArrayBuffer
 object MicroRV32TopSim {
   def main(args: Array[String]) {
     // set to true if you want to log riscv-tests simulation results into ./log/rv32ui-p-tests.log
-    var logFileEnabled = false
+    var logFileEnabled = true
     var failPC: BigInt = 0
     var passPC: BigInt = 0
 
@@ -39,12 +39,12 @@ object MicroRV32TopSim {
     // some very crude and experimental commandline argument handling
     // if logFileEnabled is set in test bench, the arguments after the binary are the failpc and passpc for automatic check and logging
     // else the argument passed after the binary is the core variant (used for semi-automatic benchmarking)
-    if (logFileEnabled) {
-      if (args.length > 1) {
-        failPC = BigInt(args(1), 16)
-        passPC = BigInt(args(2), 16)
-      }
-    } else {
+    // if (logFileEnabled) {
+    //   if (args.length > 1) {
+    //     failPC = BigInt(args(1), 16)
+    //     passPC = BigInt(args(2), 16)
+    //   }
+    // } else {
       if (args.length > 1) {
         args(1) match {
           case "rv32i"   => { enaMul = false; enaDiv = false; enaComp = false }
@@ -57,7 +57,7 @@ object MicroRV32TopSim {
         println("enaDiv " + enaDiv)
         println("enaComp " + enaComp)
       }
-    }
+    // }
 
     var hexFilePath = args(0)
     var memSize = Source.fromFile(hexFilePath).getLines.size
@@ -202,21 +202,58 @@ object MicroRV32TopSim {
           }
         }
 
-        def printRegFile() = {
+        // def printRegFile() = {
+        //   for(i <- 0 to 31) {
+        //     printf("%-5s(x%2d) = %8x\n",regname(i),i,dut.cpu.cpu.regs.regFile.getBigInt(i)) //'.getBigInt' is use to 'Mem' only
+        //   }
+        // }
+        def returnRegFileString() : String = {
+          var regFileDump = new StringBuilder("")
           for(i <- 0 to 31) {
-            printf("%-5s(x%2d) = %8x\n",regname(i),i,dut.cpu.cpu.regs.regFile.getBigInt(i))
+            regFileDump.append(f"${regname(i)}%-5s(x${i}%2d) = ${dut.cpu.cpu.regs.regFile.getBigInt(i)}%8x\n")
           }
+          regFileDump.toString
+        }
+        def printRegFile() = {
+          print(returnRegFileString())
+          // for(i <- 0 to 31) {
+            //Format specifiers always begin with a % and end up with the type of data to be printed(eg:'s' for string, 'd' for decimal, 'x' for hexadecimal)
+            //'%' marks the beginning of the format specifier, '-' means left-align the output within the specified field width
+            //'5' is the specified field width., 's' tells printf to expect a string argument
+            //'%2d' means 2 character width, decimal.  '%8x'
+            // printf("%-5s(x%2d) = %8x\n",regname(i),i,dut.cpu.cpu.registerFile.RegisterArray.getBigInt(i))
+            // printf("%-5s(x%2d) = %8x\n",regname(i),i,dut.cpu.cpu.registerFile.RegisterArray(i).toBigInt)
+          // }
         }
 
+        var logfileStringBuilder = new StringBuilder("")
         println("Starting simulation")
+        println(f"File ${hexFilePath}")
+        logfileStringBuilder.append("Starting simulation\n")
+        logfileStringBuilder.append(java.time.format.DateTimeFormatter.ofPattern("YYYY-MM-dd H:m:s").format(java.time.LocalDateTime.now)+"\n\n")
+        logfileStringBuilder.append(f"MEM = ${hexFilePath}\n")
         // Fork a process to generate the reset and the clock on the dut
-        dut.clockDomain.forkStimulus(period = 82)
+        var clockPeriodNS = 82
+        logfileStringBuilder.append(f"clock period (ns) = ${clockPeriodNS}\n")
+        dut.clockDomain.forkStimulus(period = clockPeriodNS)
         var dutRunning = false
         var simSteps: Int = 0
+        var noInstr: Int = 1
+        var noClk: Int = 1
         var maxsimSteps: Int = 2600
         var maxSimstepsReached = false
-        var resetRiEdge: Int = 100
-        var resetFaEdge: Int = 104
+        // var resetRiEdge: Int = 100
+        // var resetFaEdge: Int = 104
+
+        // println("Starting simulation")
+        // // Fork a process to generate the reset and the clock on the dut
+        // dut.clockDomain.forkStimulus(period = 82)
+        // var dutRunning = false
+        // var simSteps: Int = 0
+        // var maxsimSteps: Int = 2600
+        // var maxSimstepsReached = false
+        // var resetRiEdge: Int = 100
+        // var resetFaEdge: Int = 104
 
         // reading ram is fairly new addition to spinalhdl and still needs some debugging
         // dut.clockDomain.waitRisingEdge()
@@ -226,7 +263,7 @@ object MicroRV32TopSim {
         // readRam(ramC,0x00001ffc,0x00002000+8).toList.foreach{ printf("%8x ",_)}
         // print("\n")
 
-        // uart rxd
+        // uart rxd 
         val rxdSim: Boolean = true
         dut.io.uart.rxd #= rxdSim
         val t1 = System.nanoTime
@@ -268,7 +305,7 @@ object MicroRV32TopSim {
             println("SimSteps: " + simSteps)
             println("CPU time: " + (t2 - t1) + " ns")
             printf("SIMPC : %8x\n", simPC)
-
+            logfileStringBuilder.append(f"Halted @ time = ${simEndTime} ns\nSimSteps = ${simSteps}\nCPU time = ${(t2 - t1)} ns\nsimPC = ${simPC}%8x\n")
           }
           // if(simSteps >= resetRiEdge && simSteps <= resetFaEdge){
           //   dut.clockDomain.assertReset()
@@ -311,28 +348,44 @@ object MicroRV32TopSim {
       printf("pc = %08x\n", dut.cpu.cpu.programCounter.toBigInt)
       printf("num-instr = %d\n", dut.cpu.cpu.CSRLogic.minstret.toBigInt)
       printf("num-clk-cycle = %d\n", dut.cpu.cpu.CSRLogic.mcycle.toBigInt)
+      printf("CPI = %f\n", dut.cpu.cpu.CSRLogic.mcycle.toBigInt.toFloat / dut.cpu.cpu.CSRLogic.minstret.toBigInt.toFloat)
+
+      logfileStringBuilder.append(returnRegFileString())
+      logfileStringBuilder.append(f"pc = ${dut.cpu.cpu.programCounter.toBigInt}%08x\n")
+      logfileStringBuilder.append(f"num-instr = ${dut.cpu.cpu.CSRLogic.minstret.toBigInt}\n")
+      logfileStringBuilder.append(f"num-clk-cycle = ${dut.cpu.cpu.CSRLogic.mcycle.toBigInt}\n")
+      logfileStringBuilder.append(f"CPI = ${dut.cpu.cpu.CSRLogic.mcycle.toBigInt.toFloat / dut.cpu.cpu.CSRLogic.minstret.toBigInt.toFloat}%3.4f\n")
+      logfileStringBuilder.append(f"IPC = ${dut.cpu.cpu.CSRLogic.minstret.toBigInt.toFloat / dut.cpu.cpu.CSRLogic.mcycle.toBigInt.toFloat}%3.4f\n")
+      logfileStringBuilder.append(f"IPS = ${BigDecimal(dut.cpu.cpu.CSRLogic.minstret.toBigInt) /(BigDecimal(dut.cpu.cpu.CSRLogic.mcycle.toBigInt)*BigDecimal(clockPeriodNS*10e-9))}%.4f\n")
+
+    if (logFileEnabled) {
+            val fileName = "simulation.log"
+            val logfilePath = org.apache.commons.io.FilenameUtils.getPath(args(0)) + fileName
+            scala.tools.nsc.io.File(logfilePath).writeAll(logfileStringBuilder.toString)
+    }
+
       }
 
     // log the rv32ui-p test results
-    if (logFileEnabled) {
-      val fileName = "./log/rv32ui-p-tests.log"
-      val currentTest = org.apache.commons.io.FilenameUtils.getName(args(0))
-      val logWriter = new FileWriter(fileName, true)
-      try {
-        logWriter.append(currentTest + " :\t")
-        if (reachedEnd && simPC == passPC) {
-          logWriter.append("Passed test @\t" + simEndTime + "ns")
-        } else if (reachedEnd && simPC == failPC) {
-          logWriter.append("Failed test @\t" + simEndTime + "ns")
-        } else if (reachedEnd && cpuHalted) {
-          logWriter.append(("Failed, halted @\t" + simEndTime + "ns"))
-        } else {
-          logWriter.append("no result")
-        }
-      } finally {
-        logWriter.append(("\n"))
-        logWriter.close()
-      }
-    }
+    // if (logFileEnabled) {
+    //   val fileName = "./log/rv32ui-p-tests.log"
+    //   val currentTest = org.apache.commons.io.FilenameUtils.getName(args(0))
+    //   val logWriter = new FileWriter(fileName, true)
+    //   try {
+    //     logWriter.append(currentTest + " :\t")
+    //     if (reachedEnd && simPC == passPC) {
+    //       logWriter.append("Passed test @\t" + simEndTime + "ns")
+    //     } else if (reachedEnd && simPC == failPC) {
+    //       logWriter.append("Failed test @\t" + simEndTime + "ns")
+    //     } else if (reachedEnd && cpuHalted) {
+    //       logWriter.append(("Failed, halted @\t" + simEndTime + "ns"))
+    //     } else {
+    //       logWriter.append("no result")
+    //     }
+    //   } finally {
+    //     logWriter.append(("\n"))
+    //     logWriter.close()
+    //   }
+    // }
   }
 }
