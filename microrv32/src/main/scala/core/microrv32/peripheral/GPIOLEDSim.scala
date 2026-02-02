@@ -15,25 +15,6 @@ object GPIOLEDSim {
       .doSim{dut =>
         //Fork a process to generate the reset and the clock on the dut
         dut.clockDomain.forkStimulus(period = 10)
-        // def read(addr : Int):Bits = {
-        //   dut.io.sb.SBaddress #= addr
-        //   dut.io.sb.SBvalid #= true
-        //   dut.io.sb.SBwdata #= 0
-        //   dut.io.sb.SBwrite #= false
-
-        //   dut.clockDomain.waitRisingEdge()
-        //   dut.io.sb.SBaddress #= 0
-        //   dut.io.sb.SBvalid #= false
-        //   dut.io.sb.SBrdata
-        // }
-        // def write(addr : Int, value : Int){
-        //   dut.io.sb.SBaddress #= addr
-        //   dut.io.sb.SBvalid #= true
-        //   dut.io.sb.SBwdata #= value
-        //   dut.io.sb.SBwrite #= true
-        //   dut.clockDomain.waitRisingEdge()
-        //   dut.io.sb.SBvalid #= false
-        // }
         def read(addr : Int):Bits = {
           dut.io.sb.SBaddress #= addr
           dut.io.sb.SBvalid #= true

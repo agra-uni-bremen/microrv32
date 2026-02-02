@@ -28,7 +28,7 @@ class SBGPIOBank() extends Component{
         val sel = in(Bool)
     }
 
-    val busCtrl = SimpleBusSlaveFactory(io.sb, io.sel, addressBits = 8)
+    val busCtrl = SimpleBusSlaveFactory(io.sb, io.sel, addressBits = 4)
     
     val directionReg = Reg(Bits(8 bits)) init(0)
     val outputReg = Reg(Bits(8 bits)) init(0)

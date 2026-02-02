@@ -44,6 +44,7 @@ object SBGPIOBankSim {
           dut.io.sb.SBwrite #= true
           dut.io.sel #= true
           dut.clockDomain.waitRisingEdge()
+          dut.clockDomain.waitRisingEdge()
           dut.io.sb.SBvalid #= false
           dut.io.sel #= false
           dut.clockDomain.waitRisingEdge()
