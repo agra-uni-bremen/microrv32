@@ -17,9 +17,9 @@ object SBUartTopSim {
           defaultClockDomainFrequency=FixedFrequency(12 MHz)
         )
       )
-      .withWave
+      .withFstWave
       .compile{
-        val top = new SBUart()
+        val top = new SBSUart()
         top
       }        
       .doSim{
@@ -82,10 +82,10 @@ object SBUartTopSim {
           dut.io.sb.SBwrite #= false
           dut.io.sel #= true
           dut.clockDomain.waitRisingEdge()
-          dut.io.sb.SBaddress #= 0
-          dut.io.sb.SBvalid #= true
-          dut.io.sel #= false
           dut.clockDomain.waitRisingEdge()
+          dut.io.sb.SBaddress #= 0
+          dut.io.sel #= false
+          dut.io.sb.SBvalid #= false
           dut.io.sb.SBrdata
         }
         def write(addr : Int, value : Int){
@@ -142,30 +142,30 @@ object SBUartTopSim {
         }
         read(4)
         dut.clockDomain.waitRisingEdge()
-        dut.clockDomain.waitRisingEdge()
-        dut.clockDomain.waitRisingEdge()
-        dut.clockDomain.waitRisingEdge()
-        dut.clockDomain.waitRisingEdge()
-        dut.clockDomain.waitRisingEdge()
-        // encUART(42,dut.io.uart.rxd, 115200)
-        dut.clockDomain.waitRisingEdge()
-        dut.clockDomain.waitRisingEdge()
-        //read(8)
-        dut.clockDomain.waitRisingEdge()
-        dut.clockDomain.waitRisingEdge()
-        // encUART(64,dut.io.uart.rxd, 115200)
-        dut.clockDomain.waitRisingEdge()
-        // encUART(65,dut.io.uart.rxd, 115200)
-        dut.clockDomain.waitRisingEdge()
-        //read(8)
-        dut.clockDomain.waitRisingEdge()
-        //read(8)
-        dut.clockDomain.waitRisingEdge()
-        for(step  <- 0 to 400){
-         dut.clockDomain.waitRisingEdge()
-        }
+        // dut.clockDomain.waitRisingEdge()
+        // dut.clockDomain.waitRisingEdge()
+        // dut.clockDomain.waitRisingEdge()
+        // dut.clockDomain.waitRisingEdge()
+        // dut.clockDomain.waitRisingEdge()
+        // // encUART(42,dut.io.uart.rxd, 115200)
+        // dut.clockDomain.waitRisingEdge()
+        // dut.clockDomain.waitRisingEdge()
+        // //read(8)
+        // dut.clockDomain.waitRisingEdge()
+        // dut.clockDomain.waitRisingEdge()
+        // // encUART(64,dut.io.uart.rxd, 115200)
+        // dut.clockDomain.waitRisingEdge()
+        // // encUART(65,dut.io.uart.rxd, 115200)
+        // dut.clockDomain.waitRisingEdge()
+        // //read(8)
+        // dut.clockDomain.waitRisingEdge()
+        // //read(8)
+        // dut.clockDomain.waitRisingEdge()
+        // for(step  <- 0 to 400){
+        //  dut.clockDomain.waitRisingEdge()
+        // }
         startRXDFork = true
-        for(step  <- 0 to 8000){
+        for(step  <- 0 to 10000){
          dut.clockDomain.waitRisingEdge()
         }
         startRXDFork = false

@@ -221,7 +221,7 @@ object MicroRV32TopSim {
         // reading ram is fairly new addition to spinalhdl and still needs some debugging
         // dut.clockDomain.waitRisingEdge()
         // var ramC = dut.ram
-        // dut.clockDomain.waitRisingEdge()
+        // dut.clockDomain.waitRisigitngEdge()
         // println("memory before 2nd reset at 0x80002000")
         // readRam(ramC,0x00001ffc,0x00002000+8).toList.foreach{ printf("%8x ",_)}
         // print("\n")
@@ -311,6 +311,9 @@ object MicroRV32TopSim {
       printf("pc = %08x\n", dut.cpu.cpu.programCounter.toBigInt)
       printf("num-instr = %d\n", dut.cpu.cpu.CSRLogic.minstret.toBigInt)
       printf("num-clk-cycle = %d\n", dut.cpu.cpu.CSRLogic.mcycle.toBigInt)
+      printf("CPI = %3.3f\n", BigDecimal(dut.cpu.cpu.CSRLogic.mcycle.toBigInt)/BigDecimal(dut.cpu.cpu.CSRLogic.minstret.toBigInt))
+      printf("IPC = %3.3f\n", BigDecimal(dut.cpu.cpu.CSRLogic.minstret.toBigInt)/BigDecimal(dut.cpu.cpu.CSRLogic.mcycle.toBigInt))
+      printf("IPS = %.3f\n", BigDecimal(dut.cpu.cpu.CSRLogic.minstret.toBigInt)/(BigDecimal(dut.cpu.cpu.CSRLogic.mcycle.toBigInt)*BigDecimal(12.0*10e-9)))
       }
 
     // log the rv32ui-p test results

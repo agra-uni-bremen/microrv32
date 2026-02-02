@@ -5,7 +5,7 @@ import spinal.sim._
 import spinal.core.sim._
 import scala.math._
 
-object GPIOBankSim {
+object SBGPIOBankSim {
 
   var simEndTime : BigInt = 0
 
@@ -19,7 +19,7 @@ object GPIOBankSim {
       )
       .withWave
       .compile{
-        val top = new GPIOBank()
+        val top = new SBGPIOBank()
         top
       }        
       .doSim{
@@ -31,10 +31,10 @@ object GPIOBankSim {
           dut.io.sb.SBwrite #= false
           dut.io.sel #= true
           dut.clockDomain.waitRisingEdge()
-          dut.io.sb.SBaddress #= 0
-          dut.io.sb.SBvalid #= true
-          dut.io.sel #= false
           dut.clockDomain.waitRisingEdge()
+          dut.io.sb.SBaddress #= 0
+          dut.io.sel #= false
+          dut.io.sb.SBvalid #= false
           dut.io.sb.SBrdata
         }
         def write(addr : Int, value : Int){
@@ -83,7 +83,7 @@ object GPIOBankSim {
           gpioOutput = dut.io.gpio.write.toInt & dut.io.gpio.writeEnable.toInt
           if(gpioOutput != i)
           {
-            printf("T1: GPIO Output not correct @ %h\n", i)
+            printf("T1: GPIO Output not correct @ %h\tout= %h\n", i, gpioOutput)
           }
           dut.clockDomain.waitRisingEdge()
         }

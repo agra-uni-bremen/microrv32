@@ -10,6 +10,13 @@ import spinal.lib.IMasterSlave
    * All slaves assert ready in the clock cycle rdata is valid
    * Top level should take care of memory mapping and peripheral specific wiring-
    */
+case class SimpleBusConfig(
+  addressWidth  : Int,
+  dataWidth     : Int
+){
+  def dataBytes = dataWidth/8
+}
+
 case class SimpleBus(dataWidth:Int, addressWidth:Int) extends Bundle with IMasterSlave {
   // master signals
   val SBaddress = UInt(addressWidth bits)

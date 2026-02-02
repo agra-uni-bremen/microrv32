@@ -21,7 +21,7 @@ import core.microrv32.bus._
  *         0x8    | input register, 1 = HIGH, 0 = LOW, if direction[i] = 0, then pin[i] is forwarded to input[i] via 2 d-ff
  * 
  */
-class SBGPIOBank() extends Component{
+class GPIOBank() extends Component{
     val io = new Bundle{
         val sb = slave(SimpleBus(32,32))
         val gpio = master(TriStateArray(8 bits))
@@ -72,19 +72,4 @@ class SBGPIOBank() extends Component{
     }
     io.sb.SBready := rdy
     io.sb.SBrdata := SBGPIOLogic.sbDataOutputReg
-}
-
-/**
-*   This black box model encapsulates the Lattice Semiconductor FPGA 
-*   Technology Library for the SB_IO primitive - 
-*   Used to interconnect the IO Pad with the FPGA design
-*   
-*/
-case class SB_IO(pinType : String) extends BlackBox{
-  addGeneric("PIN_TYPE", B(pinType))
-  val PACKAGE_PIN = inout(Analog(Bool))
-  val OUTPUT_ENABLE = in(Bool)
-  val D_OUT_0 = in(Bool)
-  val D_IN_0 = out(Bool)
-  setDefinitionName("SB_IO")
 }

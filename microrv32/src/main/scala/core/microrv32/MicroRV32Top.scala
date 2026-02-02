@@ -1,7 +1,10 @@
 package core.microrv32
 
 import core.microrv32.peripheral.GPIOLED
+import core.microrv32.peripheral.SBLED
+import core.microrv32.peripheral.SBShutdown
 import core.microrv32.peripheral.uart.SBUart
+import core.microrv32.peripheral.uart.SBSUart
 import core.microrv32.peripheral.gpiobank.SBGPIOBank
 import core.microrv32.peripheral.gpiobank.SB_IO
 import spinal.lib.io.{InOutWrapper, TriStateArray}
@@ -62,19 +65,22 @@ class MicroRV32Top(initHexfile:String, sizeHexfile:Int, rv32config : RV32CoreCon
   busMappings += rvCLIC.io.sb -> (rvCLIC.io.sel, MaskMapping(0x02000000l,0xFFFF0000l)) // 0x02000000 - 0x0200FFFF
   cpu.io.irqTimer := rvCLIC.io.irq
 
-  val shutdown_periph = new Shutdown()
+  // val shutdown_periph = new Shutdown()
+  val shutdown_periph = new SBShutdown()
   busMappings += shutdown_periph.io.sb -> (shutdown_periph.io.sel, MaskMapping(0x02010000l,0xFFFFFC00l)) // 0x02010000 - 0x020103FF
   cpu.io.halt := shutdown_periph.io.halt
   cpu.io.haltErr := shutdown_periph.io.haltErr
 
   val ram = new ByteAddressableMemory(sizeHexfile,initHexfile)
-  busMappings += ram.io.sb -> (ram.io.sel, MaskMapping(0x80000000l,0xFF000000l)) // 0x80000000 - 0x80FFFFFF
+  busMappings += ram.io.sb -> (ram.io.sel, MaskMapping(0x80000000l,0xFFE00000l)) // 0x80000000 - 0x80FFFFFF
 
-  val gpio_led = new GPIOLED()
+  // val gpio_led = new GPIOLED()
+  val gpio_led = new SBLED()
   busMappings += gpio_led.io.sb -> (gpio_led.io.sel, MaskMapping(0x81000000l,0xFFFFFFF0l)) // 0x81000000 - 0x8100000F
   io.gpioLed := gpio_led.io.leds
   
-  val uartPeriph = new SBUart()
+  // val uartPeriph = new SBUart()
+  val uartPeriph = new SBSUart()
   busMappings += uartPeriph.io.sb -> (uartPeriph.io.sel, MaskMapping(0x82000000l,0xFFFFFF00l)) // 0x82000000 - 0x820000FF
   io.uart <> uartPeriph.io.uart
   
